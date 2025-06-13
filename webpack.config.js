@@ -13,6 +13,7 @@ Encore
     })
     .enableVersioning(Encore.isProduction())
     .addEntry('app', './assets/styles/app.scss')
+    .addEntry('typed', './assets/js/typed.js')
 ;
 
 module.exports = Encore.getWebpackConfig();

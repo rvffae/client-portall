@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fokuna - Client Portal</title>
-    <link rel="stylesheet" href="{{ asset('styles/app.scss') }}">
+    {{ encore_entry_link_tags('app') }}
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="{{ asset('images/F.png') }}" alt="Logo Fokuna">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo Fokuna">
         </div>
         <div class="auth-buttons">
             <a href="#">Inscription</a>
@@ -18,7 +18,9 @@
     </header>
     <section class="hero">
         <h1>Bienvenue sur Fokuna</h1>
-        <p>Votre portail client pour une gestion simplifiée et sécurisée.</p>
+        <p><span class="typed-text"></span></p>
     </section>
+    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('typed') }}
 </body>
 </html>
