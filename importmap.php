@@ -25,4 +25,7 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    'typed.js' => [
+        'version' => '2.1.0',
+    ],
 ];
