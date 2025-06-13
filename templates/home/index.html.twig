@@ -1,20 +1,24 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hello HomeController!{% endblock %}
-
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/rafael/client-portall/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>/Users/rafael/client-portall/templates/home/index.html.twig</code></li>
-    </ul>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fokuna - Client Portal</title>
+    <link rel="stylesheet" href="{{ asset('styles/app.scss') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ asset('images/F.png') }}" alt="Logo Fokuna">
+        </div>
+        <div class="auth-buttons">
+            <a href="#">Inscription</a>
+            <a href="#">Connexion</a>
+        </div>
+    </header>
+    <section class="hero">
+        <h1>Bienvenue sur Fokuna</h1>
+        <p>Votre portail client pour une gestion simplifiée et sécurisée.</p>
+    </section>
+</body>
+</html>
