@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fokuna - Client Portal</title>
-    {{ encore_entry_link_tags('app') }}
-</head>
-<body>
+{% extends 'base.html.twig' %}
+
+{% block body %}
     <header>
         <div class="logo">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo Fokuna">
+            <img src="{{ asset('images/F.png') }}" alt="Logo Fokuna">
         </div>
         <div class="auth-buttons">
             <a href="#">Inscription</a>
@@ -17,10 +11,21 @@
         </div>
     </header>
     <section class="hero">
-        <h1>Bienvenue sur Fokuna</h1>
-        <p><span class="typed-text"></span></p>
+        <h1>Bienvenue sur Fokuna 💫📊</h1>
+        <div class="p-5" style="font-size: 1.3em;">
+            {% set strings = [
+                'Votre portail client pour une gestion simplifiée et sécurisée.',
+                'Bienvenue sur Fokuna ❤️',
+                'Gestion simplifiée et sécurisée 📈🔐 ',
+                'Contrôlez votre gestion 💻',
+            ] %}
+            <span
+                data-controller="symfony--ux-typed"
+                data-symfony--ux-typed-loop-value="true"
+                data-symfony--ux-typed-show-cursor-value="true"
+                data-symfony--ux-typed-cursor-char-value="|"
+                data-symfony--ux-typed-strings-value="{{ strings|json_encode|e('html_attr') }}"
+            ></span>
+        </div>
     </section>
-    {{ encore_entry_script_tags('app') }}
-    {{ encore_entry_script_tags('typed') }}
-</body>
-</html>
+{% endblock %}
