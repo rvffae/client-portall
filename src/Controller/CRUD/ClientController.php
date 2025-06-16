@@ -1,3 +1,5 @@
+// src/Controller/ClientController.php
+
 namespace App\Controller;
 
 use App\Entity\Client;
