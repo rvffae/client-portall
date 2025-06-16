@@ -1,20 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CompanyController!{% endblock %}
+{% block title %}Company index{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>Company index</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Adress</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip_code</th>
+                <th>Country</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Website</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for company in companies %}
+            <tr>
+                <td>{{ company.id }}</td>
+                <td>{{ company.name }}</td>
+                <td>{{ company.adress }}</td>
+                <td>{{ company.city }}</td>
+                <td>{{ company.state }}</td>
+                <td>{{ company.zipCode }}</td>
+                <td>{{ company.country }}</td>
+                <td>{{ company.phone }}</td>
+                <td>{{ company.email }}</td>
+                <td>{{ company.website }}</td>
+                <td>{{ company.createdAt ? company.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ company.updatedAt ? company.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_company_show', {'id': company.id}) }}">show</a>
+                    <a href="{{ path('app_company_edit', {'id': company.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/rafael/client-portall/src/Controller/CompanyController.php</code></li>
-        <li>Your template at <code>/Users/rafael/client-portall/templates/company/index.html.twig</code></li>
-    </ul>
-</div>
+    <a href="{{ path('app_company_new') }}">Create new</a>
 {% endblock %}

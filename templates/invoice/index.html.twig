@@ -1,20 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello InvoiceController!{% endblock %}
+{% block title %}Invoice index{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>Invoice index</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Invoice_number</th>
+                <th>Issue_date</th>
+                <th>Due_date</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for invoice in invoices %}
+            <tr>
+                <td>{{ invoice.id }}</td>
+                <td>{{ invoice.invoiceNumber }}</td>
+                <td>{{ invoice.issueDate ? invoice.issueDate|date('Y-m-d') : '' }}</td>
+                <td>{{ invoice.dueDate ? invoice.dueDate|date('Y-m-d') : '' }}</td>
+                <td>{{ invoice.amount }}</td>
+                <td>{{ invoice.status }}</td>
+                <td>{{ invoice.createdAt ? invoice.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ invoice.updatedAt ? invoice.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_invoice_show', {'id': invoice.id}) }}">show</a>
+                    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/rafael/client-portall/src/Controller/InvoiceController.php</code></li>
-        <li>Your template at <code>/Users/rafael/client-portall/templates/invoice/index.html.twig</code></li>
-    </ul>
-</div>
+    <a href="{{ path('app_invoice_new') }}">Create new</a>
 {% endblock %}
