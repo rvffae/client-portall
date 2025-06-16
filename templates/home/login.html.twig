@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
-    <h1>Log in</h1>
+    <h1>Connexion</h1>
 
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -11,11 +11,11 @@
 
     <form method="post">
         <div>
-            <label for="inputEmail">Email</label>
+            <label for="inputEmail">Adresse Email</label>
             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" required autofocus>
         </div>
         <div>
-            <label for="inputPassword">Password</label>
+            <label for="inputPassword">Mot de passe</label>
             <input type="password" name="password" id="inputPassword" required>
         </div>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

@@ -1,10 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
-
 {% block body %}
     <div class="container">
-        <h1>Register</h1>
+        <h1>S'enregistrer</h1>
 
         {{ form_start(registrationForm) }}
             <div class="form-group">
@@ -16,22 +14,22 @@
             </div>
 
             <div class="form-group">
-                {{ form_label(registrationForm.children.plainPassword.first) }}
-                {{ form_widget(registrationForm.children.plainPassword.first, { attr: {'class': 'form-control'} }) }}
+                {{ form_label(registrationForm.roles) }}
+                {{ form_widget(registrationForm.roles) }}
                 <div class="text-danger">
-                    {{ form_errors(registrationForm.children.plainPassword.first) }}
+                    {{ form_errors(registrationForm.roles) }}
                 </div>
             </div>
 
             <div class="form-group">
-                {{ form_label(registrationForm.children.plainPassword.second) }}
-                {{ form_widget(registrationForm.children.plainPassword.second, { attr: {'class': 'form-control'} }) }}
+                {{ form_label(registrationForm.plainPassword) }}
+                {{ form_widget(registrationForm.plainPassword, { attr: {'class': 'form-control'} }) }}
                 <div class="text-danger">
-                    {{ form_errors(registrationForm.children.plainPassword.second) }}
+                    {{ form_errors(registrationForm.plainPassword) }}
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">S'enregistrer</button>
         {{ form_end(registrationForm) }}
     </div>
 {% endblock %}
