@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250616102233 extends AbstractMigration
+final class Version20250616132615 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -79,9 +79,9 @@ final class Version20250616102233 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE client DROP CONSTRAINT client_company_id_fkey
         SQL);
-        $this->addSql(<<<'SQL'
-            DROP INDEX IDX_C7440455979B1AD6
-        SQL);
+        //$this->addSql(<<<'SQL'
+          //  DROP INDEX IDX_C7440455979B1AD6
+        //SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE client ADD adress VARCHAR(255) DEFAULT NULL
         SQL);
@@ -139,9 +139,9 @@ final class Version20250616102233 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE contact DROP CONSTRAINT contact_client_id_fkey
         SQL);
-        $this->addSql(<<<'SQL'
-            DROP INDEX IDX_4C62E63819EB6921
-        SQL);
+       // $this->addSql(<<<'SQL'
+         //   DROP INDEX IDX_4C62E63819EB6921
+        //SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE contact ALTER created_at TYPE TIMESTAMP(0) WITHOUT TIME ZONE
         SQL);
@@ -172,9 +172,9 @@ final class Version20250616102233 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE invoice DROP CONSTRAINT invoice_project_id_fkey
         SQL);
-        $this->addSql(<<<'SQL'
-            DROP INDEX IDX_90651744166D1F9C
-        SQL);
+        //$this->addSql(<<<'SQL'
+          //  DROP INDEX IDX_90651744166D1F9C
+       // SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE invoice ALTER amount TYPE INT
         SQL);
@@ -208,9 +208,9 @@ final class Version20250616102233 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE project DROP CONSTRAINT project_company_id_fkey
         SQL);
-        $this->addSql(<<<'SQL'
-            DROP INDEX IDX_2FB3D0EE979B1AD6
-        SQL);
+     //   $this->addSql(<<<'SQL'
+       //     DROP INDEX IDX_2FB3D0EE979B1AD6
+       // SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE project DROP company_id
         SQL);
@@ -285,9 +285,9 @@ final class Version20250616102233 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE project ADD CONSTRAINT project_company_id_fkey FOREIGN KEY (company_id) REFERENCES company (id) NOT DEFERRABLE INITIALLY IMMEDIATE
         SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX IDX_2FB3D0EE979B1AD6 ON project (company_id)
-        SQL);
+   //     $this->addSql(<<<'SQL'
+     //       CREATE INDEX IDX_2FB3D0EE979B1AD6 ON project (company_id)
+      //  SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE contact DROP CONSTRAINT FK_4C62E638DC2902E0
         SQL);
@@ -318,9 +318,9 @@ final class Version20250616102233 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE contact ADD CONSTRAINT contact_client_id_fkey FOREIGN KEY (client_id) REFERENCES client (id) NOT DEFERRABLE INITIALLY IMMEDIATE
         SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX IDX_4C62E63819EB6921 ON contact (client_id)
-        SQL);
+      //  $this->addSql(<<<'SQL'
+        //    CREATE INDEX IDX_4C62E63819EB6921 ON contact (client_id)
+       // SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE company ADD address TEXT DEFAULT NULL
         SQL);
@@ -384,9 +384,9 @@ final class Version20250616102233 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE invoice ADD CONSTRAINT invoice_project_id_fkey FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE
         SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX IDX_90651744166D1F9C ON invoice (project_id)
-        SQL);
+       // $this->addSql(<<<'SQL'
+      //      CREATE INDEX IDX_90651744166D1F9C ON invoice (project_id)
+       // SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE client DROP CONSTRAINT FK_C744045538B53C32
         SQL);
@@ -414,8 +414,8 @@ final class Version20250616102233 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE client ADD CONSTRAINT client_company_id_fkey FOREIGN KEY (company_id) REFERENCES company (id) NOT DEFERRABLE INITIALLY IMMEDIATE
         SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX IDX_C7440455979B1AD6 ON client (company_id)
-        SQL);
+        //$this->addSql(<<<'SQL'
+          //  CREATE INDEX IDX_C7440455979B1AD6 ON client (company_id)
+        //SQL);
     }
 }
