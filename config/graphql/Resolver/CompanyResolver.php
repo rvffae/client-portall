@@ -3,10 +3,10 @@
 namespace App\GraphQL\Resolver;
 
 use Overblog\GraphQLBundle\Definition\Resolver\QueryInterface;
-use App\Entity\Client;
+use App\Entity\Company;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ClientResolver implements QueryInterface
+class CompanyResolver implements QueryInterface
 {
     private $em;
 
@@ -15,13 +15,13 @@ class ClientResolver implements QueryInterface
         $this->em = $em;
     }
 
-    public function resolveClients()
+    public function resolveCompanies()
     {
-        return $this->em->getRepository(Client::class)->findAll();
+        return $this->em->getRepository(Company::class)->findAll();
     }
 
-    public function resolveClient($id)
+    public function resolveCompany($id)
     {
-        return $this->em->getRepository(Client::class)->find($id);
+        return $this->em->getRepository(Company::class)->find($id);
     }
 }
