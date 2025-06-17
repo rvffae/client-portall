@@ -1,0 +1,15 @@
+type Client {
+    id: ID!
+    companyId: Int!
+    firstName: String!
+    lastName: String!
+    email: String!
+    phone: String!
+    city: String!
+    state: String!
+    zipCode: String!
+    country: String!
+    createdAt: String!
+    updatedAt: String!
+    address: String!
+}

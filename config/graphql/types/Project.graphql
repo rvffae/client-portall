@@ -1,0 +1,12 @@
+type Project{
+    id: ID!
+    name: String!
+    description: String!
+    start_date: String!
+    end_date: String!
+    status: String!
+    budget: String!
+    createdAt: String!
+    updatedAt: String!
+
+}

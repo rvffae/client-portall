@@ -1,0 +1,11 @@
+type Invoice {
+    id: ID!
+    projectId: Int!
+    invoiceNumber: String!
+    issueDate: String!
+    dueDate: String!
+    amount: Int!
+    status: String!
+    createdAt: String!
+    updatedAt: String!
+}

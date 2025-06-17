@@ -1,0 +1,14 @@
+type Company {
+    id: ID!
+    name: String!
+    city: String!
+    state: String!
+    zipCode: String!
+    country: String!
+    phone: String!
+    email: String!
+    website: String!
+    createdAt: String!
+    updatedAt: String!
+    address: String!
+}
