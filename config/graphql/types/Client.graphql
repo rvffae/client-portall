@@ -5,7 +5,17 @@ type Client {
     email: String!
 }
 
+input ClientInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+}
+
 type Query {
     clients: [Client]
     client(id: ID!): Client
+}
+
+type Mutation {
+    createClient(input: ClientInput!): Client
 }
