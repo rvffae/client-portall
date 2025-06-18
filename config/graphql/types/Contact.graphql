@@ -1,8 +1,0 @@
-type Contact {
-    id: ID!
-    clientId: Int!
-    contactType: String!
-    contactDetail: String!
-    createdAt: String!
-    updatedAt: String!
-}
