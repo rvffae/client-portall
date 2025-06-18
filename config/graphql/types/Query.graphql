@@ -13,4 +13,7 @@ type Query {
 
     invoices: [Invoice]
     invoice(id: ID!): Invoice
+
+    users: [User]
+    user(id: ID!): User
 }
