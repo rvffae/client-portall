@@ -11,7 +11,12 @@ security:
                 property: email
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern:
+                    - ^/_profiler/
+                    - ^/_wdt/
+                    - ^/css/
+                    - ^/images/
+                    - ^/js/
             security: false
         main:
             lazy: true
@@ -27,7 +32,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # - { path: ^/profile, roles: ROLE_USER }}
+        #  - { path: ^/dash, roles: ROLE_USER } # Protège toutes les routes commençant par /dash
 
 when@test:
     security:

@@ -6,7 +6,7 @@ body {
     margin: 0;
     padding: 0;
 
-    header {
+    .index-header {
         background-color: #fff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 1rem 2rem;
@@ -14,7 +14,7 @@ body {
         justify-content: space-between;
         align-items: center;
 
-        .logo {
+        .index-logo {
             font-size: 1.5rem;
             font-weight: bold;
             color: #000;
@@ -24,7 +24,7 @@ body {
             }
         }
 
-        .auth-buttons {
+        .index-auth-buttons {
             a {
                 margin-left: 1rem;
                 padding: 0.5rem 1rem;
@@ -41,7 +41,7 @@ body {
         }
     }
 
-    .hero {
+    .index-hero {
         text-align: center;
         padding: 4rem 2rem;
 
@@ -62,3 +62,5 @@ body {
         }
     }
 }
+
+

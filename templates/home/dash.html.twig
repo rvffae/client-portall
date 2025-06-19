@@ -1,0 +1,13 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div class="dashboard-container">
+        <h1>Bienvuenue, {{ user.email }}!</h1>
+        <p>This is a protected page. Only authenticated users can see this.</p>
+        <a href="{{ path('app_dashboard_clients') }}">View Clients</a>
+        <a href="{{ path('app_logout') }}">Logout</a>
+    </div>
+{% endblock %}

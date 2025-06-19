@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <header>
-        <div class="logo">
+    <header class="index-header">
+        <div class="index-logo">
             <img src="{{ asset('images/F.png') }}" alt="Logo FineDesk">
         </div>
-        <div class="auth-buttons">
+        <div class="index-auth-buttons">
         <a href="{{ path('app_register') }}">Inscription</a>
         <a href="{{ path('app_login') }}">Connexion</a>
         </div>
     </header>
-    <section class="hero">
+    <section class="index-hero">
         <img src="{{ asset('images/F.png') }}" alt="Logo FineDesk">
         <h1>FineDesk</h1>
         <div class="p-5" style="font-size: 1.3em;">
