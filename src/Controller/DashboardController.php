@@ -20,7 +20,7 @@ class DashboardController extends AbstractController
         }
 
         // Rendre la vue du tableau de bord
-        return $this->render('dash/index.html.twig', [
+        return $this->render('dashboard/index.html.twig', [
             'user' => $user,
         ]);
     }
