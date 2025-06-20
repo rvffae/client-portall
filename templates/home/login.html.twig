@@ -14,11 +14,12 @@
             <form method="post" action="{{ path('app_login') }}">
                 <div class="login-email-group">
                     <label for="inputEmail">Adresse Email</label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" required autofocus>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"  class="form-control" autocomplete="email" required autofocus>
                 </div>
+
                 <div class="login-password-group">
                     <label for="inputPassword">Mot de passe</label>
-                    <input type="password" name="password" id="inputPassword" required>
+                    <input type="password" name="password" id="inputPassword"  class="form-control" autocomplete="current-password" required>
                 </div>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
