@@ -7,6 +7,7 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        # used to reload user from session & other features (e.g. switch_user)
     
     firewalls:
         dev:
@@ -14,16 +15,24 @@ security:
             security: false
         
         main:
+            lazy: true
             pattern: ^/
             provider: app_user_provider
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: app_dashboard
                 enable_csrf: true
             logout:
                 path: app_logout
-                target: app_login
+                # where to redirect after logout
+                # target: app_any_route
+                #login_path: app_login
+                #check_path: app_login
+                #default_target_path: app_dashboard
+                #enable_csrf: true
+            #logout:
+             #   path: app_logout
+              #  target: app_login
             
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
