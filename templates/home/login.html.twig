@@ -1,30 +1,76 @@
-{% extends 'base.html.twig' %}
-
+ {# {% extends 'base.html.twig' %}
 {% block title %}Connexion{% endblock %}
-
 {% block body %}
-    <body class="login-page-body">
-        <div class="login-container">
-            <h1>Connexion</h1>
+<body class="login-page-body">
+    <div class="login-container">
+        <h1>Connexion</h1>
+        {% if error %}
+            <div class="login-alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <form method="post" action="{{ path('app_login') }}">
+            <div class="login-email-group">
+                <label for="inputEmail">Adresse Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" required autofocus>
+            </div>
+            <div class="login-password-group">
+                <label for="inputPassword">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" required>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button type="submit" class="login-btn">Se connecter</button>
+        </form>
+    </div>
+</body>
+{% endblock %}
 
-            {% if error %}
-                <div class="login-alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
+#}
 
-            <form method="post" action="{{ path('app_login') }}">
-                <div class="login-email-group">
-                    <label for="inputEmail">Adresse Email</label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"  class="form-control" autocomplete="email" required autofocus>
-                </div>
-
-                <div class="login-password-group">
-                    <label for="inputPassword">Mot de passe</label>
-                    <input type="password" name="password" id="inputPassword"  class="form-control" autocomplete="current-password" required>
-                </div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                <button type="submit" class="login-btn">Se connecter</button>
-            </form>
+{% extends 'base.html.twig' %}
+{% block title %}Test Connexion{% endblock %}
+{% block body %}
+<div style="padding: 20px;">
+    <h1>Test Connexion</h1>
+    
+    {% if error %}
+        <div style="color: red; margin: 10px 0;">
+            ERREUR: {{ error.messageKey|trans(error.messageData, 'security') }}
         </div>
-    </body>
+    {% endif %}
+
+    <form method="post" action="{{ path('app_login') }}" id="loginForm">
+        <div style="margin: 10px 0;">
+            <label for="inputEmail">Email:</label><br>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" required autofocus style="width: 300px; padding: 5px;">
+        </div>
+        
+        <div style="margin: 10px 0;">
+            <label for="inputPassword">Password:</label><br>
+            <input type="password" name="password" id="inputPassword" required style="width: 300px; padding: 5px;">
+        </div>
+        
+        <div style="margin: 10px 0;">
+            <button type="submit" style="padding: 10px 20px; background: blue; color: white; border: none;">
+                SE CONNECTER - TEST
+            </button>
+        </div>
+    </form>
+
+    <script>
+        console.log('Script loaded');
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            console.log('=== FORM SUBMIT EVENT ===');
+            console.log('Action:', this.action);
+            console.log('Method:', this.method);
+            console.log('Email:', document.getElementById('inputEmail').value);
+            console.log('Password length:', document.getElementById('inputPassword').value.length);
+            
+            // NE PAS EMPÊCHER LA SOUMISSION - juste logger
+            alert('Formulaire soumis ! Regardez la console pour les détails.');
+        });
+        
+        document.getElementById('inputEmail').value = 'test@example.com';
+        document.getElementById('inputPassword').value = 'password123';
+    </script>
+</div>
 {% endblock %}
