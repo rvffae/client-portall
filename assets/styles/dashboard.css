@@ -292,7 +292,7 @@
 }
 
 .dashboard-stat-card-info::before {
-    background: linear-gradient(90deg, transparent, #9b59b6, transparent);
+    background: linear-gradient(90deg, transparent, #c91420, transparent);
 }
 
 .dashboard-stat-icon {
