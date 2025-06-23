@@ -104,7 +104,7 @@
 }
 
 .dashboard-logout-btn {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    background: linear-gradient(135deg, #656363, #2d2c2c);
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 10px;
@@ -131,7 +131,7 @@
 /* ===== SIDEBAR ===== */
 .dashboard-sidebar {
     grid-area: sidebar;
-    background: rgba(44, 62, 80, 0.95);
+    background: rgba(41, 44, 47, 0.95);
     backdrop-filter: blur(10px);
     padding: 2rem 0;
     overflow-y: auto;
@@ -288,7 +288,7 @@
 }
 
 .dashboard-stat-card-warning::before {
-    background: linear-gradient(90deg, transparent, #f39c12, transparent);
+    background: linear-gradient(90deg, transparent, #d08101, transparent);
 }
 
 .dashboard-stat-card-info::before {

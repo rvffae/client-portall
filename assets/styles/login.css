@@ -11,7 +11,7 @@
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     padding: 3rem;
-    border-radius: 20px;
+    border-radius: 30px;
     box-shadow: 
         0 20px 40px rgba(0, 0, 0, 0.1),
         0 0 0 1px rgba(255, 255, 255, 0.2);
@@ -36,7 +36,7 @@
     margin-bottom: 2rem;
     position: relative;
     letter-spacing: 1px;
-    font-family: 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .h1-login::after {
@@ -106,7 +106,7 @@
     background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 30px;
     font-size: 1.1rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -280,6 +280,6 @@
     }
 }
 
-.checkbox mb-3 {
-    font-family: 'Inter';
+.mb-3 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
