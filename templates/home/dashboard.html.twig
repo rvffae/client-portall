@@ -1,0 +1,241 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<div class="dashboard-container">
+    <!-- Header du Dashboard -->
+    <header class="dashboard-header">
+        <div class="dashboard-header-content">
+            <div class="dashboard-welcome">
+                <h1 class="dashboard-title">Dashboard</h1>
+                <p class="dashboard-subtitle">Bienvenue {{ app.user ? app.user.userIdentifier : 'Utilisateur' }}</p>
+            </div>
+            <div class="dashboard-user-actions">
+                <div class="dashboard-user-info">
+                    <span class="dashboard-user-avatar">
+                        {{ app.user ? app.user.userIdentifier|slice(0, 2)|upper : 'US' }}
+                    </span>
+                    <span class="dashboard-user-name">{{ app.user ? app.user.userIdentifier : 'Utilisateur' }}</span>
+                </div>
+                <a href="{{ path('app_logout') }}" class="dashboard-logout-btn">Déconnexion</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="dashboard-sidebar">
+        <div class="dashboard-nav-header">
+            <h2 class="dashboard-nav-title">Menu</h2>
+        </div>
+        <ul class="dashboard-nav-menu">
+            <li class="dashboard-nav-item dashboard-nav-item-active">
+                <a href="#" class="dashboard-nav-link">
+                    <span class="dashboard-nav-icon">📊</span>
+                    <span class="dashboard-nav-text">Tableau de bord</span>
+                </a>
+            </li>
+            <li class="dashboard-nav-item">
+                <a href="#" class="dashboard-nav-link">
+                    <span class="dashboard-nav-icon">👤</span>
+                    <span class="dashboard-nav-text">Profil</span>
+                </a>
+            </li>
+            <li class="dashboard-nav-item">
+                <a href="#" class="dashboard-nav-link">
+                    <span class="dashboard-nav-icon">⚙️</span>
+                    <span class="dashboard-nav-text">Paramètres</span>
+                </a>
+            </li>
+            <li class="dashboard-nav-item">
+                <a href="#" class="dashboard-nav-link">
+                    <span class="dashboard-nav-icon">📈</span>
+                    <span class="dashboard-nav-text">Statistiques</span>
+                </a>
+            </li>
+            <li class="dashboard-nav-item">
+                <a href="#" class="dashboard-nav-link">
+                    <span class="dashboard-nav-icon">📱</span>
+                    <span class="dashboard-nav-text">Applications</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="dashboard-main">
+        <!-- Cartes de statistiques -->
+        <div class="dashboard-stats-grid">
+            <div class="dashboard-stat-card dashboard-stat-card-primary">
+                <div class="dashboard-stat-icon">👥</div>
+                <div class="dashboard-stat-content">
+                    <h3 class="dashboard-stat-title">Utilisateurs</h3>
+                    <p class="dashboard-stat-number">1,234</p>
+                    <span class="dashboard-stat-change dashboard-stat-positive">+12%</span>
+                </div>
+            </div>
+
+            <div class="dashboard-stat-card dashboard-stat-card-success">
+                <div class="dashboard-stat-icon">💰</div>
+                <div class="dashboard-stat-content">
+                    <h3 class="dashboard-stat-title">Revenus</h3>
+                    <p class="dashboard-stat-number">€45,678</p>
+                    <span class="dashboard-stat-change dashboard-stat-positive">+8%</span>
+                </div>
+            </div>
+
+            <div class="dashboard-stat-card dashboard-stat-card-warning">
+                <div class="dashboard-stat-icon">📦</div>
+                <div class="dashboard-stat-content">
+                    <h3 class="dashboard-stat-title">Commandes</h3>
+                    <p class="dashboard-stat-number">567</p>
+                    <span class="dashboard-stat-change dashboard-stat-negative">-3%</span>
+                </div>
+            </div>
+
+            <div class="dashboard-stat-card dashboard-stat-card-info">
+                <div class="dashboard-stat-icon">📊</div>
+                <div class="dashboard-stat-content">
+                    <h3 class="dashboard-stat-title">Taux de conversion</h3>
+                    <p class="dashboard-stat-number">3.2%</p>
+                    <span class="dashboard-stat-change dashboard-stat-positive">+0.5%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section des graphiques et tableaux -->
+        <div class="dashboard-content-grid">
+            <!-- Graphique principal -->
+            <div class="dashboard-widget dashboard-widget-large">
+                <div class="dashboard-widget-header">
+                    <h3 class="dashboard-widget-title">Évolution des ventes</h3>
+                    <div class="dashboard-widget-actions">
+                        <select class="dashboard-select">
+                            <option>7 derniers jours</option>
+                            <option>30 derniers jours</option>
+                            <option>3 derniers mois</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="dashboard-widget-content">
+                    <div class="dashboard-chart-placeholder">
+                        <div class="dashboard-chart-bars">
+                            <div class="dashboard-bar" style="height: 60%"></div>
+                            <div class="dashboard-bar" style="height: 80%"></div>
+                            <div class="dashboard-bar" style="height: 45%"></div>
+                            <div class="dashboard-bar" style="height: 90%"></div>
+                            <div class="dashboard-bar" style="height: 70%"></div>
+                            <div class="dashboard-bar" style="height: 85%"></div>
+                            <div class="dashboard-bar" style="height: 95%"></div>
+                        </div>
+                        <p class="dashboard-chart-label">Graphique des ventes hebdomadaires</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tableau des dernières activités -->
+            <div class="dashboard-widget">
+                <div class="dashboard-widget-header">
+                    <h3 class="dashboard-widget-title">Activités récentes</h3>
+                    <a href="#" class="dashboard-widget-link">Voir tout</a>
+                </div>
+                <div class="dashboard-widget-content">
+                    <div class="dashboard-activity-list">
+                        <div class="dashboard-activity-item">
+                            <div class="dashboard-activity-avatar">👤</div>
+                            <div class="dashboard-activity-content">
+                                <p class="dashboard-activity-text">Nouvel utilisateur inscrit</p>
+                                <span class="dashboard-activity-time">Il y a 2 minutes</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-activity-item">
+                            <div class="dashboard-activity-avatar">💳</div>
+                            <div class="dashboard-activity-content">
+                                <p class="dashboard-activity-text">Paiement reçu - €149.99</p>
+                                <span class="dashboard-activity-time">Il y a 15 minutes</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-activity-item">
+                            <div class="dashboard-activity-avatar">📦</div>
+                            <div class="dashboard-activity-content">
+                                <p class="dashboard-activity-text">Commande #1234 expédiée</p>
+                                <span class="dashboard-activity-time">Il y a 1 heure</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-activity-item">
+                            <div class="dashboard-activity-avatar">⚠️</div>
+                            <div class="dashboard-activity-content">
+                                <p class="dashboard-activity-text">Stock faible - Produit ABC</p>
+                                <span class="dashboard-activity-time">Il y a 2 heures</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions rapides -->
+            <div class="dashboard-widget">
+                <div class="dashboard-widget-header">
+                    <h3 class="dashboard-widget-title">Actions rapides</h3>
+                </div>
+                <div class="dashboard-widget-content">
+                    <div class="dashboard-quick-actions">
+                        <button class="dashboard-quick-action">
+                            <span class="dashboard-quick-action-icon">➕</span>
+                            <span class="dashboard-quick-action-text">Ajouter un utilisateur</span>
+                        </button>
+                        <button class="dashboard-quick-action">
+                            <span class="dashboard-quick-action-icon">📊</span>
+                            <span class="dashboard-quick-action-text">Générer un rapport</span>
+                        </button>
+                        <button class="dashboard-quick-action">
+                            <span class="dashboard-quick-action-icon">💌</span>
+                            <span class="dashboard-quick-action-text">Envoyer une newsletter</span>
+                        </button>
+                        <button class="dashboard-quick-action">
+                            <span class="dashboard-quick-action-icon">⚙️</span>
+                            <span class="dashboard-quick-action-text">Configuration</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="dashboard-widget">
+                <div class="dashboard-widget-header">
+                    <h3 class="dashboard-widget-title">Notifications</h3>
+                    <span class="dashboard-notification-badge">3</span>
+                </div>
+                <div class="dashboard-widget-content">
+                    <div class="dashboard-notifications">
+                        <div class="dashboard-notification dashboard-notification-success">
+                            <div class="dashboard-notification-icon">✅</div>
+                            <div class="dashboard-notification-content">
+                                <p class="dashboard-notification-title">Sauvegarde terminée</p>
+                                <span class="dashboard-notification-time">Il y a 5 minutes</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-notification dashboard-notification-warning">
+                            <div class="dashboard-notification-icon">⚠️</div>
+                            <div class="dashboard-notification-content">
+                                <p class="dashboard-notification-title">Mise à jour disponible</p>
+                                <span class="dashboard-notification-time">Il y a 1 heure</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-notification dashboard-notification-info">
+                            <div class="dashboard-notification-icon">ℹ️</div>
+                            <div class="dashboard-notification-content">
+                                <p class="dashboard-notification-title">Maintenance programmée</p>
+                                <span class="dashboard-notification-time">Demain 02:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Menu mobile toggle (optionnel) -->
+<button class="dashboard-mobile-toggle">☰</button>
+{% endblock %}
