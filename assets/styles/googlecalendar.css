@@ -1,0 +1,27 @@
+/* ===== GOOGLE CALENDAR STYLES ===== */
+
+/* Calendar Not Connected State */
+.calendar-not-connected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.05), rgba(155, 89, 182, 0.05));
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.calendar-not-connected:hover {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+}
+
+.calendar-connect-message {
+    text-align: center;
+    padding: 2rem;
+}
+
+.calendar-connect-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
