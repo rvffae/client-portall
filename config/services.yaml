@@ -25,7 +25,7 @@ services:
     # Configuration pour GoogleCalendarService
     App\Service\GoogleCalendarService:
         arguments:
-            $session: '@Symfony\Component\HttpFoundation\Session\SessionInterface'
+            $requestStack: '@request_stack'
             $logger: '@logger'
             $googleClientId: '%env(GOOGLE_CLIENT_ID)%'
             $googleClientSecret: '%env(GOOGLE_CLIENT_SECRET)%'

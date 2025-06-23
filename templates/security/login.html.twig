@@ -11,14 +11,14 @@
 
         {% if app.user %}
             <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                Vous êtes connecté en tant que {{ app.user.userIdentifier }}.</br> <a href="{{ path('app_logout') }}">Se déconnecter</a>
             </div>
         {% endif %}
 
-        <h1 class="h1-login">Please sign in</h1>
-        <label class="login-label" for="username">Email</label>
+        <h1 class="h1-login">Connectez-vous</h1>
+        <label class="login-label" for="username">Adresse mail</label>
         <input type="email" value="{{ last_username }}" name="_username" id="username" class="login-input" autocomplete="email" required autofocus>
-        <label  class="login-label" for="password">Password</label>
+        <label  class="login-label" for="password">Mot de passe</label>
         <input type="password" name="_password" id="password" class="login-input" autocomplete="current-password" required>
         <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
@@ -33,7 +33,7 @@
         #}
 
         <button class="login-sign-in-btn" type="submit">
-            Sign in
+            Se connecter
         </button>
     </form>
 </div>
