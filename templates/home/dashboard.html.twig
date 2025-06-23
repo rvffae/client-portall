@@ -249,9 +249,172 @@
                 </div>
             </div>
         </div>
+        </br>
+        <!-- Section Google Calendar -->
+    <section class="dashboard-calendar-section">
+        <div class="dashboard-widget dashboard-widget-full">
+            <div class="dashboard-widget-header">
+                <h3 class="dashboard-widget-title">📅 Google Calendar</h3>
+                {% if isCalendarConnected %}
+                    <div class="dashboard-calendar-actions">
+                        <button type="button" class="dashboard-btn dashboard-btn-primary" onclick="openAddEventModal()">
+                            ➕ Ajouter un événement
+                        </button>
+                        <a href="{{ path('google_calendar_disconnect') }}" class="dashboard-btn dashboard-btn-secondary" 
+                           onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
+                            🔌 Déconnecter
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="dashboard-widget-content">
+                {% if isCalendarConnected %}
+                    <div class="dashboard-calendar-status dashboard-calendar-connected">
+                        ✅ Connecté à Google Calendar
+                    </div>
+                    
+                    <div class="dashboard-calendar-grid">
+                        <!-- Événements d'aujourd'hui -->
+                        <div class="dashboard-calendar-today">
+                            <h4 class="dashboard-calendar-subtitle">🗓️ Aujourd'hui</h4>
+                            {% if todayEvents|length > 0 %}
+                                <div class="dashboard-calendar-events">
+                                    {% for event in todayEvents %}
+                                        <div class="dashboard-calendar-event">
+                                            <div class="dashboard-calendar-event-content">
+                                                <div class="dashboard-calendar-event-title">{{ event.title }}</div>
+                                                {% if not event.isAllDay %}
+                                                    <div class="dashboard-calendar-event-time">⏰ {{ event.start|date('H:i') }}</div>
+                                                {% else %}
+                                                    <div class="dashboard-calendar-event-time">📅 Toute la journée</div>
+                                                {% endif %}
+                                                {% if event.location %}
+                                                    <div class="dashboard-calendar-event-location">📍 {{ event.location }}</div>
+                                                {% endif %}
+                                            </div>
+                                            <button class="dashboard-calendar-delete-btn" onclick="deleteEvent('{{ event.id }}')" title="Supprimer">
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="dashboard-calendar-empty">
+                                    <div class="dashboard-calendar-empty-icon">📅</div>
+                                    <p>Aucun événement aujourd'hui</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Prochains événements -->
+                        <div class="dashboard-calendar-upcoming">
+                            <h4 class="dashboard-calendar-subtitle">📆 Prochains événements</h4>
+                            {% if upcomingEvents|length > 0 %}
+                                <div class="dashboard-calendar-events">
+                                    {% for event in upcomingEvents %}
+                                        <div class="dashboard-calendar-event">
+                                            <div class="dashboard-calendar-event-content">
+                                                <div class="dashboard-calendar-event-title">{{ event.title }}</div>
+                                                <div class="dashboard-calendar-event-time">
+                                                    📅 {{ event.start|date('d/m/Y') }}
+                                                    {% if not event.isAllDay %}
+                                                        à {{ event.start|date('H:i') }}
+                                                    {% endif %}
+                                                </div>
+                                                {% if event.location %}
+                                                    <div class="dashboard-calendar-event-location">📍 {{ event.location }}</div>
+                                                {% endif %}
+                                            </div>
+                                            <button class="dashboard-calendar-delete-btn" onclick="deleteEvent('{{ event.id }}')" title="Supprimer">
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="dashboard-calendar-empty">
+                                    <div class="dashboard-calendar-empty-icon">📆</div>
+                                    <p>Aucun événement à venir</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="dashboard-calendar-disconnected">
+                        <div class="dashboard-calendar-empty-icon">📅</div>
+                        <h4>Non connecté à Google Calendar</h4>
+                        <p>Connectez votre compte Google pour voir et gérer vos événements</p>
+                        <a href="{{ path('google_calendar_auth') }}" class="dashboard-btn dashboard-btn-primary dashboard-btn-large">
+                            Connecter Google Calendar
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal d'ajout d'événement -->
+    {% if isCalendarConnected %}
+    <div class="dashboard-modal" id="addEventModal">
+        <div class="dashboard-modal-content">
+            <div class="dashboard-modal-header">
+                <h3>➕ Ajouter un événement</h3>
+                <button class="dashboard-modal-close" onclick="closeAddEventModal()">&times;</button>
+            </div>
+            <form id="addEventForm" onsubmit="addEvent(event)">
+                <div class="dashboard-modal-body">
+                    <div class="dashboard-form-group">
+                        <label for="eventTitle">Titre *</label>
+                        <input type="text" id="eventTitle" name="title" required>
+                    </div>
+                    <div class="dashboard-form-group">
+                        <label for="eventDescription">Description</label>
+                        <textarea id="eventDescription" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="dashboard-form-row">
+                        <div class="dashboard-form-group">
+                            <label for="eventStartDate">Date de début *</label>
+                            <input type="date" id="eventStartDate" name="start_date" required>
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="eventStartTime">Heure de début</label>
+                            <input type="time" id="eventStartTime" name="start_time">
+                        </div>
+                    </div>
+                    <div class="dashboard-form-row">
+                        <div class="dashboard-form-group">
+                            <label for="eventEndDate">Date de fin</label>
+                            <input type="date" id="eventEndDate" name="end_date">
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="eventEndTime">Heure de fin</label>
+                            <input type="time" id="eventEndTime" name="end_time">
+                        </div>
+                    </div>
+                    <div class="dashboard-form-group">
+                        <label for="eventLocation">Lieu</label>
+                        <input type="text" id="eventLocation" name="location" placeholder="Adresse ou lieu">
+                    </div>
+                    <div class="dashboard-checkbox-group">
+                        <input type="checkbox" id="allDayEvent" name="all_day">
+                        <label for="allDayEvent">Événement toute la journée</label>
+                    </div>
+                </div>
+                <div class="dashboard-modal-footer">
+                    <button type="button" class="dashboard-btn dashboard-btn-secondary" onclick="closeAddEventModal()">Annuler</button>
+                    <button type="submit" class="dashboard-btn dashboard-btn-primary">Créer l'événement</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
     </main>
 </div>
 
 <!-- Menu mobile toggle (optionnel) -->
 <button class="dashboard-mobile-toggle">☰</button>
+{% block javascripts %}
+    {{ parent() }}
+    {{ asset('js/dashboard.js', 'app') }}
+{% endblock %}
 {% endblock %}

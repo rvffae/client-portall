@@ -91,4 +91,58 @@ class GoogleCalendarController extends AbstractController
             'authenticated' => $this->calendarService->isAuthenticated()
         ]);
     }
+
+    #[Route('/add-event', name: 'add_event', methods: ['POST'])]
+public function addEvent(Request $request): JsonResponse
+{
+    if (!$this->calendarService->isAuthenticated()) {
+        return new JsonResponse(['success' => false, 'message' => 'Non authentifié'], 401);
+    }
+
+    $data = json_decode($request->getContent(), true);
+    
+    if (!$data) {
+        return new JsonResponse(['success' => false, 'message' => 'Données invalides'], 400);
+    }
+
+    // Validation des champs requis
+    if (empty($data['title']) || empty($data['start_date'])) {
+        return new JsonResponse(['success' => false, 'message' => 'Titre et date de début requis'], 400);
+    }
+
+    $result = $this->calendarService->createEvent($data);
+    
+    return new JsonResponse($result);
+}
+
+#[Route('/update-event/{eventId}', name: 'update_event', methods: ['PUT'])]
+public function updateEvent(string $eventId, Request $request): JsonResponse
+{
+    if (!$this->calendarService->isAuthenticated()) {
+        return new JsonResponse(['success' => false, 'message' => 'Non authentifié'], 401);
+    }
+
+    $data = json_decode($request->getContent(), true);
+    
+    if (!$data) {
+        return new JsonResponse(['success' => false, 'message' => 'Données invalides'], 400);
+    }
+
+    $result = $this->calendarService->updateEvent($eventId, $data);
+    
+    return new JsonResponse($result);
+}
+
+#[Route('/delete-event/{eventId}', name: 'delete_event', methods: ['DELETE'])]
+public function deleteEvent(string $eventId): JsonResponse
+{
+    if (!$this->calendarService->isAuthenticated()) {
+        return new JsonResponse(['success' => false, 'message' => 'Non authentifié'], 401);
+    }
+
+    $result = $this->calendarService->deleteEvent($eventId);
+    
+    return new JsonResponse($result);
+}
+
 }
