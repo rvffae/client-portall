@@ -3,7 +3,8 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <form method="post">
+<div class="login-container">
+    <form method="post" class="sign-in-form">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
@@ -14,11 +15,11 @@
             </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+        <h1 class="h1-login">Please sign in</h1>
+        <label class="login-label" for="username">Email</label>
+        <input type="email" value="{{ last_username }}" name="_username" id="username" class="login-input" autocomplete="email" required autofocus>
+        <label  class="login-label" for="password">Password</label>
+        <input type="password" name="_password" id="password" class="login-input" autocomplete="current-password" required>
         <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
         {#
@@ -31,8 +32,9 @@
             </div>
         #}
 
-        <button class="btn btn-lg btn-primary" type="submit">
+        <button class="login-sign-in-btn" type="submit">
             Sign in
         </button>
     </form>
+</div>
 {% endblock %}

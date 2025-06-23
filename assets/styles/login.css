@@ -1,0 +1,285 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.sign-in-form {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+    max-width: 420px;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: loginFadeInUp 0.6s ease-out;
+}
+
+.sign-in-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.h1-login {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    font-weight: 200;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    letter-spacing: 1px;
+    font-family: 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.h1-login::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: #2c3e50;
+    border-radius: 1px;
+    transition: width 0.3s ease;
+}
+
+.h1-login:hover::after {
+    width: 100px;
+}
+
+.login-label {
+    display: block;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-label:hover {
+    color: #34495e;
+}
+
+.login-input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e0e6ed;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #fff;
+    transition: all 0.3s ease;
+    outline: none;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-input:focus {
+    border-color: #2c3e50;
+    box-shadow: 
+        0 0 0 3px rgba(44, 62, 80, 0.1),
+        0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.login-input:hover {
+    border-color: #34495e;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-sign-in-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    margin-top: 1.5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-sign-in-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.login-sign-in-btn:hover {
+    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.login-sign-in-btn:hover::before {
+    left: 100%;
+}
+
+.login-sign-in-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.login-sign-in-btn:active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    animation: loginRipple 0.6s ease-out;
+}
+
+.login-alert {
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    border-left: 4px solid;
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-alert-danger {
+    background: rgba(231, 76, 60, 0.1);
+    color: #c0392b;
+    border-left-color: #e74c3c;
+}
+
+.login-alert:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-user-info {
+    background: rgba(46, 204, 113, 0.1);
+    color: #27ae60;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #2ecc71;
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-user-info:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.2);
+}
+
+.login-logout-link {
+    color: #27ae60;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom-color 0.3s ease;
+}
+
+.login-logout-link:hover {
+    border-bottom-color: #27ae60;
+}
+
+.login-hidden-input {
+    display: none;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes registerFadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes loginFadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes registerRipple {
+    to {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+@keyframes loginRipple {
+    to {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+/* ===== MEDIA QUERIES ===== */
+@media (max-width: 768px) {
+    .register-form,
+    .sign-in-form {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
+    
+    .register-h1,
+    .h1-login {
+        font-size: 2rem;
+    }
+    
+    .register-btn,
+    .login-sign-in-btn {
+        padding: 14px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .register-h1,
+    .h1-login {
+        font-size: 1.6rem;
+    }
+    
+    .register-form,
+    .sign-in-form {
+        padding: 1.5rem 1rem;
+    }
+}
+
+.checkbox mb-3 {
+    font-family: 'Inter';
+}
