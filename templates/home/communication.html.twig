@@ -1,169 +1,391 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Communication - Gmail & Google Chat</title>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-</head>
-<body>
-    <div class="communication-container">
-        <!-- Header -->
-        <header class="communication-header">
-            <div class="communication-header-content">
-                <div>
-                    <h1 class="communication-title">Communication Hub</h1>
-                    <p class="communication-subtitle">Gmail et Google Chat intégrés</p>
+{% extends 'base.html.twig' %}
+
+{% block title %}Communication - Dashboard{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% block communication_scripts %}
+        <script>
+            class CommunicationManager {
+                constructor() {
+                    this.isAuthenticated = {{ authenticated|default(false) ? 'true' : 'false' }};
+                    this.refreshIntervals = {};
+                    this.init();
+                }
+
+                init() {
+                    this.bindEvents();
+                    if (this.isAuthenticated) {
+                        this.startAutoRefresh();
+                        this.updateStatus();
+                    }
+                    this.animateElements();
+                }
+
+                bindEvents() {
+                    // Boutons de rafraîchissement
+                    document.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('communication-section-refresh')) {
+                            const section = e.target.getAttribute('data-section');
+                            this.refreshSection(section);
+                        }
+                    });
+
+                    // Messages cliquables
+                    document.addEventListener('click', (e) => {
+                        if (e.target.closest('.communication-message-item')) {
+                            const messageItem = e.target.closest('.communication-message-item');
+                            this.handleMessageClick(messageItem);
+                        }
+                    });
+                }
+
+                async refreshSection(section) {
+                    const sectionElement = document.querySelector(`[data-section="${section}"]`).closest('.communication-section');
+                    const contentElement = sectionElement.querySelector('.communication-section-content');
+                    const refreshBtn = sectionElement.querySelector('.communication-section-refresh');
+                    
+                    // Animation de chargement
+                    refreshBtn.style.transform = 'rotate(360deg)';
+                    contentElement.innerHTML = this.getLoadingHTML();
+
+                    try {
+                        let endpoint = '';
+                        switch(section) {
+                            case 'gmail':
+                                endpoint = '{{ path("communication_emails") }}';
+                                break;
+                            case 'chat':
+                                endpoint = '{{ path("communication_chat_messages") }}';
+                                break;
+                        }
+
+                        const response = await fetch(endpoint);
+                        const data = await response.json();
+
+                        if (data.success) {
+                            if (section === 'gmail') {
+                                this.renderEmails(data.emails, contentElement);
+                            } else if (section === 'chat') {
+                                this.renderChatMessages(data.messages, contentElement);
+                            }
+                        } else {
+                            contentElement.innerHTML = this.getErrorHTML('Erreur lors du chargement');
+                        }
+                    } catch (error) {
+                        console.error('Erreur:', error);
+                        contentElement.innerHTML = this.getErrorHTML('Erreur de connexion');
+                    }
+
+                    // Reset animation
+                    setTimeout(() => {
+                        refreshBtn.style.transform = '';
+                    }, 500);
+                }
+
+                renderEmails(emails, container) {
+                    if (!emails || emails.length === 0) {
+                        container.innerHTML = this.getEmptyHTML('📧', 'Aucun email trouvé');
+                        return;
+                    }
+
+                    const emailsHTML = emails.map(email => `
+                        <div class="communication-message-item" data-type="email" data-id="${email.id}">
+                            <div class="communication-message-header">
+                                <div class="communication-message-from">${this.escapeHtml(email.from)}</div>
+                                <div class="communication-message-date">${this.formatDate(email.date)}</div>
+                            </div>
+                            <div class="communication-message-subject">${this.escapeHtml(email.subject)}</div>
+                            <div class="communication-message-snippet">${this.escapeHtml(email.snippet)}</div>
+                        </div>
+                    `).join('');
+
+                    container.innerHTML = emailsHTML;
+                }
+
+                renderChatMessages(messages, container) {
+                    if (!messages || messages.length === 0) {
+                        container.innerHTML = this.getEmptyHTML('💬', 'Aucun message de chat trouvé');
+                        return;
+                    }
+
+                    const messagesHTML = messages.map(message => `
+                        <div class="communication-message-item" data-type="chat" data-id="${message.id}">
+                            <div class="communication-message-header">
+                                <div class="communication-message-from">${this.escapeHtml(message.sender)}</div>
+                                <div class="communication-message-date">${this.formatDate(message.createTime)}</div>
+                            </div>
+                            <div class="communication-message-subject">📍 ${this.escapeHtml(message.space)}</div>
+                            <div class="communication-message-snippet">${this.escapeHtml(message.text)}</div>
+                        </div>
+                    `).join('');
+
+                    container.innerHTML = messagesHTML;
+                }
+
+                async updateStatus() {
+                    try {
+                        const response = await fetch('{{ path("communication_status") }}');
+                        const data = await response.json();
+                        
+                        // Mettre à jour les compteurs
+                        const emailResponse = await fetch('{{ path("communication_emails") }}');
+                        const emailData = await emailResponse.json();
+                        
+                        const chatResponse = await fetch('{{ path("communication_chat_messages") }}');
+                        const chatData = await chatResponse.json();
+                        
+                        if (emailData.success) {
+                            this.updateCounter('gmail', emailData.emails.length);
+                        }
+                        
+                        if (chatData.success) {
+                            this.updateCounter('chat', chatData.messages.length);
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors de la mise à jour du statut:', error);
+                    }
+                }
+
+                updateCounter(type, count) {
+                    const counterElement = document.querySelector(`[data-counter="${type}"]`);
+                    if (counterElement) {
+                        counterElement.textContent = count;
+                        counterElement.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            counterElement.style.transform = '';
+                        }, 300);
+                    }
+                }
+
+                startAutoRefresh() {
+                    // Rafraîchir toutes les 5 minutes
+                    this.refreshIntervals.main = setInterval(() => {
+                        this.refreshSection('gmail');
+                        this.refreshSection('chat');
+                        this.updateStatus();
+                    }, 300000);
+                }
+
+                handleMessageClick(messageItem) {
+                    // Animation de clic
+                    messageItem.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        messageItem.style.transform = '';
+                    }, 150);
+
+                    // Ici, vous pouvez ajouter la logique pour ouvrir le message
+                    const type = messageItem.getAttribute('data-type');
+                    const id = messageItem.getAttribute('data-id');
+                    
+                    console.log(`Clic sur ${type} avec ID: ${id}`);
+                    // Redirection ou ouverture de modal selon vos besoins
+                }
+
+                animateElements() {
+                    // Animation d'apparition des éléments
+                    const elements = document.querySelectorAll('.communication-section, .communication-status-card');
+                    elements.forEach((element, index) => {
+                        element.style.opacity = '0';
+                        element.style.transform = 'translateY(20px)';
+                        
+                        setTimeout(() => {
+                            element.style.transition = 'all 0.6s ease';
+                            element.style.opacity = '1';
+                            element.style.transform = 'translateY(0)';
+                        }, index * 100);
+                    });
+                }
+
+                getLoadingHTML() {
+                    return `
+                        <div class="communication-loading">
+                            <div class="communication-loading-icon">⟳</div>
+                            <div>Chargement...</div>
+                        </div>
+                    `;
+                }
+
+                getEmptyHTML(icon, message) {
+                    return `
+                        <div class="communication-empty">
+                            <div class="communication-empty-icon">${icon}</div>
+                            <div>${message}</div>
+                        </div>
+                    `;
+                }
+
+                getErrorHTML(message) {
+                    return `
+                        <div class="communication-empty">
+                            <div class="communication-empty-icon">⚠️</div>
+                            <div>${message}</div>
+                        </div>
+                    `;
+                }
+
+                escapeHtml(text) {
+                    if (!text) return '';
+                    const div = document.createElement('div');
+                    div.textContent = text;
+                    return div.innerHTML;
+                }
+
+                formatDate(dateString) {
+                    if (!dateString) return '';
+                    try {
+                        const date = new Date(dateString);
+                        return date.toLocaleDateString('fr-FR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    } catch (error) {
+                        return dateString;
+                    }
+                }
+
+                destroy() {
+                    // Nettoyer les intervalles
+                    Object.values(this.refreshIntervals).forEach(interval => {
+                        clearInterval(interval);
+                    });
+                }
+            }
+
+            // Initialiser l'application
+            document.addEventListener('DOMContentLoaded', () => {
+                window.communicationManager = new CommunicationManager();
+            });
+
+            // Nettoyer lors de la fermeture
+            window.addEventListener('beforeunload', () => {
+                if (window.communicationManager) {
+                    window.communicationManager.destroy();
+                }
+            });
+        </script>
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+<div class="communication-container communication-fade-in">
+    <div class="communication-header">
+        <h1 class="communication-title">
+            <span class="communication-title-icon">📨</span>
+            Communication
+        </h1>
+        <p class="communication-subtitle">Gérez vos emails Gmail et messages Google Chat</p>
+    </div>
+
+    {% if not authenticated %}
+        <div class="communication-auth-section">
+            <div class="communication-auth-icon">🔒</div>
+            <h2 class="communication-auth-title">Connexion requise</h2>
+            <p class="communication-auth-description">
+                Connectez-vous à votre compte Google pour accéder à vos emails Gmail et messages Google Chat.
+                Vos données restent sécurisées et privées.
+            </p>
+            <a href="{{ path('communication_auth') }}" class="communication-auth-btn">
+                <span class="communication-auth-btn-icon">🚀</span>
+                Se connecter avec Google
+            </a>
+        </div>
+    {% else %}
+        <div class="communication-status-section">
+            <div class="communication-status-card">
+                <div class="communication-status-header">
+                    <div class="communication-status-icon communication-status-icon-gmail">📥</div>
+                    <div>
+                        <h3 class="communication-status-title">Gmail</h3>
+                        <div class="communication-status-count" data-counter="gmail">{{ emails|length }}</div>
+                        <div class="communication-status-label">Messages</div>
+                    </div>
                 </div>
             </div>
-        </header>
-
-        <!-- Sidebar -->
-        <aside class="communication-sidebar">
-            <div class="communication-nav-header">
-                <h2 class="communication-nav-title">Navigation</h2>
-            </div>
-            <nav>
-                <ul class="communication-nav-menu">
-                    <li class="communication-nav-item">
-                        <a href="/dashboard" class="communication-nav-link">
-                            <i class="ph ph-house communication-nav-icon"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="communication-nav-item communication-nav-item-active">
-                        <a href="/communication" class="communication-nav-link">
-                            <i class="ph ph-chat-circle communication-nav-icon"></i>
-                            <span>Communication</span>
-                        </a>
-                    </li>
-                    <li class="communication-nav-item">
-                        <a href="/calendar" class="communication-nav-link">
-                            <i class="ph ph-calendar communication-nav-icon"></i>
-                            <span>Calendrier</span>
-                        </a>
-                    </li>
-                    <li class="communication-nav-item">
-                        <a href="/contacts" class="communication-nav-link">
-                            <i class="ph ph-address-book communication-nav-icon"></i>
-                            <span>Contacts</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="communication-main">
-            <div class="communication-grid">
-                <!-- Gmail Section -->
-                <section class="gmail-section">
-                    <header class="gmail-header">
-                        <div class="gmail-header-content">
-                            <i class="ph ph-envelope gmail-icon"></i>
-                            <h2 class="gmail-title">Gmail</h2>
-                            <div class="gmail-stats">
-                                <div class="gmail-stat">
-                                    <i class="ph ph-envelope-open"></i> 12 nouveaux
-                                </div>
-                                <div class="gmail-stat">
-                                    <i class="ph ph-archive"></i> 247 total
-                                </div>
-                            </div>
-                        </div>
-                    </header>
-                    <div class="gmail-body">
-                        <div class="gmail-email-list">
-                            <div class="gmail-email-item">
-                                <div class="gmail-email-header">
-                                    <span class="gmail-email-sender">Jean Dupont</span>
-                                    <span class="gmail-email-time">Il y a 5 min</span>
-                                </div>
-                                <div class="gmail-email-subject">Réunion projet CRM</div>
-                                <div class="gmail-email-preview">Bonjour, je souhaite programmer une réunion pour discuter de l'avancement du projet CRM. Pourriez-vous me dire vos disponibilités pour cette semaine ?</div>
-                            </div>
-                            
-                            <div class="gmail-email-item">
-                                <div class="gmail-email-header">
-                                    <span class="gmail-email-sender">Marie Martin</span>
-                                    <span class="gmail-email-time">Il y a 1h</span>
-                                </div>
-                                <div class="gmail-email-subject">Rapport mensuel</div>
-                                <div class="gmail-email-preview">Veuillez trouver en pièce jointe le rapport mensuel des ventes. Les chiffres sont très encourageants ce mois-ci...</div>
-                            </div>
-                            
-                            <div class="gmail-email-item">
-                                <div class="gmail-email-header">
-                                    <span class="gmail-email-sender">Support Technique</span>
-                                    <span class="gmail-email-time">Il y a 3h</span>
-                                </div>
-                                <div class="gmail-email-subject">Mise à jour système</div>
-                                <div class="gmail-email-preview">Une mise à jour importante du système est prévue pour ce week-end. Veuillez sauvegarder vos données importantes...</div>
-                            </div>
-                            
-                            <div class="gmail-email-item">
-                                <div class="gmail-email-header">
-                                    <span class="gmail-email-sender">Client ABC</span>
-                                    <span class="gmail-email-time">Hier</span>
-                                </div>
-                                <div class="gmail-email-subject">Demande de devis</div>
-                                <div class="gmail-email-preview">Nous aimerions obtenir un devis pour vos services. Pourriez-vous nous contacter pour en discuter ?</div>
-                            </div>
-                        </div>
+            
+            <div class="communication-status-card">
+                <div class="communication-status-header">
+                    <div class="communication-status-icon communication-status-icon-chat">💬</div>
+                    <div>
+                        <h3 class="communication-status-title">Google Chat</h3>
+                        <div class="communication-status-count" data-counter="chat">{{ chatMessages|length }}</div>
+                        <div class="communication-status-label">Messages</div>
                     </div>
-                </section>
-
-                <!-- Google Chat Section -->
-                <section class="gchat-section">
-                    <header class="gchat-header">
-                        <div class="gchat-header-content">
-                            <i class="ph ph-chat-circle gchat-icon"></i>
-                            <h2 class="gchat-title">Google Chat</h2>
-                            <div class="gchat-status">
-                                <div class="gchat-status-indicator"></div>
-                                En ligne
-                            </div>
-                        </div>
-                    </header>
-                    <div class="gchat-body">
-                        <div class="gchat-conversations">
-                            <div class="gchat-conversation">
-                                <div class="gchat-message-header">
-                                    <span class="gchat-sender">Équipe Dev</span>
-                                    <span class="gchat-time">Il y a 2 min</span>
-                                </div>
-                                <div class="gchat-message">Le déploiement de la nouvelle version est terminé. Tout fonctionne parfaitement !</div>
-                            </div>
-                            
-                            <div class="gchat-conversation">
-                                <div class="gchat-message-header">
-                                    <span class="gchat-sender">Sophie Laurent</span>
-                                    <span class="gchat-time">Il y a 15 min</span>
-                                </div>
-                                <div class="gchat-message">Pouvez-vous valider les maquettes que j'ai envoyées hier ?</div>
-                            </div>
-                            
-                            <div class="gchat-conversation">
-                                <div class="gchat-message-header">
-                                    <span class="gchat-sender">Direction</span>
-                                    <span class="gchat-time">Il y a 1h</span>
-                                </div>
-                                <div class="gchat-message">Réunion exceptionnelle prévue demain à 14h en salle de conférence</div>
-                            </div>
-                        </div>
-                        
-                        <div class="gchat-input-section">
-                            <form class="gchat-input-form">
-                                <input type="text" class="gchat-input" placeholder="Tapez votre message...">
-                                <button type="submit" class="gchat-send-btn">
-                                    <i class="ph ph-paper-plane-right"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </section>
+                </div>
             </div>
-        </main>
-    </div>
-</body>
-</html>
+        </div>
+
+        <div class="communication-content-grid">
+            <!-- Section Gmail -->
+            <div class="communication-section">
+                <div class="communication-section-header">
+                    <h2 class="communication-section-title">
+                        <span class="communication-section-icon">📥</span>
+                        Emails Gmail
+                    </h2>
+                    <button class="communication-section-refresh" data-section="gmail" title="Actualiser">⟳</button>
+                </div>
+                <div class="communication-section-content">
+                    {% if emails is empty %}
+                        <div class="communication-empty">
+                            <div class="communication-empty-icon">📧</div>
+                            <div>Aucun email trouvé</div>
+                        </div>
+                    {% else %}
+                        {% for email in emails %}
+                            <div class="communication-message-item" data-type="email" data-id="{{ email.id }}">
+                                <div class="communication-message-header">
+                                    <div class="communication-message-from">{{ email.from }}</div>
+                                    <div class="communication-message-date">{{ email.date|date('d/m/Y H:i') }}</div>
+                                </div>
+                                <div class="communication-message-subject">{{ email.subject }}</div>
+                                <div class="communication-message-snippet">{{ email.snippet }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Section Google Chat -->
+            <div class="communication-section">
+                <div class="communication-section-header">
+                    <h2 class="communication-section-title">
+                        <span class="communication-section-icon">💬</span>
+                        Google Chat
+                    </h2>
+                    <button class="communication-section-refresh" data-section="chat" title="Actualiser">⟳</button>
+                </div>
+                <div class="communication-section-content">
+                    {% if chatMessages is empty %}
+                        <div class="communication-empty">
+                            <div class="communication-empty-icon">💬</div>
+                            <div>Aucun message de chat trouvé</div>
+                        </div>
+                    {% else %}
+                        {% for message in chatMessages %}
+                            <div class="communication-message-item" data-type="chat" data-id="{{ message.id }}">
+                                <div class="communication-message-header">
+                                    <div class="communication-message-from">{{ message.sender }}</div>
+                                    <div class="communication-message-date">{{ message.createTime|date('d/m/Y H:i') }}</div>
+                                </div>
+                                <div class="communication-message-subject">📍 {{ message.space }}</div>
+                                <div class="communication-message-snippet">{{ message.text }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="communication-actions">
+            <a href="{{ path('communication_disconnect') }}" class="communication-btn communication-btn-disconnect">
+                <span>🔓</span>
+                Se déconnecter
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,565 +1,449 @@
 /* ===== COMMUNICATION LAYOUT ===== */
-        .communication-container {
-            display: grid;
-            grid-template-areas: 
-                "header header"
-                "sidebar main";
-            grid-template-columns: 280px 1fr;
-            grid-template-rows: auto 1fr;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        /* ===== HEADER ===== */
-        .communication-header {
-            grid-area: header;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            padding: 1.5rem 2rem;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .communication-header:hover {
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .communication-header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .communication-title {
-            font-size: 2rem;
-            font-weight: 300;
-            color: #2c3e50;
-            margin: 0;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
-        }
-
-        .communication-title:hover {
-            color: #34495e;
-        }
-
-        .communication-subtitle {
-            color: #7f8c8d;
-            margin: 0.5rem 0 0 0;
-            font-size: 1rem;
-            font-weight: 400;
-        }
-
-        /* ===== SIDEBAR ===== */
-        .communication-sidebar {
-            grid-area: sidebar;
-            background: rgba(41, 44, 47, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2rem 0;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-        }
-
-        .communication-nav-header {
-            padding: 0 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .communication-nav-title {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0;
-            transition: color 0.3s ease;
-        }
-
-        .communication-nav-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .communication-nav-item {
-            margin-bottom: 0.5rem;
-        }
-
-        .communication-nav-link {
-            display: flex;
-            align-items: center;
-            padding: 1rem 2rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .communication-nav-link::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background: white;
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .communication-nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            transform: translateX(10px);
-        }
-
-        .communication-nav-link:hover::before {
-            transform: scaleY(1);
-        }
-
-        .communication-nav-item-active .communication-nav-link {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            font-weight: 500;
-        }
-
-        .communication-nav-item-active .communication-nav-link::before {
-            transform: scaleY(1);
-        }
-
-        .communication-nav-icon {
-            font-size: 1.2rem;
-            margin-right: 1rem;
-            width: 24px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .communication-nav-link:hover .communication-nav-icon {
-            transform: scale(1.2);
-        }
-
-        /* ===== MAIN CONTENT ===== */
-        .communication-main {
-            grid-area: main;
-            padding: 2rem;
-            overflow-y: auto;
-            animation: communicationFadeIn 0.6s ease-out;
-        }
-
-        @keyframes communicationFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+            .communication-container {
+                min-height: 100vh;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                padding: 2rem;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .communication-header {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
             }
-        }
 
-        /* ===== COMMUNICATION GRID ===== */
-        .communication-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            height: calc(100vh - 200px);
-        }
+            .communication-header:hover {
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+                transform: translateY(-2px);
+            }
 
-        /* ===== GMAIL SECTION ===== */
-        .gmail-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-        }
+            .communication-title {
+                font-size: 2.5rem;
+                font-weight: 300;
+                color: #2c3e50;
+                margin: 0 0 1rem 0;
+                letter-spacing: 1px;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
 
-        .gmail-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #dd4b39, #ea4335);
-        }
+            .communication-title-icon {
+                font-size: 2rem;
+                color: #3498db;
+                animation: communicationPulse 2s infinite;
+            }
 
-        .gmail-section:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
+            @keyframes communicationPulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+            }
 
-        .gmail-header {
-            background: linear-gradient(135deg, rgba(221, 75, 57, 0.1), rgba(234, 67, 53, 0.05));
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
+            .communication-subtitle {
+                color: #7f8c8d;
+                font-size: 1.1rem;
+                margin: 0;
+            }
 
-        .gmail-header-content {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+            /* ===== AUTH SECTION ===== */
+            .communication-auth-section {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 3rem;
+                text-align: center;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                margin-bottom: 2rem;
+                transition: all 0.3s ease;
+            }
 
-        .gmail-icon {
-            font-size: 1.8rem;
-            color: #dd4b39;
-            transition: transform 0.3s ease;
-        }
+            .communication-auth-section:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            }
 
-        .gmail-header:hover .gmail-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
+            .communication-auth-icon {
+                font-size: 4rem;
+                color: #e74c3c;
+                margin-bottom: 1.5rem;
+                animation: communicationBounce 2s infinite;
+            }
 
-        .gmail-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #2c3e50;
-            margin: 0;
-        }
+            @keyframes communicationBounce {
+                0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+                40% { transform: translateY(-10px); }
+                60% { transform: translateY(-5px); }
+            }
 
-        .gmail-stats {
-            display: flex;
-            gap: 1rem;
-            margin-left: auto;
-        }
+            .communication-auth-title {
+                font-size: 1.8rem;
+                color: #2c3e50;
+                margin-bottom: 1rem;
+                font-weight: 300;
+            }
 
-        .gmail-stat {
-            background: rgba(221, 75, 57, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            color: #dd4b39;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
+            .communication-auth-description {
+                color: #7f8c8d;
+                font-size: 1.1rem;
+                margin-bottom: 2rem;
+                line-height: 1.6;
+            }
 
-        .gmail-stat:hover {
-            background: rgba(221, 75, 57, 0.2);
-            transform: scale(1.05);
-        }
+            .communication-auth-btn {
+                background: linear-gradient(135deg, #3498db, #2980b9);
+                color: white;
+                padding: 1rem 2.5rem;
+                border-radius: 15px;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1.1rem;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                border: none;
+                cursor: pointer;
+            }
 
-        .gmail-body {
-            padding: 1.5rem 2rem;
-            height: calc(100% - 100px);
-            overflow-y: auto;
-        }
+            .communication-auth-btn:hover {
+                background: linear-gradient(135deg, #2980b9, #1e6b93);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+            }
 
-        .gmail-email-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+            .communication-auth-btn-icon {
+                font-size: 1.2rem;
+            }
 
-        .gmail-email-item {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
-            padding: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .gmail-email-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: #dd4b39;
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .gmail-email-item:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: translateX(8px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .gmail-email-item:hover::before {
-            transform: scaleY(1);
-        }
-
-        .gmail-email-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .gmail-email-sender {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 0.95rem;
-        }
-
-        .gmail-email-time {
-            color: #7f8c8d;
-            font-size: 0.8rem;
-        }
-
-        .gmail-email-subject {
-            font-weight: 500;
-            color: #34495e;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
-        }
-
-        .gmail-email-preview {
-            color: #95a5a6;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* ===== GOOGLE CHAT SECTION ===== */
-        .gchat-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .gchat-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #0f9d58, #34a853);
-        }
-
-        .gchat-section:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .gchat-header {
-            background: linear-gradient(135deg, rgba(15, 157, 88, 0.1), rgba(52, 168, 83, 0.05));
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            flex-shrink: 0;
-        }
-
-        .gchat-header-content {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .gchat-icon {
-            font-size: 1.8rem;
-            color: #0f9d58;
-            transition: transform 0.3s ease;
-        }
-
-        .gchat-header:hover .gchat-icon {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        .gchat-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #2c3e50;
-            margin: 0;
-        }
-
-        .gchat-status {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(15, 157, 88, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            color: #0f9d58;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .gchat-status-indicator {
-            width: 8px;
-            height: 8px;
-            background: #0f9d58;
-            border-radius: 50%;
-            animation: gchatPulse 2s infinite;
-        }
-
-        @keyframes gchatPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .gchat-body {
-            padding: 1.5rem 2rem;
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .gchat-conversations {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .gchat-conversation {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
-            padding: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .gchat-conversation::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: #0f9d58;
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .gchat-conversation:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: translateX(8px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .gchat-conversation:hover::before {
-            transform: scaleY(1);
-        }
-
-        .gchat-message-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .gchat-sender {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 0.95rem;
-        }
-
-        .gchat-time {
-            color: #7f8c8d;
-            font-size: 0.8rem;
-        }
-
-        .gchat-message {
-            color: #34495e;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .gchat-input-section {
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            padding-top: 1rem;
-            flex-shrink: 0;
-        }
-
-        .gchat-input-form {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .gchat-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        .gchat-input:focus {
-            outline: none;
-            border-color: #0f9d58;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(15, 157, 88, 0.1);
-        }
-
-        .gchat-send-btn {
-            background: linear-gradient(135deg, #0f9d58, #34a853);
-            color: white;
-            border: none;
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .gchat-send-btn:hover {
-            background: linear-gradient(135deg, #0d8a4c, #2e8b47);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(15, 157, 88, 0.3);
-        }
-
-        .gchat-send-btn:active {
-            transform: translateY(0);
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1200px) {
-            .communication-grid {
-                grid-template-columns: 1fr;
+            /* ===== STATUS SECTION ===== */
+            .communication-status-section {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                 gap: 1.5rem;
+                margin-bottom: 2rem;
             }
-            
-            .communication-container {
-                grid-template-columns: 250px 1fr;
-            }
-        }
 
-        @media (max-width: 768px) {
-            .communication-container {
-                grid-template-columns: 1fr;
-                grid-template-areas: 
-                    "header"
-                    "main";
+            .communication-status-card {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 2rem;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             }
-            
-            .communication-sidebar {
-                display: none;
+
+            .communication-status-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, transparent, rgba(46, 204, 113, 0.8), transparent);
+                transform: translateX(-100%);
+                transition: transform 0.6s ease;
             }
-            
-            .communication-main {
-                padding: 1rem;
+
+            .communication-status-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             }
-        }
+
+            .communication-status-card:hover::before {
+                transform: translateX(100%);
+            }
+
+            .communication-status-header {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .communication-status-icon {
+                font-size: 2rem;
+                padding: 0.75rem;
+                border-radius: 12px;
+                transition: all 0.3s ease;
+            }
+
+            .communication-status-icon-gmail {
+                background: linear-gradient(135deg, #eb1212, #fd5549);
+                color: white;
+            }
+
+            .communication-status-icon-chat {
+                background: linear-gradient(135deg, #a8d7b4, #a1e4c4);
+                color: white;
+            }
+
+            .communication-status-card:hover .communication-status-icon {
+                transform: scale(1.1) rotate(5deg);
+            }
+
+            .communication-status-title {
+                font-size: 1.3rem;
+                color: #2c3e50;
+                margin: 0;
+                font-weight: 500;
+            }
+
+            .communication-status-count {
+                font-size: 2.5rem;
+                font-weight: 300;
+                color: #2c3e50;
+                margin: 0.5rem 0;
+            }
+
+            .communication-status-label {
+                color: #7f8c8d;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            /* ===== CONTENT SECTIONS ===== */
+            .communication-content-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .communication-section {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+
+            .communication-section:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            .communication-section-header {
+                padding: 2rem 2rem 1rem 2rem;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                position: relative;
+            }
+
+            .communication-section-title {
+                font-size: 1.5rem;
+                color: #2c3e50;
+                margin: 0;
+                font-weight: 400;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            .communication-section-icon {
+                font-size: 1.3rem;
+            }
+
+            .communication-section-refresh {
+                position: absolute;
+                top: 2rem;
+                right: 2rem;
+                background: none;
+                border: none;
+                color: #7f8c8d;
+                font-size: 1.2rem;
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+
+            .communication-section-refresh:hover {
+                background: rgba(0, 0, 0, 0.05);
+                color: #2c3e50;
+                transform: rotate(180deg);
+            }
+
+            .communication-section-content {
+                padding: 1.5rem 2rem 2rem 2rem;
+                max-height: 500px;
+                overflow-y: auto;
+            }
+
+            /* ===== MESSAGE ITEMS ===== */
+            .communication-message-item {
+                padding: 1.5rem;
+                border-radius: 12px;
+                margin-bottom: 1rem;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .communication-message-item::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 3px;
+                background: linear-gradient(180deg, #3498db, #2980b9);
+                transform: scaleY(0);
+                transition: transform 0.3s ease;
+            }
+
+            .communication-message-item:hover {
+                background: rgba(52, 152, 219, 0.05);
+                transform: translateX(5px);
+            }
+
+            .communication-message-item:hover::before {
+                transform: scaleY(1);
+            }
+
+            .communication-message-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 0.75rem;
+            }
+
+            .communication-message-from {
+                font-weight: 600;
+                color: #2c3e50;
+                font-size: 0.95rem;
+            }
+
+            .communication-message-date {
+                color: #7f8c8d;
+                font-size: 0.8rem;
+            }
+
+            .communication-message-subject {
+                font-weight: 500;
+                color: #34495e;
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+            }
+
+            .communication-message-snippet {
+                color: #7f8c8d;
+                font-size: 0.9rem;
+                line-height: 1.4;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            /* ===== LOADING & EMPTY STATES ===== */
+            .communication-loading {
+                text-align: center;
+                padding: 3rem;
+                color: #7f8c8d;
+            }
+
+            .communication-loading-icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                animation: communicationSpin 1s linear infinite;
+            }
+
+            @keyframes communicationSpin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+
+            .communication-empty {
+                text-align: center;
+                padding: 3rem;
+                color: #7f8c8d;
+            }
+
+            .communication-empty-icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                opacity: 0.5;
+            }
+
+            /* ===== ACTIONS ===== */
+            .communication-actions {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+                margin-top: 2rem;
+            }
+
+            .communication-btn {
+                background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: 10px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                border: none;
+                cursor: pointer;
+                font-size: 0.9rem;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .communication-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            .communication-btn-disconnect {
+                background: linear-gradient(135deg, #e74c3c, #c0392b);
+            }
+
+            .communication-btn-disconnect:hover {
+                background: linear-gradient(135deg, #c0392b, #a93226);
+                box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+            }
+
+            /* ===== RESPONSIVE ===== */
+            @media (max-width: 768px) {
+                .communication-content-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .communication-status-section {
+                    grid-template-columns: 1fr;
+                }
+                
+                .communication-container {
+                    padding: 1rem;
+                }
+                
+                .communication-title {
+                    font-size: 2rem;
+                }
+            }
+
+            /* ===== ANIMATIONS ===== */
+            .communication-fade-in {
+                animation: communicationFadeIn 0.6s ease-out;
+            }
+
+            @keyframes communicationFadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
