@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication - Gmail & Google Chat</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="communication-container">
+        <!-- Header -->
+        <header class="communication-header">
+            <div class="communication-header-content">
+                <div>
+                    <h1 class="communication-title">Communication Hub</h1>
+                    <p class="communication-subtitle">Gmail et Google Chat intégrés</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="communication-sidebar">
+            <div class="communication-nav-header">
+                <h2 class="communication-nav-title">Navigation</h2>
+            </div>
+            <nav>
+                <ul class="communication-nav-menu">
+                    <li class="communication-nav-item">
+                        <a href="/dashboard" class="communication-nav-link">
+                            <i class="ph ph-house communication-nav-icon"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="communication-nav-item communication-nav-item-active">
+                        <a href="/communication" class="communication-nav-link">
+                            <i class="ph ph-chat-circle communication-nav-icon"></i>
+                            <span>Communication</span>
+                        </a>
+                    </li>
+                    <li class="communication-nav-item">
+                        <a href="/calendar" class="communication-nav-link">
+                            <i class="ph ph-calendar communication-nav-icon"></i>
+                            <span>Calendrier</span>
+                        </a>
+                    </li>
+                    <li class="communication-nav-item">
+                        <a href="/contacts" class="communication-nav-link">
+                            <i class="ph ph-address-book communication-nav-icon"></i>
+                            <span>Contacts</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="communication-main">
+            <div class="communication-grid">
+                <!-- Gmail Section -->
+                <section class="gmail-section">
+                    <header class="gmail-header">
+                        <div class="gmail-header-content">
+                            <i class="ph ph-envelope gmail-icon"></i>
+                            <h2 class="gmail-title">Gmail</h2>
+                            <div class="gmail-stats">
+                                <div class="gmail-stat">
+                                    <i class="ph ph-envelope-open"></i> 12 nouveaux
+                                </div>
+                                <div class="gmail-stat">
+                                    <i class="ph ph-archive"></i> 247 total
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="gmail-body">
+                        <div class="gmail-email-list">
+                            <div class="gmail-email-item">
+                                <div class="gmail-email-header">
+                                    <span class="gmail-email-sender">Jean Dupont</span>
+                                    <span class="gmail-email-time">Il y a 5 min</span>
+                                </div>
+                                <div class="gmail-email-subject">Réunion projet CRM</div>
+                                <div class="gmail-email-preview">Bonjour, je souhaite programmer une réunion pour discuter de l'avancement du projet CRM. Pourriez-vous me dire vos disponibilités pour cette semaine ?</div>
+                            </div>
+                            
+                            <div class="gmail-email-item">
+                                <div class="gmail-email-header">
+                                    <span class="gmail-email-sender">Marie Martin</span>
+                                    <span class="gmail-email-time">Il y a 1h</span>
+                                </div>
+                                <div class="gmail-email-subject">Rapport mensuel</div>
+                                <div class="gmail-email-preview">Veuillez trouver en pièce jointe le rapport mensuel des ventes. Les chiffres sont très encourageants ce mois-ci...</div>
+                            </div>
+                            
+                            <div class="gmail-email-item">
+                                <div class="gmail-email-header">
+                                    <span class="gmail-email-sender">Support Technique</span>
+                                    <span class="gmail-email-time">Il y a 3h</span>
+                                </div>
+                                <div class="gmail-email-subject">Mise à jour système</div>
+                                <div class="gmail-email-preview">Une mise à jour importante du système est prévue pour ce week-end. Veuillez sauvegarder vos données importantes...</div>
+                            </div>
+                            
+                            <div class="gmail-email-item">
+                                <div class="gmail-email-header">
+                                    <span class="gmail-email-sender">Client ABC</span>
+                                    <span class="gmail-email-time">Hier</span>
+                                </div>
+                                <div class="gmail-email-subject">Demande de devis</div>
+                                <div class="gmail-email-preview">Nous aimerions obtenir un devis pour vos services. Pourriez-vous nous contacter pour en discuter ?</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Google Chat Section -->
+                <section class="gchat-section">
+                    <header class="gchat-header">
+                        <div class="gchat-header-content">
+                            <i class="ph ph-chat-circle gchat-icon"></i>
+                            <h2 class="gchat-title">Google Chat</h2>
+                            <div class="gchat-status">
+                                <div class="gchat-status-indicator"></div>
+                                En ligne
+                            </div>
+                        </div>
+                    </header>
+                    <div class="gchat-body">
+                        <div class="gchat-conversations">
+                            <div class="gchat-conversation">
+                                <div class="gchat-message-header">
+                                    <span class="gchat-sender">Équipe Dev</span>
+                                    <span class="gchat-time">Il y a 2 min</span>
+                                </div>
+                                <div class="gchat-message">Le déploiement de la nouvelle version est terminé. Tout fonctionne parfaitement !</div>
+                            </div>
+                            
+                            <div class="gchat-conversation">
+                                <div class="gchat-message-header">
+                                    <span class="gchat-sender">Sophie Laurent</span>
+                                    <span class="gchat-time">Il y a 15 min</span>
+                                </div>
+                                <div class="gchat-message">Pouvez-vous valider les maquettes que j'ai envoyées hier ?</div>
+                            </div>
+                            
+                            <div class="gchat-conversation">
+                                <div class="gchat-message-header">
+                                    <span class="gchat-sender">Direction</span>
+                                    <span class="gchat-time">Il y a 1h</span>
+                                </div>
+                                <div class="gchat-message">Réunion exceptionnelle prévue demain à 14h en salle de conférence</div>
+                            </div>
+                        </div>
+                        
+                        <div class="gchat-input-section">
+                            <form class="gchat-input-form">
+                                <input type="text" class="gchat-input" placeholder="Tapez votre message...">
+                                <button type="submit" class="gchat-send-btn">
+                                    <i class="ph ph-paper-plane-right"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
