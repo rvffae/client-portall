@@ -9,9 +9,12 @@ import './styles/app.css';
 import './styles/login.css';
 import './styles/register.css';
 import './styles/dashboard.css';
+import './styles/communication.css';
+import './styles/googlecalendar.css';
 
-import './js/calendar.js'
-import './js/dashboard.js'
+import './js/calendar.js';
+import './js/dashboard.js';
+import './js/communication.js';
 
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

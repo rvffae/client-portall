@@ -19,8 +19,6 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
 
     # Configuration pour GoogleCalendarService
     App\Service\GoogleCalendarService:
@@ -30,3 +28,12 @@ services:
             $googleClientId: '%env(GOOGLE_CLIENT_ID)%'
             $googleClientSecret: '%env(GOOGLE_CLIENT_SECRET)%'
             $googleRedirectUri: '%env(GOOGLE_REDIRECT_URI)%'
+
+    # Configuration pour GoogleApiService (Gmail + Chat)
+    App\Service\GoogleApiService:
+        arguments:
+            $requestStack: '@request_stack'
+            $logger: '@logger'
+            $googleClientId: '%env(GOOGLE_CLIENT_ID)%'
+            $googleClientSecret: '%env(GOOGLE_CLIENT_SECRET)%'
+            $googleRedirectUri: '%env(GOOGLE_REDIRECT_URI_COMMUNICATION)%'
