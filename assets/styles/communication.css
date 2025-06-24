@@ -1,449 +1,742 @@
-/* ===== COMMUNICATION LAYOUT ===== */
-            .communication-container {
-                min-height: 100vh;
-                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                padding: 2rem;
-            }
+/* ===== DASHBOARD LAYOUT ===== */
+.dashboard-container {
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "sidebar main";
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    background: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
 
-            .communication-header {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 20px;
-                padding: 2rem;
-                margin-bottom: 2rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;
-            }
+/* ===== HEADER ===== */
+.dashboard-header {
+    grid-area: header;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid #e0e0e0;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
 
-            .communication-header:hover {
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-                transform: translateY(-2px);
-            }
+.dashboard-header:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-            .communication-title {
-                font-size: 2.5rem;
-                font-weight: 300;
-                color: #2c3e50;
-                margin: 0 0 1rem 0;
-                letter-spacing: 1px;
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-            }
+.dashboard-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
-            .communication-title-icon {
-                font-size: 2rem;
-                color: #3498db;
-                animation: communicationPulse 2s infinite;
-            }
+.dashboard-welcome {
+    flex: 1;
+}
 
-            @keyframes communicationPulse {
-                0%, 100% { transform: scale(1); }
-                50% { transform: scale(1.1); }
-            }
+.dashboard-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #333333;
+    margin: 0;
+    transition: color 0.3s ease;
+}
 
-            .communication-subtitle {
-                color: #7f8c8d;
-                font-size: 1.1rem;
-                margin: 0;
-            }
+.dashboard-title:hover {
+    color: #000000;
+}
 
-            /* ===== AUTH SECTION ===== */
-            .communication-auth-section {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 20px;
-                padding: 3rem;
-                text-align: center;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-                margin-bottom: 2rem;
-                transition: all 0.3s ease;
-            }
+.dashboard-subtitle {
+    color: #666666;
+    margin: 0.5rem 0 0 0;
+    font-size: 1rem;
+    font-weight: 400;
+}
 
-            .communication-auth-section:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            }
+.dashboard-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
 
-            .communication-auth-icon {
-                font-size: 4rem;
-                color: #e74c3c;
-                margin-bottom: 1.5rem;
-                animation: communicationBounce 2s infinite;
-            }
+.dashboard-user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: rgba(240, 240, 240, 0.8);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
 
-            @keyframes communicationBounce {
-                0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-                40% { transform: translateY(-10px); }
-                60% { transform: translateY(-5px); }
-            }
+.dashboard-user-info:hover {
+    background: rgba(220, 220, 220, 0.8);
+}
 
-            .communication-auth-title {
-                font-size: 1.8rem;
-                color: #2c3e50;
-                margin-bottom: 1rem;
-                font-weight: 300;
-            }
+.dashboard-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #cccccc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
 
-            .communication-auth-description {
-                color: #7f8c8d;
-                font-size: 1.1rem;
-                margin-bottom: 2rem;
-                line-height: 1.6;
-            }
+.dashboard-user-info:hover .dashboard-user-avatar {
+    transform: scale(1.1);
+}
 
-            .communication-auth-btn {
-                background: linear-gradient(135deg, #3498db, #2980b9);
-                color: white;
-                padding: 1rem 2.5rem;
-                border-radius: 15px;
-                text-decoration: none;
-                font-weight: 500;
-                font-size: 1.1rem;
-                transition: all 0.3s ease;
-                display: inline-flex;
-                align-items: center;
-                gap: 0.75rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                border: none;
-                cursor: pointer;
-            }
+.dashboard-user-name {
+    color: #333333;
+    font-weight: 500;
+}
 
-            .communication-auth-btn:hover {
-                background: linear-gradient(135deg, #2980b9, #1e6b93);
-                transform: translateY(-3px);
-                box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
-            }
+.dashboard-logout-btn {
+    background: #666666;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
 
-            .communication-auth-btn-icon {
-                font-size: 1.2rem;
-            }
+.dashboard-logout-btn:hover {
+    background: #555555;
+}
 
-            /* ===== STATUS SECTION ===== */
-            .communication-status-section {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 1.5rem;
-                margin-bottom: 2rem;
-            }
+/* ===== SIDEBAR ===== */
+.dashboard-sidebar {
+    grid-area: sidebar;
+    background: #333333;
+    padding: 1rem 0;
+    overflow-y: auto;
+    transition: background 0.3s ease;
+}
 
-            .communication-status-card {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 20px;
-                padding: 2rem;
-                transition: all 0.3s ease;
-                position: relative;
-                overflow: hidden;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            }
+.dashboard-nav-header {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+}
 
-            .communication-status-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                background: linear-gradient(90deg, transparent, rgba(46, 204, 113, 0.8), transparent);
-                transform: translateX(-100%);
-                transition: transform 0.6s ease;
-            }
+.dashboard-nav-title {
+    color: #cccccc;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    transition: color 0.3s ease;
+}
 
-            .communication-status-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            }
+.dashboard-nav-title:hover {
+    color: #ffffff;
+}
 
-            .communication-status-card:hover::before {
-                transform: translateX(100%);
-            }
+.dashboard-nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-            .communication-status-header {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                margin-bottom: 1.5rem;
-            }
+.dashboard-nav-item {
+    margin-bottom: 0.5rem;
+}
 
-            .communication-status-icon {
-                font-size: 2rem;
-                padding: 0.75rem;
-                border-radius: 12px;
-                transition: all 0.3s ease;
-            }
+.dashboard-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #cccccc;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
-            .communication-status-icon-gmail {
-                background: linear-gradient(135deg, #eb1212, #fd5549);
-                color: white;
-            }
+.dashboard-nav-link:hover {
+    background: #4d4d4d;
+    color: #ffffff;
+}
 
-            .communication-status-icon-chat {
-                background: linear-gradient(135deg, #a8d7b4, #a1e4c4);
-                color: white;
-            }
+.dashboard-nav-item-active .dashboard-nav-link {
+    background: #4d4d4d;
+    color: white;
+    font-weight: 500;
+}
 
-            .communication-status-card:hover .communication-status-icon {
-                transform: scale(1.1) rotate(5deg);
-            }
+.dashboard-nav-icon {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    width: 24px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
 
-            .communication-status-title {
-                font-size: 1.3rem;
-                color: #2c3e50;
-                margin: 0;
-                font-weight: 500;
-            }
+.dashboard-nav-link:hover .dashboard-nav-icon {
+    transform: scale(1.1);
+}
 
-            .communication-status-count {
-                font-size: 2.5rem;
-                font-weight: 300;
-                color: #2c3e50;
-                margin: 0.5rem 0;
-            }
+.dashboard-nav-text {
+    font-size: 0.95rem;
+    font-weight: 400;
+}
 
-            .communication-status-label {
-                color: #7f8c8d;
-                font-size: 0.9rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
+/* ===== MAIN CONTENT ===== */
+.dashboard-main {
+    grid-area: main;
+    padding: 1rem;
+    overflow-y: auto;
+}
 
-            /* ===== CONTENT SECTIONS ===== */
-            .communication-content-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 2rem;
-                margin-bottom: 2rem;
-            }
+/* ===== STATS GRID ===== */
+.dashboard-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
 
-            .communication-section {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 20px;
-                overflow: hidden;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;
-            }
+.dashboard-stat-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-            .communication-section:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            }
+.dashboard-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-            .communication-section-header {
-                padding: 2rem 2rem 1rem 2rem;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-                position: relative;
-            }
+.dashboard-stat-icon {
+    font-size: 2rem;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
 
-            .communication-section-title {
-                font-size: 1.5rem;
-                color: #2c3e50;
-                margin: 0;
-                font-weight: 400;
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-            }
+.dashboard-stat-card:hover .dashboard-stat-icon {
+    opacity: 1;
+}
 
-            .communication-section-icon {
-                font-size: 1.3rem;
-            }
+.dashboard-stat-content {
+    flex: 1;
+}
 
-            .communication-section-refresh {
-                position: absolute;
-                top: 2rem;
-                right: 2rem;
-                background: none;
-                border: none;
-                color: #7f8c8d;
-                font-size: 1.2rem;
-                cursor: pointer;
-                padding: 0.5rem;
-                border-radius: 8px;
-                transition: all 0.3s ease;
-            }
+.dashboard-stat-title {
+    color: #666666;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 0.5rem 0;
+}
 
-            .communication-section-refresh:hover {
-                background: rgba(0, 0, 0, 0.05);
-                color: #2c3e50;
-                transform: rotate(180deg);
-            }
+.dashboard-stat-number {
+    color: #333333;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+}
 
-            .communication-section-content {
-                padding: 1.5rem 2rem 2rem 2rem;
-                max-height: 500px;
-                overflow-y: auto;
-            }
+.dashboard-stat-change {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
 
-            /* ===== MESSAGE ITEMS ===== */
-            .communication-message-item {
-                padding: 1.5rem;
-                border-radius: 12px;
-                margin-bottom: 1rem;
-                transition: all 0.3s ease;
-                cursor: pointer;
-                position: relative;
-                overflow: hidden;
-            }
+.dashboard-stat-positive {
+    background: #e6f4ea;
+    color: #2e7d32;
+}
 
-            .communication-message-item::before {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 100%;
-                width: 3px;
-                background: linear-gradient(180deg, #3498db, #2980b9);
-                transform: scaleY(0);
-                transition: transform 0.3s ease;
-            }
+.dashboard-stat-negative {
+    background: #ffebee;
+    color: #c62828;
+}
 
-            .communication-message-item:hover {
-                background: rgba(52, 152, 219, 0.05);
-                transform: translateX(5px);
-            }
+/* ===== CONTENT GRID ===== */
+.dashboard-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+    grid-template-areas:
+        "chart activities"
+        "chart actions"
+        "chart notifications";
+}
 
-            .communication-message-item:hover::before {
-                transform: scaleY(1);
-            }
+.dashboard-widget {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
 
-            .communication-message-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin-bottom: 0.75rem;
-            }
+.dashboard-widget:hover {
+    transform: translateY(-3px);
+}
 
-            .communication-message-from {
-                font-weight: 600;
-                color: #2c3e50;
-                font-size: 0.95rem;
-            }
+.dashboard-widget-large {
+    grid-area: chart;
+}
 
-            .communication-message-date {
-                color: #7f8c8d;
-                font-size: 0.8rem;
-            }
+.dashboard-widget-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+}
 
-            .communication-message-subject {
-                font-weight: 500;
-                color: #34495e;
-                margin-bottom: 0.5rem;
-                font-size: 1rem;
-            }
+.dashboard-widget-title {
+    color: #333333;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
 
-            .communication-message-snippet {
-                color: #7f8c8d;
-                font-size: 0.9rem;
-                line-height: 1.4;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
+.dashboard-widget-link {
+    color: #3f51b5;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
 
-            /* ===== LOADING & EMPTY STATES ===== */
-            .communication-loading {
-                text-align: center;
-                padding: 3rem;
-                color: #7f8c8d;
-            }
+.dashboard-widget-link:hover {
+    background: rgba(63, 81, 181, 0.1);
+    color: #303f9f;
+}
 
-            .communication-loading-icon {
-                font-size: 3rem;
-                margin-bottom: 1rem;
-                animation: communicationSpin 1s linear infinite;
-            }
+.dashboard-widget-content {
+    padding: 1rem;
+}
 
-            @keyframes communicationSpin {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(360deg); }
-            }
+.dashboard-select {
+    padding: 0.5rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    background: white;
+    color: #333333;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
 
-            .communication-empty {
-                text-align: center;
-                padding: 3rem;
-                color: #7f8c8d;
-            }
+.dashboard-select:hover {
+    border-color: #999999;
+}
 
-            .communication-empty-icon {
-                font-size: 3rem;
-                margin-bottom: 1rem;
-                opacity: 0.5;
-            }
+/* ===== CHART PLACEHOLDER ===== */
+.dashboard-chart-placeholder {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #f9f9f9;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
 
-            /* ===== ACTIONS ===== */
-            .communication-actions {
-                display: flex;
-                gap: 1rem;
-                justify-content: center;
-                margin-top: 2rem;
-            }
+.dashboard-chart-placeholder:hover {
+    background: #f0f0f0;
+}
 
-            .communication-btn {
-                background: linear-gradient(135deg, #95a5a6, #7f8c8d);
-                color: white;
-                padding: 0.75rem 1.5rem;
-                border-radius: 10px;
-                text-decoration: none;
-                font-weight: 500;
-                transition: all 0.3s ease;
-                border: none;
-                cursor: pointer;
-                font-size: 0.9rem;
-                display: inline-flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
+.dashboard-chart-bars {
+    display: flex;
+    align-items: end;
+    gap: 1rem;
+    height: 200px;
+    margin-bottom: 1rem;
+}
 
-            .communication-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            }
+.dashboard-bar {
+    width: 30px;
+    background: #3f51b5;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
 
-            .communication-btn-disconnect {
-                background: linear-gradient(135deg, #e74c3c, #c0392b);
-            }
+.dashboard-bar:hover {
+    background: #303f9f;
+}
 
-            .communication-btn-disconnect:hover {
-                background: linear-gradient(135deg, #c0392b, #a93226);
-                box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
-            }
+.dashboard-chart-label {
+    color: #666666;
+    font-size: 0.9rem;
+    margin: 0;
+}
 
-            /* ===== RESPONSIVE ===== */
-            @media (max-width: 768px) {
-                .communication-content-grid {
-                    grid-template-columns: 1fr;
-                }
-                
-                .communication-status-section {
-                    grid-template-columns: 1fr;
-                }
-                
-                .communication-container {
-                    padding: 1rem;
-                }
-                
-                .communication-title {
-                    font-size: 2rem;
-                }
-            }
+/* ===== ACTIVITIES ===== */
+.dashboard-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
-            /* ===== ANIMATIONS ===== */
-            .communication-fade-in {
-                animation: communicationFadeIn 0.6s ease-out;
-            }
+.dashboard-activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f9f9f9;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
 
-            @keyframes communicationFadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
+.dashboard-activity-item:hover {
+    transform: translateX(5px);
+}
+
+.dashboard-activity-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-activity-item:hover .dashboard-activity-avatar {
+    transform: scale(1.1);
+}
+
+.dashboard-activity-content {
+    flex: 1;
+}
+
+.dashboard-activity-text {
+    color: #333333;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0 0 0.25rem 0;
+}
+
+.dashboard-activity-time {
+    color: #666666;
+    font-size: 0.8rem;
+}
+
+/* ===== QUICK ACTIONS ===== */
+.dashboard-quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.dashboard-quick-action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.dashboard-quick-action:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+/* Section Google Calendar */
+.dashboard-calendar-section {
+    margin-top: 1rem;
+}
+
+.dashboard-widget-full {
+    width: 100%;
+    grid-column: 1 / -1;
+}
+
+.dashboard-calendar-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dashboard-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.dashboard-btn-primary {
+    background: #3f51b5;
+    color: white;
+}
+
+.dashboard-btn-primary:hover {
+    background: #303f9f;
+}
+
+.dashboard-btn-secondary {
+    background: #666666;
+    color: white;
+}
+
+.dashboard-btn-secondary:hover {
+    background: #555555;
+}
+
+.dashboard-btn-large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+.dashboard-calendar-status {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.dashboard-calendar-connected {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.dashboard-calendar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.dashboard-calendar-subtitle {
+    color: #333333;
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.dashboard-calendar-events {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.dashboard-calendar-event {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-calendar-event:hover {
+    border-color: #3f51b5;
+    box-shadow: 0 2px 4px rgba(63, 81, 181, 0.1);
+}
+
+.dashboard-calendar-event-content {
+    flex: 1;
+}
+
+.dashboard-calendar-event-title {
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-calendar-event-time {
+    font-size: 0.875rem;
+    color: #666666;
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-calendar-event-location {
+    font-size: 0.875rem;
+    color: #3f51b5;
+}
+
+.dashboard-calendar-delete-btn {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.dashboard-calendar-delete-btn:hover {
+    background: #ffebee;
+}
+
+.dashboard-calendar-empty {
+    text-align: center;
+    padding: 2rem;
+    color: #666666;
+}
+
+.dashboard-calendar-disconnected {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.dashboard-calendar-disconnected h4 {
+    color: #333333;
+    margin: 1rem 0 0.5rem 0;
+}
+
+.dashboard-calendar-disconnected p {
+    color: #666666;
+    margin-bottom: 2rem;
+}
+
+/* Modal */
+.dashboard-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.dashboard-modal-header h3 {
+    margin: 0;
+    color: #333333;
+}
+
+.dashboard-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666666;
+    transition: color 0.3s ease;
+}
+
+.dashboard-modal-close:hover {
+    color: #333333;
+}
+
+.dashboard-modal-body {
+    padding: 1rem;
+}
+
+.dashboard-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.dashboard-form-group {
+    margin-bottom: 1rem;
+}
+
+.dashboard-form-group label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    color: #333333;
+}
+
+.dashboard-form-group input,
+.dashboard-form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    transition: border-color 0.3s ease;
+}
+
+.dashboard-form-group input:focus,
+.dashboard-form-group textarea:focus {
+    outline: none;
+    border-color: #3f51b5;
+}
+
+.dashboard-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.dashboard-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.dashboard-checkbox-group input[type="checkbox"] {
+    width: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-calendar-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .dashboard-form-row {
+        grid-template-columns: 1fr;
+    }
+    .dashboard-calendar-actions {
+        flex-direction: column;
+    }
+}
