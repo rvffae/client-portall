@@ -23,7 +23,6 @@
                 }
 
                 bindEvents() {
-                    // Boutons de rafraîchissement
                     document.addEventListener('click', (e) => {
                         if (e.target.classList.contains('communication-section-refresh')) {
                             const section = e.target.getAttribute('data-section');
@@ -31,7 +30,6 @@
                         }
                     });
 
-                    // Messages cliquables
                     document.addEventListener('click', (e) => {
                         if (e.target.closest('.communication-message-item')) {
                             const messageItem = e.target.closest('.communication-message-item');
@@ -44,8 +42,6 @@
                     const sectionElement = document.querySelector(`[data-section="${section}"]`).closest('.communication-section');
                     const contentElement = sectionElement.querySelector('.communication-section-content');
                     const refreshBtn = sectionElement.querySelector('.communication-section-refresh');
-                    
-                    // Animation de chargement
                     refreshBtn.style.transform = 'rotate(360deg)';
                     contentElement.innerHTML = this.getLoadingHTML();
 
@@ -77,7 +73,6 @@
                         contentElement.innerHTML = this.getErrorHTML('Erreur de connexion');
                     }
 
-                    // Reset animation
                     setTimeout(() => {
                         refreshBtn.style.transform = '';
                     }, 500);
@@ -127,18 +122,13 @@
                     try {
                         const response = await fetch('{{ path("communication_status") }}');
                         const data = await response.json();
-                        
-                        // Mettre à jour les compteurs
                         const emailResponse = await fetch('{{ path("communication_emails") }}');
                         const emailData = await emailResponse.json();
-                        
                         const chatResponse = await fetch('{{ path("communication_chat_messages") }}');
                         const chatData = await chatResponse.json();
-                        
                         if (emailData.success) {
                             this.updateCounter('gmail', emailData.emails.length);
                         }
-                        
                         if (chatData.success) {
                             this.updateCounter('chat', chatData.messages.length);
                         }
@@ -159,7 +149,6 @@
                 }
 
                 startAutoRefresh() {
-                    // Rafraîchir toutes les 5 minutes
                     this.refreshIntervals.main = setInterval(() => {
                         this.refreshSection('gmail');
                         this.refreshSection('chat');
@@ -168,27 +157,21 @@
                 }
 
                 handleMessageClick(messageItem) {
-                    // Animation de clic
                     messageItem.style.transform = 'scale(0.98)';
                     setTimeout(() => {
                         messageItem.style.transform = '';
                     }, 150);
 
-                    // Ici, vous pouvez ajouter la logique pour ouvrir le message
                     const type = messageItem.getAttribute('data-type');
                     const id = messageItem.getAttribute('data-id');
-                    
                     console.log(`Clic sur ${type} avec ID: ${id}`);
-                    // Redirection ou ouverture de modal selon vos besoins
                 }
 
                 animateElements() {
-                    // Animation d'apparition des éléments
                     const elements = document.querySelectorAll('.communication-section, .communication-status-card');
                     elements.forEach((element, index) => {
                         element.style.opacity = '0';
                         element.style.transform = 'translateY(20px)';
-                        
                         setTimeout(() => {
                             element.style.transition = 'all 0.6s ease';
                             element.style.opacity = '1';
@@ -248,19 +231,16 @@
                 }
 
                 destroy() {
-                    // Nettoyer les intervalles
                     Object.values(this.refreshIntervals).forEach(interval => {
                         clearInterval(interval);
                     });
                 }
             }
 
-            // Initialiser l'application
             document.addEventListener('DOMContentLoaded', () => {
                 window.communicationManager = new CommunicationManager();
             });
 
-            // Nettoyer lors de la fermeture
             window.addEventListener('beforeunload', () => {
                 if (window.communicationManager) {
                     window.communicationManager.destroy();
@@ -289,7 +269,7 @@
                 Vos données restent sécurisées et privées.
             </p>
             <a href="{{ path('communication_auth') }}" class="communication-auth-btn">
-                <span class="communication-auth-btn-icon">🚀</span>
+                <span class="communication-auth-btn-icon"></span>
                 Se connecter avec Google
             </a>
         </div>
@@ -305,7 +285,6 @@
                     </div>
                 </div>
             </div>
-            
             <div class="communication-status-card">
                 <div class="communication-status-header">
                     <div class="communication-status-icon communication-status-icon-chat">💬</div>
