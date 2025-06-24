@@ -144,5 +144,4 @@ public function deleteEvent(string $eventId): JsonResponse
     
     return new JsonResponse($result);
 }
-
 }
