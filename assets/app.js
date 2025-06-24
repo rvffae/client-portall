@@ -10,5 +10,8 @@ import './styles/login.css';
 import './styles/register.css';
 import './styles/dashboard.css';
 
+import './js/calendar.js'
+import './js/dashboard.js'
+
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
