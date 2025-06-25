@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invoice Details{% endblock %}
+
+{% block body %}
+    <h1>Invoice Details</h1>
+
+    <div class="invoice-detail">
+        <p><strong>Invoice Number:</strong> {{ invoice.invoice_number }}</p>
+        <p><strong>Issue Date:</strong> {{ invoice.issue_date ? invoice.issue_date|date('Y-m-d') : '' }}</p>
+        <p><strong>Due Date:</strong> {{ invoice.due_date ? invoice.due_date|date('Y-m-d') : '' }}</p>
+        <p><strong>Amount:</strong> {{ invoice.amount }}</p>
+        <p><strong>Status:</strong> {{ invoice.status }}</p>
+        <p><strong>Project:</strong> {{ invoice.project_id ? invoice.project_id.name : '' }}</p>
+        <p><strong>Products:</strong>
+            {% for product in invoice.products %}
+                {{ product.name }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    </div>
+
+    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">Edit</a>
+    <a href="{{ path('app_invoice_index') }}">Back to List</a>
+{% endblock %}

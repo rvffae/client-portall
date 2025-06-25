@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Invoice;
-use App\Form\InvoiceForm;
+use App\Form\InvoiceTypeForm;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,10 +26,13 @@ final class InvoiceController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $invoice = new Invoice();
-        $form = $this->createForm(InvoiceForm::class, $invoice);
+        $form = $this->createForm(InvoiceTypeForm::class, $invoice);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $invoice->setCreatedAt(new \DateTimeImmutable());
+            $invoice->setUpdatedAt(new \DateTimeImmutable());
+
             $entityManager->persist($invoice);
             $entityManager->flush();
 
@@ -38,7 +41,7 @@ final class InvoiceController extends AbstractController
 
         return $this->render('invoice/new.html.twig', [
             'invoice' => $invoice,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -53,10 +56,11 @@ final class InvoiceController extends AbstractController
     #[Route('/{id}/edit', name: 'app_invoice_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Invoice $invoice, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(InvoiceForm::class, $invoice);
+        $form = $this->createForm(InvoiceTypeForm::class, $invoice);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $invoice->setUpdatedAt(new \DateTimeImmutable());
             $entityManager->flush();
 
             return $this->redirectToRoute('app_invoice_index', [], Response::HTTP_SEE_OTHER);
@@ -64,14 +68,14 @@ final class InvoiceController extends AbstractController
 
         return $this->render('invoice/edit.html.twig', [
             'invoice' => $invoice,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_invoice_delete', methods: ['POST'])]
     public function delete(Request $request, Invoice $invoice, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$invoice->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$invoice->getId(), $request->request->get('_token'))) {
             $entityManager->remove($invoice);
             $entityManager->flush();
         }
