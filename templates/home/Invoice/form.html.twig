@@ -3,10 +3,46 @@
 {% block title %}{{ invoice.id ? 'Edit' : 'New' }} Invoice{% endblock %}
 
 {% block body %}
-    <h1>{{ invoice.id ? 'Edit' : 'Create' }} Invoice</h1>
+    <div class="invoice-form-container">
+        <h1>{{ invoice.id ? 'Edit' : 'Create' }} Invoice</h1>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button type="submit">Save</button>
-    {{ form_end(form) }}
+        {{ form_start(form) }}
+            <div class="invoice-form-group">
+                {{ form_label(form.invoice_number, 'Invoice Number', {'label_attr': {'class': 'invoice-form-label'}}) }}
+                {{ form_widget(form.invoice_number, {'attr': {'class': 'invoice-form-control'}}) }}
+            </div>
+
+            <div class="invoice-form-group">
+                {{ form_label(form.issue_date, 'Issue Date', {'label_attr': {'class': 'invoice-form-label'}}) }}
+                {{ form_widget(form.issue_date, {'attr': {'class': 'invoice-form-control'}}) }}
+            </div>
+
+            <div class="invoice-form-group">
+                {{ form_label(form.due_date, 'Due Date', {'label_attr': {'class': 'invoice-form-label'}}) }}
+                {{ form_widget(form.due_date, {'attr': {'class': 'invoice-form-control'}}) }}
+            </div>
+
+            <div class="invoice-form-group">
+                {{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'invoice-form-label'}}) }}
+                {{ form_widget(form.amount, {'attr': {'class': 'invoice-form-control'}}) }}
+            </div>
+
+            <div class="invoice-form-group">
+                {{ form_label(form.status, 'Status', {'label_attr': {'class': 'invoice-form-label'}}) }}
+                {{ form_widget(form.status, {'attr': {'class': 'invoice-form-control'}}) }}
+            </div>
+
+            <div class="invoice-form-group">
+                {{ form_label(form.project_id, 'Project', {'label_attr': {'class': 'invoice-form-label'}}) }}
+                {{ form_widget(form.project_id, {'attr': {'class': 'invoice-form-control'}}) }}
+            </div>
+
+            <div class="invoice-form-group">
+                {{ form_label(form.products, 'Products', {'label_attr': {'class': 'invoice-form-label'}}) }}
+                {{ form_widget(form.products) }}
+            </div>
+
+            <button type="submit" class="invoice-submit-button">Save</button>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

@@ -11,6 +11,7 @@ import './styles/register.css';
 import './styles/dashboard.css';
 import './styles/communication.css';
 import './styles/googlecalendar.css';
+import './styles/form.css';
 
 import './js/calendar.js';
 import './js/dashboard.js';
