@@ -251,7 +251,7 @@
 {% endblock %}
 
 {% block body %}
-
+<div class="communication-main-container">
     <!-- Navigation principale -->
     <nav class="communication-sidebar">
         <div class="communication-nav-header">
@@ -309,121 +309,121 @@
         </ul>
     </nav>
 
+    <div class="communication-container communication-fade-in">
+        <div class="communication-header">
+            <h1 class="communication-title">
+                <span class="communication-title-icon">📨</span>
+                Messagerie
+            </h1>
+            <p class="communication-subtitle">Gérez Gmail et Google Chat</p>
+        </div>
 
-<div class="communication-container communication-fade-in">
-    <div class="communication-header">
-        <h1 class="communication-title">
-            <span class="communication-title-icon">📨</span>
-            Messagerie
-        </h1>
-        <p class="communication-subtitle">Gérez Gmail et Google Chat</p>
+        {% if not authenticated %}
+            <div class="communication-auth-section">
+                <div class="communication-auth-icon">🔒</div>
+                <h2 class="communication-auth-title">Connexion requise</h2>
+                <p class="communication-auth-description">
+                    Connectez-vous à votre compte Google pour accéder à vos emails Gmail et messages Google Chat.
+                    Vos données restent sécurisées et privées.
+                </p>
+                <a href="{{ path('communication_auth') }}" class="communication-auth-btn">
+                    <span class="communication-auth-btn-icon"></span>
+                    Se connecter avec Google
+                </a>
+            </div>
+        {% else %}
+            <div class="communication-status-section">
+                <div class="communication-status-card">
+                    <div class="communication-status-header">
+                        <div class="communication-status-icon communication-status-icon-gmail">📥</div>
+                        <div>
+                            <h3 class="communication-status-title">Gmail</h3>
+                            <div class="communication-status-count" data-counter="gmail">{{ emails|length }}</div>
+                            <div class="communication-status-label">Messages</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="communication-status-card">
+                    <div class="communication-status-header">
+                        <div class="communication-status-icon communication-status-icon-chat">💬</div>
+                        <div>
+                            <h3 class="communication-status-title">Google Chat</h3>
+                            <div class="communication-status-count" data-counter="chat">{{ chatMessages|length }}</div>
+                            <div class="communication-status-label">Messages</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="communication-content-grid">
+                <!-- Section Gmail -->
+                <div class="communication-section">
+                    <div class="communication-section-header">
+                        <h2 class="communication-section-title">
+                            <span class="communication-section-icon">📥</span>
+                            Emails Gmail
+                        </h2>
+                        <button class="communication-section-refresh" data-section="gmail" title="Actualiser">⟳</button>
+                    </div>
+                    <div class="communication-section-content">
+                        {% if emails is empty %}
+                            <div class="communication-empty">
+                                <div class="communication-empty-icon">📧</div>
+                                <div>Aucun email trouvé</div>
+                            </div>
+                        {% else %}
+                            {% for email in emails %}
+                                <div class="communication-message-item" data-type="email" data-id="{{ email.id }}">
+                                    <div class="communication-message-header">
+                                        <div class="communication-message-from">{{ email.from }}</div>
+                                        <div class="communication-message-date">{{ email.date|date('d/m/Y H:i') }}</div>
+                                    </div>
+                                    <div class="communication-message-subject">{{ email.subject }}</div>
+                                    <div class="communication-message-snippet">{{ email.snippet }}</div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Section Google Chat -->
+                <div class="communication-section">
+                    <div class="communication-section-header">
+                        <h2 class="communication-section-title">
+                            <span class="communication-section-icon">💬</span>
+                            Google Chat
+                        </h2>
+                        <button class="communication-section-refresh" data-section="chat" title="Actualiser">⟳</button>
+                    </div>
+                    <div class="communication-section-content">
+                        {% if chatMessages is empty %}
+                            <div class="communication-empty">
+                                <div class="communication-empty-icon">💬</div>
+                                <div>Aucun message de chat trouvé</div>
+                            </div>
+                        {% else %}
+                            {% for message in chatMessages %}
+                                <div class="communication-message-item" data-type="chat" data-id="{{ message.id }}">
+                                    <div class="communication-message-header">
+                                        <div class="communication-message-from">{{ message.sender }}</div>
+                                        <div class="communication-message-date">{{ message.createTime|date('d/m/Y H:i') }}</div>
+                                    </div>
+                                    <div class="communication-message-subject">📍 {{ message.space }}</div>
+                                    <div class="communication-message-snippet">{{ message.text }}</div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="communication-actions">
+                <a href="{{ path('communication_disconnect') }}" class="communication-btn communication-btn-disconnect">
+                    <span>🔓</span>
+                    Se déconnecter
+                </a>
+            </div>
+        {% endif %}
     </div>
-
-    {% if not authenticated %}
-        <div class="communication-auth-section">
-            <div class="communication-auth-icon">🔒</div>
-            <h2 class="communication-auth-title">Connexion requise</h2>
-            <p class="communication-auth-description">
-                Connectez-vous à votre compte Google pour accéder à vos emails Gmail et messages Google Chat.
-                Vos données restent sécurisées et privées.
-            </p>
-            <a href="{{ path('communication_auth') }}" class="communication-auth-btn">
-                <span class="communication-auth-btn-icon"></span>
-                Se connecter avec Google
-            </a>
-        </div>
-    {% else %}
-        <div class="communication-status-section">
-            <div class="communication-status-card">
-                <div class="communication-status-header">
-                    <div class="communication-status-icon communication-status-icon-gmail">📥</div>
-                    <div>
-                        <h3 class="communication-status-title">Gmail</h3>
-                        <div class="communication-status-count" data-counter="gmail">{{ emails|length }}</div>
-                        <div class="communication-status-label">Messages</div>
-                    </div>
-                </div>
-            </div>
-            <div class="communication-status-card">
-                <div class="communication-status-header">
-                    <div class="communication-status-icon communication-status-icon-chat">💬</div>
-                    <div>
-                        <h3 class="communication-status-title">Google Chat</h3>
-                        <div class="communication-status-count" data-counter="chat">{{ chatMessages|length }}</div>
-                        <div class="communication-status-label">Messages</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="communication-content-grid">
-            <!-- Section Gmail -->
-            <div class="communication-section">
-                <div class="communication-section-header">
-                    <h2 class="communication-section-title">
-                        <span class="communication-section-icon">📥</span>
-                        Emails Gmail
-                    </h2>
-                    <button class="communication-section-refresh" data-section="gmail" title="Actualiser">⟳</button>
-                </div>
-                <div class="communication-section-content">
-                    {% if emails is empty %}
-                        <div class="communication-empty">
-                            <div class="communication-empty-icon">📧</div>
-                            <div>Aucun email trouvé</div>
-                        </div>
-                    {% else %}
-                        {% for email in emails %}
-                            <div class="communication-message-item" data-type="email" data-id="{{ email.id }}">
-                                <div class="communication-message-header">
-                                    <div class="communication-message-from">{{ email.from }}</div>
-                                    <div class="communication-message-date">{{ email.date|date('d/m/Y H:i') }}</div>
-                                </div>
-                                <div class="communication-message-subject">{{ email.subject }}</div>
-                                <div class="communication-message-snippet">{{ email.snippet }}</div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- Section Google Chat -->
-            <div class="communication-section">
-                <div class="communication-section-header">
-                    <h2 class="communication-section-title">
-                        <span class="communication-section-icon">💬</span>
-                        Google Chat
-                    </h2>
-                    <button class="communication-section-refresh" data-section="chat" title="Actualiser">⟳</button>
-                </div>
-                <div class="communication-section-content">
-                    {% if chatMessages is empty %}
-                        <div class="communication-empty">
-                            <div class="communication-empty-icon">💬</div>
-                            <div>Aucun message de chat trouvé</div>
-                        </div>
-                    {% else %}
-                        {% for message in chatMessages %}
-                            <div class="communication-message-item" data-type="chat" data-id="{{ message.id }}">
-                                <div class="communication-message-header">
-                                    <div class="communication-message-from">{{ message.sender }}</div>
-                                    <div class="communication-message-date">{{ message.createTime|date('d/m/Y H:i') }}</div>
-                                </div>
-                                <div class="communication-message-subject">📍 {{ message.space }}</div>
-                                <div class="communication-message-snippet">{{ message.text }}</div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="communication-actions">
-            <a href="{{ path('communication_disconnect') }}" class="communication-btn communication-btn-disconnect">
-                <span>🔓</span>
-                Se déconnecter
-            </a>
-        </div>
-    {% endif %}
 </div>
 {% endblock %}
