@@ -251,6 +251,65 @@
 {% endblock %}
 
 {% block body %}
+
+    <!-- Navigation principale -->
+    <nav class="communication-sidebar">
+        <div class="communication-nav-header">
+            <h2 class="communication-nav-title">Menu</h2>
+        </div>
+        <ul class="communication-nav-menu">
+            <li class="communication-nav-item">
+                <a href="{{ path('dashboard') }}" class="communication-nav-link">
+                    <span class="communication-nav-icon">{{ ux_icon('ph:chart-pie') }}</span>
+                    <span class="communication-nav-text">Tableau de bord</span>
+                </a>
+            </li>
+            <li class="communication-nav-item">
+                <a href="{{ path('communication_index') }}" class="communication-nav-link">
+                    <span class="communication-nav-icon">{{ ux_icon('ph:envelope') }}</span>
+                    <span class="communication-nav-text">Messagerie</span>
+                </a>
+            </li>
+            <li class="communication-nav-item">
+                <a href="#" class="communication-nav-link">
+                    <span class="communication-nav-icon">{{ ux_icon('ph:package') }}</span>
+                    <span class="communication-nav-text">Produit</span>
+                </a>
+            </li>
+            <li class="communication-nav-item">
+                <a href="#" class="communication-nav-link">
+                    <span class="communication-nav-icon">{{ ux_icon('ph:users') }}</span>
+                    <span class="communication-nav-text">Clients</span>
+                </a>
+            </li>
+            <li class="communication-nav-item">
+                <a href="#" class="communication-nav-link">
+                    <span class="communication-nav-icon">{{ ux_icon('ph:buildings') }}</span>
+                    <span class="communication-nav-text">Entreprises</span>
+                </a>
+            </li>
+            <li class="communication-nav-item">
+                <a href="#" class="communication-nav-link">
+                    <span class="communication-nav-icon">{{ ux_icon('ph:chart-line') }}</span>
+                    <span class="communication-nav-text">Statistiques</span>
+                </a>
+            </li>
+            <li class="communication-nav-item">
+                <a href="#" class="communication-nav-link">
+                    <span class="communication-nav-icon">{{ ux_icon('ph:device-mobile') }}</span>
+                    <span class="communication-nav-text">Applications</span>
+                </a>
+            </li>
+            <li class="communication-nav-item">
+                <a href="#" class="communication-nav-link">
+                    <span class="communication-nav-icon">{{ ux_icon('ph:gear') }}</span>
+                    <span class="communication-nav-text">Paramètres</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
 <div class="communication-container communication-fade-in">
     <div class="communication-header">
         <h1 class="communication-title">

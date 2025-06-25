@@ -28,4 +28,7 @@ return [
     'typed.js' => [
         'version' => '2.1.0',
     ],
+    'chart.js' => [
+        'version' => '3.9.1',
+    ],
 ];

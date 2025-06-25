@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li class="dashboard-nav-item">
-                <a href="#" class="dashboard-nav-link">
+                <a href="{{ path('communication_index') }}" class="dashboard-nav-link">
                     <span class="dashboard-nav-icon">{{ ux_icon('ph:envelope') }}</span>
                     <span class="dashboard-nav-text">Messagerie</span>
                 </a>
@@ -410,7 +410,4 @@
     {% endif %}
     </main>
 </div>
-
-<!-- Menu mobile toggle (optionnel) -->
-<button class="dashboard-mobile-toggle">☰</button>
 {% endblock %}
