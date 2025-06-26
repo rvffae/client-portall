@@ -1,196 +1,299 @@
-/* ===== MAIN LAYOUT ===== */
-.company-main-container {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-areas: "sidebar main";
-  min-height: 100vh;
+/* ===== COMMUNICATION LAYOUT ===== */
+.communication-main-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "sidebar main";
+    min-height: 100vh;
 }
 
-.company-container {
-  grid-area: main;
-  display: flex;
-  flex-direction: column;
-  background: #f5f5f5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  padding: 2rem;
+.communication-container {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    background: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding: 2rem;
 }
 
-/* ===== HEADER ===== */
-.company-header {
-  text-align: center;
-  margin-bottom: 2rem;
+/* ===== HEADER STYLES ===== */
+.communication-header {
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-.company-title {
-  font-size: 2rem;
-  font-weight: 500;
-  color: #333333;
-  margin: 0;
+.communication-title {
+    font-size: 2rem;
+    font-weight: 500;
+    color: #333333;
+    margin: 0;
 }
 
-.company-subtitle {
-  color: #666666;
-  margin: 0.5rem 0 0 0;
-  font-size: 1rem;
-  font-weight: 400;
+.communication-subtitle {
+    color: #666666;
+    margin: 0.5rem 0 0 0;
+    font-size: 1rem;
+    font-weight: 400;
 }
 
-/* ===== DROP ZONE ===== */
-#dropZone {
-  border: 2px dashed #ccc;
-  border-radius: 8px;
-  padding: 40px;
-  text-align: center;
-  margin: 20px 0;
-  background-color: #f9f9f9;
-  transition: all 0.3s ease;
-  cursor: pointer;
+/* ===== IMPORT SECTION STYLES ===== */
+.import-section {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
 }
 
-#dropZone.dragover {
-  border-color: #007bff;
-  background-color: #e7f3ff;
+.drop-zone {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    margin: 1rem 0;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-#dropZone:hover {
-  border-color: #007bff;
-  background-color: #f0f8ff;
+.drop-zone.dragover,
+.drop-zone:hover {
+    border-color: #3498db;
+    background-color: rgba(52, 152, 219, 0.1);
 }
 
 .drop-zone-content {
-  pointer-events: none;
-}
-
-/* ===== IMPORT SECTION ===== */
-#import-section {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
-/* ===== ALERTS ===== */
-.alert {
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 4px;
-}
-
-.alert-success {
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
-}
-
-.alert-danger {
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
-}
-
-.alert-warning {
-  background-color: #fff3cd;
-  border: 1px solid #ffeaa7;
-  color: #856404;
-}
-
-/* ===== HIDDEN ELEMENTS ===== */
-.hidden {
-  display: none;
-}
-
-/* ===== LOADING ANIMATION ===== */
-.loading {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #3498db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-right: 10px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    pointer-events: none;
 }
 
 /* ===== TABLE STYLES ===== */
-#companies-table {
-  width: 100%;
-  border-collapse: collapse;
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-#companies-table th, #companies-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.table th,
+.table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
-#companies-table tr:hover {
-  background-color: #f5f5f5;
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
 }
 
-/* ===== LINKS ===== */
-#create-new-company-link {
-  display: inline-block;
-  background: #000000;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.3s ease;
+.table tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
-#create-new-company-link:hover {
-  background: #333333;
+/* ===== ALERT STYLES ===== */
+.alert {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 8px;
 }
 
-/* ===== COMPANY DETAILS TABLE ===== */
-#company-details-table {
-  width: 100%;
-  border-collapse: collapse;
+.alert-success {
+    background-color: rgba(46, 204, 113, 0.2);
+    border: 1px solid #2ecc71;
+    color: #2ecc71;
 }
 
-#company-details-table th, #company-details-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.alert-danger {
+    background-color: rgba(231, 76, 60, 0.2);
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
 }
 
-/* ===== BACK TO LIST LINK ===== */
-#back-to-list-link {
-  display: inline-block;
-  background: #000000;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.3s ease;
-  margin-top: 1rem;
+/* ===== BUTTON STYLES ===== */
+.communication-btn {
+    display: inline-block;
+    background: #000000;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease;
 }
 
-#back-to-list-link:hover {
-  background: #333333;
+.communication-btn:hover {
+    background: #333333;
 }
 
-/* ===== EDIT COMPANY LINK ===== */
-#edit-company-link {
-  display: inline-block;
-  background: #161515;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.3s ease;
-  margin-top: 1rem;
+/* ===== STATUS SECTION STYLES ===== */
+.communication-status-section {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
-#edit-company-link:hover {
-  background: #000000;
+.communication-status-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    width: 200px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.communication-status-card:hover {
+    transform: translateY(-5px);
+}
+
+.communication-status-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.communication-status-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.communication-status-title {
+    font-size: 1.2rem;
+    color: #333333;
+    margin: 0;
+}
+
+.communication-status-count {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333333;
+    margin: 0.5rem 0;
+}
+
+.communication-status-label {
+    font-size: 0.8rem;
+    color: #666666;
+}
+
+/* ===== CONTENT GRID STYLES ===== */
+.communication-content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.communication-section {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.communication-section:hover {
+    transform: translateY(-5px);
+}
+
+.communication-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.communication-section-title {
+    font-size: 1.2rem;
+    color: #333333;
+    margin: 0;
+}
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 768px) {
+    .communication-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .communication-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* ===== SIDEBAR STYLES ===== */
+.communication-sidebar {
+    grid-area: sidebar;
+    background: #333333;
+    padding: 1rem 0;
+    overflow-y: auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    transition: background 0.3s ease;
+}
+
+.communication-nav-header {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+}
+
+.communication-nav-title {
+    color: #cccccc;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.communication-nav-title:hover {
+    color: #ffffff;
+}
+
+.communication-nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.communication-nav-item {
+    margin-bottom: 0.5rem;
+}
+
+.communication-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #cccccc;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.communication-nav-link:hover {
+    background: #4d4d4d;
+    color: #ffffff;
+}
+
+.communication-nav-item-active .communication-nav-link {
+    background: #4d4d4d;
+    color: white;
+    font-weight: 500;
+}
+
+.communication-nav-icon {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    width: 24px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.communication-nav-link:hover .communication-nav-icon {
+    transform: scale(1.1);
+}
+
+.communication-nav-text {
+    font-size: 0.95rem;
+    font-weight: 400;
 }
