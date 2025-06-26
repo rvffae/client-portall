@@ -3,9 +3,13 @@
 {% block title %}New Invoice{% endblock %}
 
 {% block body %}
-    <h1>Create new Invoice</h1>
-
-    {{ include('invoice/_form.html.twig') }}
-
-    <a href="{{ path('app_invoice_index') }}">back to list</a>
+    <div class="inv-container">
+        <div class="inv-header">
+            <h1 class="inv-title">Create new Invoice</h1>
+        </div>
+        <div class="inv-form-container">
+            {{ include('invoice/_form.html.twig') }}
+            <a href="{{ path('app_invoice_index') }}" class="inv-back-link">Back to list</a>
+        </div>
+    </div>
 {% endblock %}
