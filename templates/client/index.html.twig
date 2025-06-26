@@ -4,6 +4,64 @@
 
 {% block body %}
 <div class="client-container">
+<!-- Navigation principale -->
+<nav class="client-sidebar">
+    <div class="client-nav-header">
+        <h2 class="client-nav-title">Menu</h2>
+    </div>
+    <ul class="client-nav-menu">
+        <li class="client-nav-item">
+            <a href="{{ path('dashboard') }}" class="client-nav-link">
+                <span class="client-nav-icon">{{ ux_icon('ph:chart-pie') }}</span>
+                <span class="client-nav-text">Tableau de bord</span>
+            </a>
+        </li>
+        <li class="client-nav-item">
+            <a href="{{ path('communication_index') }}" class="client-nav-link">
+                <span class="client-nav-icon">{{ ux_icon('ph:envelope') }}</span>
+                <span class="client-nav-text">Messagerie</span>
+            </a>
+        </li>
+        <li class="client-nav-item">
+            <a href="{{ path('app_invoice_index')}}" class="client-nav-link">
+                <span class="client-nav-icon">{{ ux_icon('ph:invoice') }}</span>
+                <span class="client-nav-text">Factures</span>
+            </a>
+        </li>
+        <li class="client-nav-item">
+            <a href="#" class="client-nav-link">
+                <span class="client-nav-icon">{{ ux_icon('ph:users') }}</span>
+                <span class="client-nav-text">Clients</span>
+            </a>
+        </li>
+        <li class="client-nav-item">
+            <a href="#" class="client-nav-link">
+                <span class="client-nav-icon">{{ ux_icon('ph:buildings') }}</span>
+                <span class="client-nav-text">Entreprises</span>
+            </a>
+        </li>
+        <li class="client-nav-item">
+            <a href="#" class="client-nav-link">
+                <span class="client-nav-icon">{{ ux_icon('ph:chart-line') }}</span>
+                <span class="client-nav-text">Statistiques</span>
+            </a>
+        </li>
+        <li class="client-nav-item">
+            <a href="#" class="client-nav-link">
+                <span class="client-nav-icon">{{ ux_icon('ph:device-mobile') }}</span>
+                <span class="client-nav-text">Applications</span>
+            </a>
+        </li>
+        <li class="client-nav-item">
+            <a href="#" class="client-nav-link">
+                <span class="client-nav-icon">{{ ux_icon('ph:gear') }}</span>
+                <span class="client-nav-text">Paramètres</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
     <h1 class="client-main-title">
         📋 Gestion des Clients
     </h1>
@@ -68,8 +126,8 @@
                 <td>{{ client.updatedAt ? client.updatedAt|date('d/m/Y H:i') : '-' }}</td>
                 <td>
                     <div class="client-action-links">
-                        <a href="{{ path('app_client_show', {'id': client.id}) }}" class="client-action-link client-action-show">👁️ Voir</a>
-                        <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="client-action-link client-action-edit">✏️ Modifier</a>
+                        <a href="{{ path('app_client_show', {'id': client.id}) }}" class="client-action-link client-action-show">See</a>
+                        <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="client-action-link client-action-edit">Edit</a>
                     </div>
                 </td>
             </tr>

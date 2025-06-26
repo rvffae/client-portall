@@ -3,11 +3,15 @@
 {% block title %}Edit Client{% endblock %}
 
 {% block body %}
-    <h1>Edit Client</h1>
-
+<div class="edit-invoice-container">
+    <h1 class="client-main-title">Edit Client</h1>
+    <div class="edit-invoice-form-container">
     {{ include('client/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_client_index') }}">back to list</a>
+    <div class="edit-invoice-actions">
+    <a href="{{ path('app_client_index') }}" class="edit-invoice-back-link">Back to list</a>
 
     {{ include('client/_delete_form.html.twig') }}
+         </div>
+    </div>
+</div>
 {% endblock %}
