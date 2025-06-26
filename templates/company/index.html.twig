@@ -1,55 +1,255 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Company index{% endblock %}
+{% block stylesheets %}
+    <style>
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
 
+        .drop-zone.dragover {
+            border-color: #007bff;
+            background-color: #e7f3ff;
+        }
+
+        .drop-zone:hover {
+            border-color: #007bff;
+            background-color: #f0f8ff;
+        }
+
+        .drop-zone-content {
+            pointer-events: none;
+        }
+
+        .import-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+{% endblock %}
 {% block body %}
-    <h1>Company index</h1>
+    <div id="company-index-container">
+        <h1>Company index</h1>
+        <div class="import-section" id="import-section">
+            <h3>Importer des entreprises via CSV</h3>
+            <p>Glissez-déposez votre fichier CSV ou cliquez pour le sélectionner.</p>
+            <p><small>Format attendu : id, name, city, state, zip_code, country, phone, email, website, created_at, updated_at, address</small></p>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Adress</th>
-                <th>City</th>
-                <th>State</th>
-                <th>Zip_code</th>
-                <th>Country</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Website</th>
-                <th>Created_at</th>
-                <th>Updated_at</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for company in companies %}
-            <tr>
-                <td>{{ company.id }}</td>
-                <td>{{ company.name }}</td>
-                <td>{{ company.adress }}</td>
-                <td>{{ company.city }}</td>
-                <td>{{ company.state }}</td>
-                <td>{{ company.zipCode }}</td>
-                <td>{{ company.country }}</td>
-                <td>{{ company.phone }}</td>
-                <td>{{ company.email }}</td>
-                <td>{{ company.website }}</td>
-                <td>{{ company.createdAt ? company.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ company.updatedAt ? company.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_company_show', {'id': company.id}) }}">show</a>
-                    <a href="{{ path('app_company_edit', {'id': company.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="13">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-content">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14,2 14,8 20,8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10,9 9,9 8,9"></polyline>
+                    </svg>
+                    <p>Glissez votre fichier CSV ici ou cliquez pour le sélectionner</p>
+                    <p><small>Seuls les fichiers .csv sont acceptés</small></p>
+                </div>
+            </div>
 
-    <a href="{{ path('app_company_new') }}">Create new</a>
+            <input type="file" id="csvFileInput" accept=".csv" class="hidden">
+
+            <div id="importStatus" class="hidden">
+                <div class="loading"></div>
+                <span>Import en cours...</span>
+            </div>
+
+            <div id="importResult"></div>
+        </div>
+        <table class="table" id="companies-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Adress</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip_code</th>
+                    <th>Country</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Website</th>
+                    <th>Created_at</th>
+                    <th>Updated_at</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody id="companiesTable">
+            {% for company in companies %}
+                <tr>
+                    <td>{{ company.id }}</td>
+                    <td>{{ company.name }}</td>
+                    <td>{{ company.adress }}</td>
+                    <td>{{ company.city }}</td>
+                    <td>{{ company.state }}</td>
+                    <td>{{ company.zipCode }}</td>
+                    <td>{{ company.country }}</td>
+                    <td>{{ company.phone }}</td>
+                    <td>{{ company.email }}</td>
+                    <td>{{ company.website }}</td>
+                    <td>{{ company.createdAt ? company.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ company.updatedAt ? company.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('app_company_show', {'id': company.id}) }}">show</a>
+                        <a href="{{ path('app_company_edit', {'id': company.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="13">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('app_company_new') }}" id="create-new-company-link">Create new</a>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('csvFileInput');
+            const importStatus = document.getElementById('importStatus');
+            const importResult = document.getElementById('importResult');
+
+            dropZone.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            dropZone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            function handleFile(file) {
+                if (!file.name.toLowerCase().endsWith('.csv')) {
+                    showResult('Veuillez sélectionner un fichier CSV.', 'danger');
+                    return;
+                }
+
+                importStatus.classList.remove('hidden');
+                importResult.innerHTML = '';
+
+                const formData = new FormData();
+                formData.append('csv_file', file);
+
+                fetch('{{ path('app_company_import_csv') }}', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    importStatus.classList.add('hidden');
+
+                    if (data.success) {
+                        showResult(data.message, 'success');
+
+                        if (data.warnings && data.warnings.length > 0) {
+                            let warningHtml = '<div class="alert alert-warning"><strong>Avertissements :</strong><ul>';
+                            data.warnings.forEach(warning => {
+                                warningHtml += '<li>' + warning + '</li>';
+                            });
+                            warningHtml += '</ul></div>';
+                            importResult.innerHTML += warningHtml;
+                        }
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        showResult(data.error || 'Une erreur est survenue lors de l\'importation.', 'danger');
+                    }
+                })
+                .catch(error => {
+                    importStatus.classList.add('hidden');
+                    showResult('Erreur de communication avec le serveur.', 'danger');
+                });
+
+                fileInput.value = '';
+            }
+
+            function showResult(message, type) {
+                const alertClass = type === 'success' ? 'alert-success' :
+                                 type === 'warning' ? 'alert-warning' : 'alert-danger';
+
+                importResult.innerHTML = `<div class="alert ${alertClass}">${message}</div>`;
+            }
+        });
+    </script>
 {% endblock %}

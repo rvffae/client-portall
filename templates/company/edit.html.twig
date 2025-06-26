@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Edit Company{% endblock %}
-
 {% block body %}
-    <h1>Edit Company</h1>
-
-    {{ include('company/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_company_index') }}">back to list</a>
-
-    {{ include('company/_delete_form.html.twig') }}
+    <div id="edit-company-container">
+        <h1>Edit Company</h1>
+        <div id="edit-company-form">
+            {{ include('company/_form.html.twig', {'button_label': 'Update'}) }}
+        </div>
+        <a href="{{ path('app_company_index') }}" id="back-to-list-link">back to list</a>
+        <div id="delete-company-form">
+            {{ include('company/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}
