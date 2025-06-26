@@ -3,45 +3,13 @@
 {% block title %}New Invoice{% endblock %}
 
 {% block body %}
-    <div class="inv-global-container">
-        <div class="inv-form-container">
-            <h1 class="inv-form-title">Create New Invoice</h1>
-            <form>
-                <div class="inv-form-group">
-                    <label for="invoice_number">Invoice Number</label>
-                    <input type="text" id="invoice_number" name="invoice_number">
-                </div>
-                <div class="inv-form-group">
-                    <label for="issue_date">Issue Date</label>
-                    <input type="date" id="issue_date" name="issue_date">
-                </div>
-                <div class="inv-form-group">
-                    <label for="due_date">Due Date</label>
-                    <input type="date" id="due_date" name="due_date">
-                </div>
-                <div class="inv-form-group">
-                    <label for="amount">Amount</label>
-                    <input type="number" id="amount" name="amount">
-                </div>
-                <div class="inv-form-group">
-                    <label for="status">Status</label>
-                    <input type="text" id="status" name="status">
-                </div>
-                <div class="inv-form-group">
-                    <label for="project_id">Project ID</label>
-                    <select id="project_id" name="project_id">
-                        <option value="">Select Project</option>
-                    </select>
-                </div>
-                <div class="inv-form-group">
-                    <label for="products">Products</label>
-                    <input type="text" id="products" name="products">
-                </div>
-                <div class="inv-form-actions">
-                    <button type="submit" class="inv-save-btn">Save</button>
-                </div>
-            </form>
-            <a href="{{ path('app_invoice_index') }}" class="inv-back-link">Back to list</a>
-        </div>
+<div class="new-invoice-container">
+    <div class="new-invoice-header">
+        <h1 class="new-invoice-title">Create New Invoice</h1>
     </div>
+    <div class="new-invoice-form-container">
+        {{ include('invoice/_form.html.twig') }}
+        <a href="{{ path('app_invoice_index') }}" class="new-invoice-back-link">Back to list</a>
+    </div>
+</div>
 {% endblock %}

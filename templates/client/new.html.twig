@@ -1,12 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add New Client{% endblock %}
+{% block title %}Nouveau Client{% endblock %}
 
 {% block body %}
-    <h1>Add New Client</h1>
-
-    {{ form_start(form) }}
+<div class="client-container">
+    <h1 class="client-main-title">➕ Ajouter un Nouveau Client</h1>
+    
+    <div class="client-form-container">
+        {{ form_start(form) }}
         {{ form_widget(form) }}
-        <button type="submit" class="btn btn-primary">Add Client</button>
-    {{ form_end(form) }}
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" class="client-btn client-btn-success">💾 Ajouter le Client</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+    
+    <div class="client-nav-links">
+        <a href="{{ path('app_client_index') }}" class="client-btn client-btn-secondary">← Retour à la liste</a>
+    </div>
+</div>
 {% endblock %}

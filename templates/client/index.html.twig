@@ -3,53 +3,189 @@
 {% block title %}Client index{% endblock %}
 
 {% block body %}
-    <h1>Client index</h1>
+<div class="client-container">
+    <h1 class="client-main-title">
+        📋 Gestion des Clients
+    </h1>
 
-    <table class="table">
+    <!-- Zone d'import CSV -->
+    <div class="client-csv-import-container" id="csvImportContainer">
+        <div class="client-import-icon">📁</div>
+        <div class="client-import-text">
+            <strong>Importer des clients depuis un fichier CSV</strong><br>
+            Glissez-déposez votre fichier CSV ici ou cliquez pour sélectionner
+        </div>
+        <input type="file" id="csvFileInput" class="client-file-input" accept=".csv" />
+        <button type="button" class="client-btn-select-file" onclick="document.getElementById('csvFileInput').click()">
+            📤 Sélectionner un fichier
+        </button>
+        
+        <div class="client-import-progress" id="importProgress">
+            <div class="client-spinner"></div>
+            <span>Import en cours...</span>
+        </div>
+        
+        <div class="client-import-results" id="importResults">
+            <div id="importMessage"></div>
+            <div class="client-error-list" id="errorList"></div>
+        </div>
+    </div>
+
+    <table class="client-table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>First_name</th>
-                <th>Last_name</th>
+                <th>ID</th>
+                <th>Entreprise</th>
+                <th>Prénom</th>
+                <th>Nom</th>
                 <th>Email</th>
-                <th>Phone</th>
-                <th>Adress</th>
-                <th>City</th>
-                <th>State</th>
-                <th>Zip_code</th>
-                <th>Country</th>
-                <th>Created_at</th>
-                <th>Updated_at</th>
-                <th>actions</th>
+                <th>Téléphone</th>
+                <th>Adresse</th>
+                <th>Ville</th>
+                <th>État</th>
+                <th>Code Postal</th>
+                <th>Pays</th>
+                <th>Créé le</th>
+                <th>Modifié le</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for client in clients %}
+            {% for client in clients %}
             <tr>
                 <td>{{ client.id }}</td>
+                <td>{{ client.companyId ? client.companyId.name : '-' }}</td>
                 <td>{{ client.firstName }}</td>
                 <td>{{ client.lastName }}</td>
-                <td>{{ client.email }}</td>
-                <td>{{ client.phone }}</td>
-                <td>{{ client.adress }}</td>
-                <td>{{ client.city }}</td>
-                <td>{{ client.state }}</td>
-                <td>{{ client.zipCode }}</td>
-                <td>{{ client.country }}</td>
-                <td>{{ client.createdAt ? client.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ client.updatedAt ? client.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ client.email ?: '-' }}</td>
+                <td>{{ client.phone ?: '-' }}</td>
+                <td>{{ client.adress ?: '-' }}</td>
+                <td>{{ client.city ?: '-' }}</td>
+                <td>{{ client.state ?: '-' }}</td>
+                <td>{{ client.zipCode ?: '-' }}</td>
+                <td>{{ client.country ?: '-' }}</td>
+                <td>{{ client.createdAt ? client.createdAt|date('d/m/Y H:i') : '-' }}</td>
+                <td>{{ client.updatedAt ? client.updatedAt|date('d/m/Y H:i') : '-' }}</td>
                 <td>
-                    <a href="{{ path('app_client_show', {'id': client.id}) }}">show</a>
-                    <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+                    <div class="client-action-links">
+                        <a href="{{ path('app_client_show', {'id': client.id}) }}" class="client-action-link client-action-show">👁️ Voir</a>
+                        <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="client-action-link client-action-edit">✏️ Modifier</a>
+                    </div>
                 </td>
             </tr>
-        {% else %}
+            {% else %}
             <tr>
-                <td colspan="13">no records found</td>
+                <td colspan="14" style="text-align: center; color: #7f8c8d; font-style: italic; padding: 40px;">
+                    Aucun client trouvé
+                </td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_client_new') }}">Create new</a>
+    <div class="client-nav-links">
+        <a href="{{ path('app_client_new') }}" class="client-btn client-btn-primary">➕ Créer un nouveau client</a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const csvImportContainer = document.getElementById('csvImportContainer');
+    const csvFileInput = document.getElementById('csvFileInput');
+    const importProgress = document.getElementById('importProgress');
+    const importResults = document.getElementById('importResults');
+    const importMessage = document.getElementById('importMessage');
+    const errorList = document.getElementById('errorList');
+    
+    // Gestion du drag and drop
+    csvImportContainer.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        csvImportContainer.classList.add('client-dragover');
+    });
+    
+    csvImportContainer.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        csvImportContainer.classList.remove('client-dragover');
+    });
+    
+    csvImportContainer.addEventListener('drop', function(e) {
+        e.preventDefault();
+        csvImportContainer.classList.remove('client-dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileUpload(files[0]);
+        }
+    });
+    
+    // Gestion de la sélection de fichier
+    csvFileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            handleFileUpload(e.target.files[0]);
+        }
+    });
+    
+    function handleFileUpload(file) {
+        if (!file.name.endsWith('.csv')) {
+            showResults('Le fichier doit être au format CSV', 'client-error');
+            return;
+        }
+        
+        importProgress.style.display = 'block';
+        importResults.style.display = 'none';
+        
+        const formData = new FormData();
+        formData.append('csv_file', file);
+        
+        fetch('{{ path('app_client_import_csv') }}', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            importProgress.style.display = 'none';
+            
+            if (data.success) {
+                let message = data.message;
+                showResults(message, 'client-success');
+                
+                if (data.errors && data.errors.length > 0) {
+                    showErrors(data.errors);
+                }
+                
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                showResults(data.error, 'client-error');
+            }
+        })
+        .catch(error => {
+            importProgress.style.display = 'none';
+            showResults('Erreur lors de l\'upload: ' + error.message, 'client-error');
+        });
+        
+        csvFileInput.value = '';
+    }
+    
+    function showResults(message, type) {
+        importMessage.textContent = message;
+        importResults.className = 'client-import-results ' + type;
+        importResults.style.display = 'block';
+        errorList.style.display = 'none';
+    }
+    
+    function showErrors(errors) {
+        if (errors.length > 0) {
+            let errorHtml = '<strong>Erreurs détaillées:</strong><ul>';
+            errors.forEach(error => {
+                errorHtml += '<li>' + error + '</li>';
+            });
+            errorHtml += '</ul>';
+            errorList.innerHTML = errorHtml;
+            errorList.style.display = 'block';
+        }
+    }
+});
+</script>
 {% endblock %}

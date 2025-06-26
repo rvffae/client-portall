@@ -12,6 +12,7 @@ import './styles/dashboard.css';
 import './styles/communication.css';
 import './styles/googlecalendar.css';
 import './styles/form.css';
+import './styles/client.css';
 
 import './js/calendar.js';
 import './js/dashboard.js';

@@ -3,9 +3,9 @@
 {% block title %}Client{% endblock %}
 
 {% block body %}
-    <h1>Client</h1>
+    <h1 class="client-main-title">Client</h1>
 
-    <table class="table">
+    <table class="client-detail-table">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -58,9 +58,10 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_client_index') }}">back to list</a>
-
-    <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+    <div class="client-nav-links">
+        <a class="client-btn client-btn-secondary" href="{{ path('app_client_index') }}">back to list</a>
+        <a class="client-btn client-btn-primary" href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+    </div>
 
     {{ include('client/_delete_form.html.twig') }}
 {% endblock %}
