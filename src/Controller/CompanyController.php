@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Company;
@@ -53,89 +52,105 @@ final class CompanyController extends AbstractController
         /** @var UploadedFile $file */
         $file = $request->files->get('csv_file');
         
-        if (!$file || $file->getClientOriginalExtension() !== 'csv') {
-            return new JsonResponse(['error' => 'Veuillez sélectionner un fichier CSV valide.'], 400);
+        if (!$file) {
+            return new JsonResponse(['error' => 'Aucun fichier fourni'], 400);
+        }
+
+        if ($file->getClientOriginalExtension() !== 'csv') {
+            return new JsonResponse(['error' => 'Le fichier doit être au format CSV'], 400);
         }
 
         try {
+            // Lire le fichier CSV
             $csv = Reader::createFromPath($file->getPathname(), 'r');
-            $csv->setHeaderOffset(0);
+            $csv->setHeaderOffset(0); // La première ligne contient les en-têtes
             
             $records = $csv->getRecords();
             $importedCount = 0;
             $errors = [];
-            
+            $skippedCount = 0;
+
             foreach ($records as $offset => $record) {
                 try {
+                    // Vérifier si l'entreprise existe déjà (par email ou nom)
+                    $existingCompany = null;
+                    if (!empty($record['email'])) {
+                        $existingCompany = $entityManager->getRepository(Company::class)
+                            ->findOneBy(['email' => $record['email']]);
+                    }
+                    
+                    if (!$existingCompany && !empty($record['name'])) {
+                        $existingCompany = $entityManager->getRepository(Company::class)
+                            ->findOneBy(['name' => $record['name']]);
+                    }
+                    
+                    if ($existingCompany) {
+                        $skippedCount++;
+                        continue; // Skip si l'entreprise existe déjà
+                    }
+
                     $company = new Company();
                     
-                    // Mapping des colonnes selon l'ordre du CSV fourni
-                    // id,name,city,state,zip_code,country,phone,email,website,created_at,updated_at,address
+                    // Mapper les champs du CSV vers l'entité (selon l'ordre du CSV fourni)
                     $company->setName($record['name'] ?? '');
-                    $company->setCity($record['city'] ?? null);
-                    $company->setState($record['state'] ?? null);
-                    $company->setZipCode($record['zip_code'] ?? null);
-                    $company->setCountry($record['country'] ?? null);
-                    $company->setPhone($record['phone'] ?? null);
-                    $company->setEmail($record['email'] ?? null);
-                    $company->setWebsite($record['website'] ?? null);
+                    $company->setCity(!empty($record['city']) ? $record['city'] : null);
+                    $company->setState(!empty($record['state']) ? $record['state'] : null);
+                    $company->setZipCode(!empty($record['zip_code']) ? $record['zip_code'] : null);
+                    $company->setCountry(!empty($record['country']) ? $record['country'] : null);
+                    $company->setPhone(!empty($record['phone']) ? $record['phone'] : null);
+                    $company->setEmail(!empty($record['email']) ? $record['email'] : null);
+                    $company->setWebsite(!empty($record['website']) ? $record['website'] : null);
+                    $company->setAdress(!empty($record['address']) ? $record['address'] : null); // Note: address dans CSV, adress dans entité
                     
-                    // Gestion de l'adresse (colonne "address" dans le CSV)
-                    $company->setAdress($record['address'] ?? null);
-                    
-                    // Gestion des dates
-                    $createdAt = null;
-                    $updatedAt = null;
-                    
+                    // Gérer les dates
                     if (!empty($record['created_at'])) {
                         try {
-                            $createdAt = new \DateTimeImmutable($record['created_at']);
+                            $company->setCreatedAt(new \DateTimeImmutable($record['created_at']));
                         } catch (\Exception $e) {
-                            $createdAt = new \DateTimeImmutable();
+                            $company->setCreatedAt(new \DateTimeImmutable());
                         }
                     } else {
-                        $createdAt = new \DateTimeImmutable();
+                        $company->setCreatedAt(new \DateTimeImmutable());
                     }
                     
                     if (!empty($record['updated_at'])) {
                         try {
-                            $updatedAt = new \DateTimeImmutable($record['updated_at']);
+                            $company->setUpdatedAt(new \DateTimeImmutable($record['updated_at']));
                         } catch (\Exception $e) {
-                            $updatedAt = new \DateTimeImmutable();
+                            $company->setUpdatedAt(new \DateTimeImmutable());
                         }
                     } else {
-                        $updatedAt = new \DateTimeImmutable();
+                        $company->setUpdatedAt(new \DateTimeImmutable());
                     }
-                    
-                    $company->setCreatedAt($createdAt);
-                    $company->setUpdatedAt($updatedAt);
-                    
+
+                    // Validation basique
+                    if (empty($company->getName())) {
+                        $errors[] = "Ligne " . ($offset + 2) . ": Nom d'entreprise requis";
+                        continue;
+                    }
+
                     $entityManager->persist($company);
                     $importedCount++;
-                    
+
                 } catch (\Exception $e) {
                     $errors[] = "Ligne " . ($offset + 2) . ": " . $e->getMessage();
                 }
             }
-            
+
             $entityManager->flush();
-            
-            $response = [
-                'success' => true,
-                'message' => "$importedCount entreprises importées avec succès.",
-                'imported' => $importedCount
-            ];
-            
-            if (!empty($errors)) {
-                $response['warnings'] = $errors;
-            }
-            
-            return new JsonResponse($response);
-            
-        } catch (\Exception $e) {
+
             return new JsonResponse([
-                'error' => 'Erreur lors de l\'importation : ' . $e->getMessage()
-            ], 500);
+                'success' => true,
+                'imported' => $importedCount,
+                'skipped' => $skippedCount,
+                'errors' => $errors,
+                'message' => "$importedCount entreprises importées avec succès" . 
+                           ($skippedCount > 0 ? ", $skippedCount doublons ignorés" : "") .
+                           (count($errors) > 0 ? ", " . count($errors) . " erreurs" : "")
+            ]);
+
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Erreur lors de l\'import: ' . $e->getMessage()], 500);
         }
     }
 

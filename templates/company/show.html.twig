@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Company{% endblock %}
+
 {% block body %}
-    <div id="show-company-container">
-        <h1>Company</h1>
-        <table class="table" id="company-details-table">
+<div class="company-container">
+    <h1 class="company-main-title">Company</h1>
+    <div class="company-table-container">
+        <table class="company-detail-table">
             <tbody>
                 <tr>
                     <th>Id</th>
@@ -55,10 +58,11 @@
                 </tr>
             </tbody>
         </table>
-        <a href="{{ path('app_company_index') }}" id="back-to-list-link">back to list</a>
-        <a href="{{ path('app_company_edit', {'id': company.id}) }}" id="edit-company-link">edit</a>
-        <div id="delete-company-form">
-            {{ include('company/_delete_form.html.twig') }}
-        </div>
     </div>
+    <div class="company-nav-links">
+        <a class="company-btn company-btn-secondary" href="{{ path('app_company_index') }}">Back to list</a>
+        <a class="company-btn company-btn-primary" href="{{ path('app_company_edit', {'id': company.id}) }}">Edit</a>
+    </div>
+    {{ include('company/_delete_form.html.twig') }}
+</div>
 {% endblock %}

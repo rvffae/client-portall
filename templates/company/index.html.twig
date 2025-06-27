@@ -1,247 +1,240 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Company index{% endblock %}
-{% block stylesheets %}
-    <style>
-        .drop-zone {
-            border: 2px dashed #ccc;
-            border-radius: 8px;
-            padding: 40px;
-            text-align: center;
-            margin: 20px 0;
-            background-color: #f9f9f9;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
 
-        .drop-zone.dragover {
-            border-color: #007bff;
-            background-color: #e7f3ff;
-        }
-
-        .drop-zone:hover {
-            border-color: #007bff;
-            background-color: #f0f8ff;
-        }
-
-        .drop-zone-content {
-            pointer-events: none;
-        }
-
-        .import-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .alert {
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 4px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-
-        .alert-warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-{% endblock %}
 {% block body %}
-    <div id="company-index-container">
-        <h1 class="client-main-title">Company index</h1>
-        <div class="import-section" id="import-section">
-            <h3>Importer des entreprises clientes via CSV</h3>
-            <p>Glissez-déposez votre fichier CSV ou cliquez pour le sélectionner.</p>
-            <div class="drop-zone" id="dropZone">
-                <div class="drop-zone-content">
-                <h3 class="company-emoji-index">📁</h3>
-                    <p>Glissez votre fichier CSV ici ou cliquez pour le sélectionner</p>
-                    <p><small> Glissez-déposez votre fichier CSV ici ou cliquez pour sélectionner </small></p>
-                </div>
+<div class="client-main-container">
+    <!-- Navigation principale -->
+    <nav class="client-sidebar">
+        <div class="client-nav-header">
+            <h2 class="client-nav-title">Menu</h2>
+        </div>
+        <ul class="client-nav-menu">
+            <li class="client-nav-item">
+                <a href="{{ path('dashboard') }}" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:chart-pie') }}</span>
+                    <span class="client-nav-text">Tableau de bord</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="{{ path('communication_index') }}" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:envelope') }}</span>
+                    <span class="client-nav-text">Messagerie</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="{{ path('app_invoice_index')}}" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:invoice') }}</span>
+                    <span class="client-nav-text">Factures</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="{{ path('app_client_index') }}" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:users') }}</span>
+                    <span class="client-nav-text">Clients</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="{{ path('app_company_index') }}" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:buildings') }}</span>
+                    <span class="client-nav-text">Entreprises</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="#" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:chart-line') }}</span>
+                    <span class="client-nav-text">Statistiques</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="#" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:device-mobile') }}</span>
+                    <span class="client-nav-text">Applications</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="#" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:gear') }}</span>
+                    <span class="client-nav-text">Paramètres</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="client-content">
+        <h1 class="client-main-title">
+            🏢 Gestion des Entreprises
+        </h1>
+
+        <!-- Zone d'import CSV -->
+        <div class="client-csv-import-container" id="csvImportContainer">
+            <div class="client-import-icon">📁</div>
+            <div class="client-import-text">
+                <strong>Importer des entreprises depuis un fichier CSV</strong><br>
+                Glissez-déposez votre fichier CSV ici ou cliquez pour sélectionner
             </div>
-
-            <input type="file" id="csvFileInput" accept=".csv" class="hidden">
-
-            <div id="importStatus" class="hidden">
-                <div class="loading"></div>
+            <input type="file" id="csvFileInput" class="client-file-input" accept=".csv" />
+            <button type="button" class="client-btn-select-file" onclick="document.getElementById('csvFileInput').click()">
+                📤 Sélectionner un fichier
+            </button>
+            <div class="client-import-progress" id="importProgress">
+                <div class="client-spinner"></div>
                 <span>Import en cours...</span>
             </div>
-
-            <div id="importResult"></div>
+            <div class="client-import-results" id="importResults">
+                <div id="importMessage"></div>
+                <div class="client-error-list" id="errorList"></div>
+            </div>
         </div>
-        <table class="table" id="companies-table">
+
+        <table class="client-table">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Adress</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Zip_code</th>
-                    <th>Country</th>
-                    <th>Phone</th>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Ville</th>
+                    <th>État</th>
+                    <th>Code Postal</th>
+                    <th>Pays</th>
+                    <th>Téléphone</th>
                     <th>Email</th>
-                    <th>Website</th>
-                    <th>Created_at</th>
-                    <th>Updated_at</th>
-                    <th>actions</th>
+                    <th>Site Web</th>
+                    <th>Créé le</th>
+                    <th>Modifié le</th>
+                    <th>Adresse</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="companiesTable">
-            {% for company in companies %}
+            <tbody>
+                {% for company in companies %}
                 <tr>
                     <td>{{ company.id }}</td>
                     <td>{{ company.name }}</td>
-                    <td>{{ company.adress }}</td>
-                    <td>{{ company.city }}</td>
-                    <td>{{ company.state }}</td>
-                    <td>{{ company.zipCode }}</td>
-                    <td>{{ company.country }}</td>
-                    <td>{{ company.phone }}</td>
-                    <td>{{ company.email }}</td>
-                    <td>{{ company.website }}</td>
-                    <td>{{ company.createdAt ? company.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ company.updatedAt ? company.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ company.city ?: '-' }}</td>
+                    <td>{{ company.state ?: '-' }}</td>
+                    <td>{{ company.zipCode ?: '-' }}</td>
+                    <td>{{ company.country ?: '-' }}</td>
+                    <td>{{ company.phone ?: '-' }}</td>
+                    <td>{{ company.email ?: '-' }}</td>
+                    <td>{{ company.website ?: '-' }}</td>
+                    <td>{{ company.createdAt ? company.createdAt|date('d/m/Y H:i') : '-' }}</td>
+                    <td>{{ company.updatedAt ? company.updatedAt|date('d/m/Y H:i') : '-' }}</td>
+                    <td>{{ company.adress ?: '-' }}</td>
                     <td>
-                        <a href="{{ path('app_company_show', {'id': company.id}) }}">show</a>
-                        <a href="{{ path('app_company_edit', {'id': company.id}) }}">edit</a>
+                        <div class="client-action-links">
+                            <a href="{{ path('app_company_show', {'id': company.id}) }}" class="client-action-link client-action-show">See</a>
+                            <a href="{{ path('app_company_edit', {'id': company.id}) }}" class="client-action-link client-action-edit">Edit</a>
+                        </div>
                     </td>
                 </tr>
-            {% else %}
+                {% else %}
                 <tr>
-                    <td colspan="13">no records found</td>
+                    <td colspan="13" style="text-align: center; color: #7f8c8d; font-style: italic; padding: 40px;">
+                        Aucune entreprise trouvée
+                    </td>
                 </tr>
-            {% endfor %}
+                {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('app_company_new') }}" id="create-new-company-link">Create new</a>
+
+        <div class="client-nav-links">
+            <a href="{{ path('app_company_new') }}" class="client-btn client-btn-primary">➕ Créer une nouvelle entreprise</a>
+        </div>
     </div>
-{% endblock %}
-{% block javascripts %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropZone = document.getElementById('dropZone');
-            const fileInput = document.getElementById('csvFileInput');
-            const importStatus = document.getElementById('importStatus');
-            const importResult = document.getElementById('importResult');
+</div>
 
-            dropZone.addEventListener('click', function() {
-                fileInput.click();
-            });
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const csvImportContainer = document.getElementById('csvImportContainer');
+    const csvFileInput = document.getElementById('csvFileInput');
+    const importProgress = document.getElementById('importProgress');
+    const importResults = document.getElementById('importResults');
+    const importMessage = document.getElementById('importMessage');
+    const errorList = document.getElementById('errorList');
 
-            dropZone.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                dropZone.classList.add('dragover');
-            });
+    // Gestion du drag and drop
+    csvImportContainer.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        csvImportContainer.classList.add('client-dragover');
+    });
 
-            dropZone.addEventListener('dragleave', function(e) {
-                e.preventDefault();
-                dropZone.classList.remove('dragover');
-            });
+    csvImportContainer.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        csvImportContainer.classList.remove('client-dragover');
+    });
 
-            dropZone.addEventListener('drop', function(e) {
-                e.preventDefault();
-                dropZone.classList.remove('dragover');
+    csvImportContainer.addEventListener('drop', function(e) {
+        e.preventDefault();
+        csvImportContainer.classList.remove('client-dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileUpload(files[0]);
+        }
+    });
 
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    handleFile(files[0]);
+    // Gestion de la sélection de fichier
+    csvFileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            handleFileUpload(e.target.files[0]);
+        }
+    });
+
+    function handleFileUpload(file) {
+        if (!file.name.endsWith('.csv')) {
+            showResults('Le fichier doit être au format CSV', 'client-error');
+            return;
+        }
+        importProgress.style.display = 'block';
+        importResults.style.display = 'none';
+        const formData = new FormData();
+        formData.append('csv_file', file);
+
+        fetch('{{ path('app_company_import_csv') }}', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            importProgress.style.display = 'none';
+            if (data.success) {
+                let message = data.message;
+                showResults(message, 'client-success');
+                if (data.errors && data.errors.length > 0) {
+                    showErrors(data.errors);
                 }
-            });
-
-            fileInput.addEventListener('change', function(e) {
-                if (e.target.files.length > 0) {
-                    handleFile(e.target.files[0]);
-                }
-            });
-
-            function handleFile(file) {
-                if (!file.name.toLowerCase().endsWith('.csv')) {
-                    showResult('Veuillez sélectionner un fichier CSV.', 'danger');
-                    return;
-                }
-
-                importStatus.classList.remove('hidden');
-                importResult.innerHTML = '';
-
-                const formData = new FormData();
-                formData.append('csv_file', file);
-
-                fetch('{{ path('app_company_import_csv') }}', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    importStatus.classList.add('hidden');
-
-                    if (data.success) {
-                        showResult(data.message, 'success');
-
-                        if (data.warnings && data.warnings.length > 0) {
-                            let warningHtml = '<div class="alert alert-warning"><strong>Avertissements :</strong><ul>';
-                            data.warnings.forEach(warning => {
-                                warningHtml += '<li>' + warning + '</li>';
-                            });
-                            warningHtml += '</ul></div>';
-                            importResult.innerHTML += warningHtml;
-                        }
-
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 2000);
-                    } else {
-                        showResult(data.error || 'Une erreur est survenue lors de l\'importation.', 'danger');
-                    }
-                })
-                .catch(error => {
-                    importStatus.classList.add('hidden');
-                    showResult('Erreur de communication avec le serveur.', 'danger');
-                });
-
-                fileInput.value = '';
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                showResults(data.error, 'client-error');
             }
-
-            function showResult(message, type) {
-                const alertClass = type === 'success' ? 'alert-success' :
-                                 type === 'warning' ? 'alert-warning' : 'alert-danger';
-
-                importResult.innerHTML = `<div class="alert ${alertClass}">${message}</div>`;
-            }
+        })
+        .catch(error => {
+            importProgress.style.display = 'none';
+            showResults('Erreur lors de l\'upload: ' + error.message, 'client-error');
         });
-    </script>
+        csvFileInput.value = '';
+    }
+
+    function showResults(message, type) {
+        importMessage.textContent = message;
+        importResults.className = 'client-import-results ' + type;
+        importResults.style.display = 'block';
+        errorList.style.display = 'none';
+    }
+
+    function showErrors(errors) {
+        if (errors.length > 0) {
+            let errorHtml = '<strong>Erreurs détaillées:</strong><ul>';
+            errors.forEach(error => {
+                errorHtml += '<li>' + error + '</li>';
+            });
+            errorHtml += '</ul>';
+            errorList.innerHTML = errorHtml;
+            errorList.style.display = 'block';
+        }
+    }
+});
+</script>
 {% endblock %}
