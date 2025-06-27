@@ -3,146 +3,146 @@
 {% block title %}Client index{% endblock %}
 
 {% block body %}
-<div class="client-container">
-<!-- Navigation principale -->
-<nav class="client-sidebar">
-    <div class="client-nav-header">
-        <h2 class="client-nav-title">Menu</h2>
-    </div>
-    <ul class="client-nav-menu">
-        <li class="client-nav-item">
-            <a href="{{ path('dashboard') }}" class="client-nav-link">
-                <span class="client-nav-icon">{{ ux_icon('ph:chart-pie') }}</span>
-                <span class="client-nav-text">Tableau de bord</span>
-            </a>
-        </li>
-        <li class="client-nav-item">
-            <a href="{{ path('communication_index') }}" class="client-nav-link">
-                <span class="client-nav-icon">{{ ux_icon('ph:envelope') }}</span>
-                <span class="client-nav-text">Messagerie</span>
-            </a>
-        </li>
-        <li class="client-nav-item">
-            <a href="{{ path('app_invoice_index')}}" class="client-nav-link">
-                <span class="client-nav-icon">{{ ux_icon('ph:invoice') }}</span>
-                <span class="client-nav-text">Factures</span>
-            </a>
-        </li>
-        <li class="client-nav-item">
-            <a href="#" class="client-nav-link">
-                <span class="client-nav-icon">{{ ux_icon('ph:users') }}</span>
-                <span class="client-nav-text">Clients</span>
-            </a>
-        </li>
-        <li class="client-nav-item">
-            <a href="#" class="client-nav-link">
-                <span class="client-nav-icon">{{ ux_icon('ph:buildings') }}</span>
-                <span class="client-nav-text">Entreprises</span>
-            </a>
-        </li>
-        <li class="client-nav-item">
-            <a href="#" class="client-nav-link">
-                <span class="client-nav-icon">{{ ux_icon('ph:chart-line') }}</span>
-                <span class="client-nav-text">Statistiques</span>
-            </a>
-        </li>
-        <li class="client-nav-item">
-            <a href="#" class="client-nav-link">
-                <span class="client-nav-icon">{{ ux_icon('ph:device-mobile') }}</span>
-                <span class="client-nav-text">Applications</span>
-            </a>
-        </li>
-        <li class="client-nav-item">
-            <a href="#" class="client-nav-link">
-                <span class="client-nav-icon">{{ ux_icon('ph:gear') }}</span>
-                <span class="client-nav-text">Paramètres</span>
-            </a>
-        </li>
-    </ul>
-</nav>
-
-
-    <h1 class="client-main-title">
-        📋 Gestion des Clients
-    </h1>
-
-    <!-- Zone d'import CSV -->
-    <div class="client-csv-import-container" id="csvImportContainer">
-        <div class="client-import-icon">📁</div>
-        <div class="client-import-text">
-            <strong>Importer des clients depuis un fichier CSV</strong><br>
-            Glissez-déposez votre fichier CSV ici ou cliquez pour sélectionner
+<div class="client-main-container">
+    <!-- Navigation principale -->
+    <nav class="client-sidebar">
+        <div class="client-nav-header">
+            <h2 class="client-nav-title">Menu</h2>
         </div>
-        <input type="file" id="csvFileInput" class="client-file-input" accept=".csv" />
-        <button type="button" class="client-btn-select-file" onclick="document.getElementById('csvFileInput').click()">
-            📤 Sélectionner un fichier
-        </button>
-        
-        <div class="client-import-progress" id="importProgress">
-            <div class="client-spinner"></div>
-            <span>Import en cours...</span>
-        </div>
-        
-        <div class="client-import-results" id="importResults">
-            <div id="importMessage"></div>
-            <div class="client-error-list" id="errorList"></div>
-        </div>
-    </div>
+        <ul class="client-nav-menu">
+            <li class="client-nav-item">
+                <a href="{{ path('dashboard') }}" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:chart-pie') }}</span>
+                    <span class="client-nav-text">Tableau de bord</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="{{ path('communication_index') }}" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:envelope') }}</span>
+                    <span class="client-nav-text">Messagerie</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="{{ path('app_invoice_index')}}" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:invoice') }}</span>
+                    <span class="client-nav-text">Factures</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="#" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:users') }}</span>
+                    <span class="client-nav-text">Clients</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="#" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:buildings') }}</span>
+                    <span class="client-nav-text">Entreprises</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="#" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:chart-line') }}</span>
+                    <span class="client-nav-text">Statistiques</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="#" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:device-mobile') }}</span>
+                    <span class="client-nav-text">Applications</span>
+                </a>
+            </li>
+            <li class="client-nav-item">
+                <a href="#" class="client-nav-link">
+                    <span class="client-nav-icon">{{ ux_icon('ph:gear') }}</span>
+                    <span class="client-nav-text">Paramètres</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-    <table class="client-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Entreprise</th>
-                <th>Prénom</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <th>Adresse</th>
-                <th>Ville</th>
-                <th>État</th>
-                <th>Code Postal</th>
-                <th>Pays</th>
-                <th>Créé le</th>
-                <th>Modifié le</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for client in clients %}
-            <tr>
-                <td>{{ client.id }}</td>
-                <td>{{ client.companyId ? client.companyId.name : '-' }}</td>
-                <td>{{ client.firstName }}</td>
-                <td>{{ client.lastName }}</td>
-                <td>{{ client.email ?: '-' }}</td>
-                <td>{{ client.phone ?: '-' }}</td>
-                <td>{{ client.adress ?: '-' }}</td>
-                <td>{{ client.city ?: '-' }}</td>
-                <td>{{ client.state ?: '-' }}</td>
-                <td>{{ client.zipCode ?: '-' }}</td>
-                <td>{{ client.country ?: '-' }}</td>
-                <td>{{ client.createdAt ? client.createdAt|date('d/m/Y H:i') : '-' }}</td>
-                <td>{{ client.updatedAt ? client.updatedAt|date('d/m/Y H:i') : '-' }}</td>
-                <td>
-                    <div class="client-action-links">
-                        <a href="{{ path('app_client_show', {'id': client.id}) }}" class="client-action-link client-action-show">See</a>
-                        <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="client-action-link client-action-edit">Edit</a>
-                    </div>
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="14" style="text-align: center; color: #7f8c8d; font-style: italic; padding: 40px;">
-                    Aucun client trouvé
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- Contenu principal -->
+    <div class="client-content">
+        <h1 class="client-main-title">
+            📋 Gestion des Clients
+        </h1>
 
-    <div class="client-nav-links">
-        <a href="{{ path('app_client_new') }}" class="client-btn client-btn-primary">➕ Créer un nouveau client</a>
+        <!-- Zone d'import CSV -->
+        <div class="client-csv-import-container" id="csvImportContainer">
+            <div class="client-import-icon">📁</div>
+            <div class="client-import-text">
+                <strong>Importer des clients depuis un fichier CSV</strong><br>
+                Glissez-déposez votre fichier CSV ici ou cliquez pour sélectionner
+            </div>
+            <input type="file" id="csvFileInput" class="client-file-input" accept=".csv" />
+            <button type="button" class="client-btn-select-file" onclick="document.getElementById('csvFileInput').click()">
+                📤 Sélectionner un fichier
+            </button>
+            <div class="client-import-progress" id="importProgress">
+                <div class="client-spinner"></div>
+                <span>Import en cours...</span>
+            </div>
+            <div class="client-import-results" id="importResults">
+                <div id="importMessage"></div>
+                <div class="client-error-list" id="errorList"></div>
+            </div>
+        </div>
+
+        <table class="client-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Entreprise</th>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    <th>Ville</th>
+                    <th>État</th>
+                    <th>Code Postal</th>
+                    <th>Pays</th>
+                    <th>Créé le</th>
+                    <th>Modifié le</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                <tr>
+                    <td>{{ client.id }}</td>
+                    <td>{{ client.companyId ? client.companyId.name : '-' }}</td>
+                    <td>{{ client.firstName }}</td>
+                    <td>{{ client.lastName }}</td>
+                    <td>{{ client.email ?: '-' }}</td>
+                    <td>{{ client.phone ?: '-' }}</td>
+                    <td>{{ client.adress ?: '-' }}</td>
+                    <td>{{ client.city ?: '-' }}</td>
+                    <td>{{ client.state ?: '-' }}</td>
+                    <td>{{ client.zipCode ?: '-' }}</td>
+                    <td>{{ client.country ?: '-' }}</td>
+                    <td>{{ client.createdAt ? client.createdAt|date('d/m/Y H:i') : '-' }}</td>
+                    <td>{{ client.updatedAt ? client.updatedAt|date('d/m/Y H:i') : '-' }}</td>
+                    <td>
+                        <div class="client-action-links">
+                            <a href="{{ path('app_client_show', {'id': client.id}) }}" class="client-action-link client-action-show">See</a>
+                            <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="client-action-link client-action-edit">Edit</a>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="14" style="text-align: center; color: #7f8c8d; font-style: italic; padding: 40px;">
+                        Aucun client trouvé
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="client-nav-links">
+            <a href="{{ path('app_client_new') }}" class="client-btn client-btn-primary">➕ Créer un nouveau client</a>
+        </div>
     </div>
 </div>
 
@@ -154,47 +154,44 @@ document.addEventListener('DOMContentLoaded', function() {
     const importResults = document.getElementById('importResults');
     const importMessage = document.getElementById('importMessage');
     const errorList = document.getElementById('errorList');
-    
+
     // Gestion du drag and drop
     csvImportContainer.addEventListener('dragover', function(e) {
         e.preventDefault();
         csvImportContainer.classList.add('client-dragover');
     });
-    
+
     csvImportContainer.addEventListener('dragleave', function(e) {
         e.preventDefault();
         csvImportContainer.classList.remove('client-dragover');
     });
-    
+
     csvImportContainer.addEventListener('drop', function(e) {
         e.preventDefault();
         csvImportContainer.classList.remove('client-dragover');
-        
         const files = e.dataTransfer.files;
         if (files.length > 0) {
             handleFileUpload(files[0]);
         }
     });
-    
+
     // Gestion de la sélection de fichier
     csvFileInput.addEventListener('change', function(e) {
         if (e.target.files.length > 0) {
             handleFileUpload(e.target.files[0]);
         }
     });
-    
+
     function handleFileUpload(file) {
         if (!file.name.endsWith('.csv')) {
             showResults('Le fichier doit être au format CSV', 'client-error');
             return;
         }
-        
         importProgress.style.display = 'block';
         importResults.style.display = 'none';
-        
         const formData = new FormData();
         formData.append('csv_file', file);
-        
+
         fetch('{{ path('app_client_import_csv') }}', {
             method: 'POST',
             body: formData,
@@ -202,15 +199,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             importProgress.style.display = 'none';
-            
             if (data.success) {
                 let message = data.message;
                 showResults(message, 'client-success');
-                
                 if (data.errors && data.errors.length > 0) {
                     showErrors(data.errors);
                 }
-                
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000);
@@ -222,17 +216,16 @@ document.addEventListener('DOMContentLoaded', function() {
             importProgress.style.display = 'none';
             showResults('Erreur lors de l\'upload: ' + error.message, 'client-error');
         });
-        
         csvFileInput.value = '';
     }
-    
+
     function showResults(message, type) {
         importMessage.textContent = message;
         importResults.className = 'client-import-results ' + type;
         importResults.style.display = 'block';
         errorList.style.display = 'none';
     }
-    
+
     function showErrors(errors) {
         if (errors.length > 0) {
             let errorHtml = '<strong>Erreurs détaillées:</strong><ul>';

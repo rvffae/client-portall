@@ -1,286 +1,29 @@
-/* Conteneur principal : Définit la largeur maximale, la marge, le remplissage et la police pour le conteneur principal de la page. */
-.client-container {
-    max-width: 1200px; /* Largeur maximale du conteneur */
-    margin: 0 auto; /* Centre le conteneur horizontalement */
-    padding: 20px; /* Espace intérieur autour du contenu du conteneur */
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Police de caractères */
+/* Conteneur principal avec grille */
+.client-main-container {
+    display: grid;
+    grid-template-areas: "sidebar content";
+    grid-template-columns: 250px 1fr;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-/* Titre principal : Style pour le titre principal de la page. */
-.client-main-title {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Police de caractères */
-    color: #131713; /* Couleur du texte */
-    text-align: center; /* Centre le texte */
-    margin-bottom: 30px; /* Marge en bas du titre */
-}
-
-/* Zone d'import CSV : Style pour la zone où les fichiers CSV peuvent être importés. */
-.client-csv-import-container {
-    border: 2px dashed #bdc3c7; /* Bordure en pointillés */
-    border-radius: 5px; /* Coins arrondis */
-    padding: 20px; /* Espace intérieur */
-    text-align: center; /* Centre le texte */
-    margin-bottom: 20px; /* Marge en bas */
-    cursor: pointer; /* Change le curseur au survol */
-    transition: background-color 0.3s; /* Transition douce pour le changement de couleur de fond */
-    background: rgba(255, 255, 255, 0.98); /* Fond légèrement transparent */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Ombre légère */
-}
-
-/* Changement de couleur de fond lors du survol de la zone d'import CSV. */
-.client-csv-import-container.client-dragover {
-    background-color: #ecf0f1; /* Couleur de fond lors du survol */
-}
-
-/* Icône d'import : Style pour l'icône dans la zone d'import. */
-.client-import-icon {
-    font-size: 48px; /* Taille de l'icône */
-    margin-bottom: 10px; /* Marge en bas */
-}
-
-/* Texte d'import : Style pour le texte dans la zone d'import. */
-.client-import-text {
-    margin-bottom: 15px; /* Marge en bas */
-}
-
-/* Masque le champ de sélection de fichier par défaut. */
-.client-file-input {
-    display: none; /* Cache l'élément */
-}
-
-/* Bouton de sélection de fichier : Style pour le bouton personnalisé de sélection de fichier. */
-.client-btn-select-file {
-    background-color: #3f51b5; /* Couleur de fond */
-    color: white; /* Couleur du texte */
-    border: none; /* Pas de bordure */
-    padding: 10px 15px; /* Espace intérieur */
-    border-radius: 5px; /* Coins arrondis */
-    cursor: pointer; /* Change le curseur au survol */
-    font-size: 16px; /* Taille du texte */
-    transition: background-color 0.3s; /* Transition douce pour le changement de couleur de fond */
-}
-
-/* Changement de couleur de fond du bouton de sélection de fichier au survol. */
-.client-btn-select-file:hover {
-    background-color: #303f9f; /* Couleur de fond au survol */
-}
-
-/* Progression de l'import : Style pour la barre de progression lors de l'import. */
-.client-import-progress {
-    display: none; /* Cache l'élément par défaut */
-    margin-top: 20px; /* Marge en haut */
-}
-
-/* Spinner de chargement : Animation pour le spinner de chargement. */
-.client-spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1); /* Bordure légère */
-    border-radius: 50%; /* Forme circulaire */
-    border-top: 4px solid #3f51b5; /* Bordure supérieure colorée */
-    width: 30px; /* Largeur */
-    height: 30px; /* Hauteur */
-    animation: spin 2s linear infinite; /* Animation de rotation */
-    margin: 0 auto; /* Centre horizontalement */
-}
-
-/* Animation de rotation pour le spinner. */
-@keyframes spin {
-    0% { transform: rotate(0deg); } /* Position initiale */
-    100% { transform: rotate(360deg); } /* Position finale après une rotation complète */
-}
-
-/* Résultats de l'import : Style pour la zone affichant les résultats de l'import. */
-.client-import-results {
-    display: none; /* Cache l'élément par défaut */
-    margin-top: 20px; /* Marge en haut */
-    padding: 10px; /* Espace intérieur */
-    border-radius: 5px; /* Coins arrondis */
-}
-
-/* Style pour les résultats réussis de l'import. */
-.client-import-results.client-success {
-    background-color: #e8f5e9; /* Couleur de fond */
-    color: #2e7d32; /* Couleur du texte */
-}
-
-/* Style pour les résultats d'erreur de l'import. */
-.client-import-results.client-error {
-    background-color: #ffebee; /* Couleur de fond */
-    color: #c62828; /* Couleur du texte */
-}
-
-/* Liste des erreurs : Style pour la liste des erreurs. */
-.client-error-list {
-    margin-top: 10px; /* Marge en haut */
-    text-align: left; /* Aligne le texte à gauche */
-}
-
-/* Tableau des clients : Style pour le tableau affichant la liste des clients. */
-.client-table {
-    width: 100%; /* Largeur maximale */
-    border-collapse: collapse; /* Fusionne les bordures des cellules */
-    margin-bottom: 20px; /* Marge en bas */
-    background: #ffffff; /* Couleur de fond */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
-    table-layout: fixed; /* Largeur fixe pour le tableau */
-}
-
-/* Style pour les cellules d'en-tête et de données du tableau. */
-.client-table th, .client-table td {
-    border: 1px solid #e0e0e0; /* Bordure légère */
-    padding: 6px; /* Espace intérieur réduit */
-    text-align: left; /* Aligne le texte à gauche */
-    font-size: 13px; /* Taille du texte réduite */
-    overflow: hidden; /* Cache le contenu qui dépasse */
-    text-overflow: ellipsis; /* Ajoute des points de suspension pour le texte qui dépasse */
-    white-space: nowrap; /* Empêche le retour à la ligne */
-}
-
-/* Style pour les cellules d'en-tête du tableau. */
-.client-table th {
-    background-color: #f9f9f9; /* Couleur de fond */
-    font-weight: 600; /* Texte en gras */
-    color: #131713; /* Couleur du texte */
-}
-
-/* Style pour les lignes paires du tableau. */
-.client-table tr:nth-child(even) {
-    background-color: #f9f9f9; /* Couleur de fond */
-}
-
-/* Style pour les lignes du tableau au survol. */
-.client-table tr:hover {
-    background-color: #f0f0f0; /* Couleur de fond au survol */
-}
-
-/* Liens d'action : Style pour les liens d'action dans le tableau. */
-.client-action-links {
-    display: flex; /* Affiche les éléments en ligne */
-    gap: 5px; /* Espace entre les éléments */
-}
-
-/* Style pour les liens d'action individuels. */
-.client-action-link {
-    padding: 3px 6px; /* Espace intérieur réduit */
-    border-radius: 3px; /* Coins légèrement arrondis */
-    text-decoration: none; /* Pas de soulignement */
-    font-size: 12px; /* Taille du texte réduite */
-    transition: background-color 0.3s; /* Transition douce pour le changement de couleur de fond */
-}
-
-/* Style pour le lien "Voir". */
-.client-action-show {
-    background-color: #000000; /* Couleur de fond */
-    color: #fff; /* Couleur du texte */
-}
-
-/* Style pour le lien "Voir" au survol. */
-.client-action-show:hover {
-    background-color: #ffd600; /* Couleur de fond au survol */
-}
-
-/* Style pour le lien "Modifier". */
-.client-action-edit {
-    background-color: #3f51b5; /* Couleur de fond */
-    color: white; /* Couleur du texte */
-}
-
-/* Style pour le lien "Modifier" au survol. */
-.client-action-edit:hover {
-    background-color: #303f9f; /* Couleur de fond au survol */
-}
-
-/* Liens de navigation : Style pour les liens de navigation. */
-.client-nav-links {
-    margin-top: 20px; /* Marge en haut */
-    text-align: center; /* Centre le texte */
-}
-
-/* Style pour les boutons de navigation. */
-.client-btn {
-    display: inline-block; /* Affiche l'élément en ligne */
-    padding: 8px 12px; /* Espace intérieur réduit */
-    margin: 5px; /* Marge autour du bouton */
-    border-radius: 5px; /* Coins arrondis */
-    text-decoration: none; /* Pas de soulignement */
-    font-size: 14px; /* Taille du texte réduite */
-    transition: background-color 0.3s; /* Transition douce pour le changement de couleur de fond */
-}
-
-/* Style pour le bouton principal. */
-.client-btn-primary {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Police de caractères */
-    background-color: #2ecc71; /* Couleur de fond */
-    color: white; /* Couleur du texte */
-}
-
-/* Style pour le bouton principal au survol. */
-.client-btn-primary:hover {
-    background-color: #27ae60; /* Couleur de fond au survol */
-}
-
-/* Style pour le bouton secondaire. */
-.client-btn-secondary {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Police de caractères */
-    background-color: #95a5a6; /* Couleur de fond */
-    color: white; /* Couleur du texte */
-}
-
-/* Style pour le bouton secondaire au survol. */
-.client-btn-secondary:hover {
-    background-color: #7f8c8d; /* Couleur de fond au survol */
-}
-
-/* Formulaire : Style pour le conteneur du formulaire. */
-.client-form-container {
-    background-color: white; /* Couleur de fond */
-    padding: 20px; /* Espace intérieur */
-    border-radius: 5px; /* Coins arrondis */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
-    margin-bottom: 20px; /* Marge en bas */
-}
-
-/* Tableau de détails du client : Style pour le tableau affichant les détails d'un client. */
-.client-detail-table {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Police de caractères */;
-    width: 100%; /* Largeur maximale */
-    border-collapse: collapse; /* Fusionne les bordures des cellules */
-    margin-bottom: 20px; /* Marge en bas */
-    background: #ffffff; /* Couleur de fond */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
-}
-
-/* Style pour les cellules d'en-tête et de données du tableau de détails. */
-.client-detail-table th, .client-detail-table td {
-    border: 1px solid #e0e0e0; /* Bordure légère */
-    padding: 8px; /* Espace intérieur */
-    text-align: left; /* Aligne le texte à gauche */
-    font-size: 13px; /* Taille du texte */
-}
-
-/* Style pour les cellules d'en-tête du tableau de détails. */
-.client-detail-table th {
-    background-color: #f9f9f9; /* Couleur de fond */
-    font-weight: 600; /* Texte en gras */
-    color: #131713; /* Couleur du texte */
-    width: 20%; /* Largeur des cellules d'en-tête */
-}
-
-/* Style pour les lignes paires du tableau de détails. */
-.client-detail-table tr:nth-child(even) {
-    background-color: #f9f9f9; /* Couleur de fond */
-}
-
-
-/* ===== SIDEBAR ===== */
+/* Style pour la barre de navigation */
 .client-sidebar {
     grid-area: sidebar;
     background: #333333;
     padding: 1rem 0;
     overflow-y: auto;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     transition: background 0.3s ease;
 }
 
+/* Style pour le contenu principal */
+.client-content {
+    grid-area: content;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+/* Autres styles CSS restent inchangés */
 .client-nav-header {
     padding: 0 1rem;
     margin-bottom: 1rem;
@@ -345,4 +88,393 @@
 .client-nav-text {
     font-size: 0.95rem;
     font-weight: 400;
+}
+
+.client-main-title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #131713;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.client-csv-import-container {
+    border: 2px dashed #bdc3c7;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.client-csv-import-container.client-dragover {
+    background-color: #ecf0f1;
+}
+
+.client-import-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.client-import-text {
+    margin-bottom: 15px;
+}
+
+.client-file-input {
+    display: none;
+}
+
+.client-btn-select-file {
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.client-btn-select-file:hover {
+    background-color: #303f9f;
+}
+
+.client-import-progress {
+    display: none;
+    margin-top: 20px;
+}
+
+.client-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #3f51b5;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.client-import-results {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.client-import-results.client-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.client-import-results.client-error {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.client-error-list {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.client-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    table-layout: fixed;
+}
+
+.client-table th, .client-table td {
+    border: 1px solid #e0e0e0;
+    padding: 6px;
+    text-align: left;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.client-table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+    color: #131713;
+}
+
+.client-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.client-table tr:hover {
+    background-color: #f0f0f0;
+}
+
+.client-action-links {
+    display: flex;
+    gap: 5px;
+}
+
+.client-action-link {
+    padding: 3px 6px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.client-action-show {
+    background-color: #000000;
+    color: #fff;
+}
+
+.client-action-show:hover {
+    background-color: #ffd600;
+}
+
+.client-action-edit {
+    background-color: #3f51b5;
+    color: white;
+}
+
+.client-action-edit:hover {
+    background-color: #303f9f;
+}
+
+.client-nav-links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.client-btn {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.client-btn-primary {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #2ecc71;
+    color: white;
+}
+
+.client-btn-primary:hover {
+    background-color: #27ae60;
+}
+
+.client-btn-secondary {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #95a5a6;
+    color: white;
+}
+
+.client-btn-secondary:hover {
+    background-color: #7f8c8d;
+}
+
+
+/* Titre principal */
+.client-main-title {
+    color: #333;
+    text-align: center;
+    margin: 20px 0 30px;
+    font-size: 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Tableau de détails du client */
+.client-detail-table {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    border-collapse: collapse;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* En-têtes et cellules du tableau */
+.client-detail-table th,
+.client-detail-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* En-têtes du tableau */
+.client-detail-table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+    color: #555;
+    width: 30%;
+}
+
+/* Lignes du tableau */
+.client-detail-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Lignes du tableau au survol */
+.client-detail-table tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Liens de navigation */
+.client-nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Boutons */
+.client-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Bouton principal */
+.client-btn-primary {
+    background-color: #27ae60;
+    color: white;
+}
+
+.client-btn-primary:hover {
+    background-color: #078039;
+    transform: translateY(-2px);
+}
+
+/* Bouton secondaire */
+.client-btn-secondary {
+    background-color: #607d8b;
+    color: white;
+}
+
+.client-btn-secondary:hover {
+    background-color: #455a64;
+    transform: translateY(-2px);
+}
+
+/* Formulaire de suppression */
+.client-delete-form {
+    margin-top: 30px;
+    text-align: center;
+}
+
+/* Bouton de suppression */
+.client-btn-danger {
+    background-color: #e53935;
+    color: white;
+}
+
+.client-btn-danger:hover {
+    background-color: #c62828;
+    transform: translateY(-2px);
+}
+
+
+/* Conteneur principal */
+.client-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Titre principal */
+.client-main-title {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* Conteneur du formulaire */
+.client-form-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour les éléments du formulaire */
+.client-form-container .form-group {
+    margin-bottom: 15px;
+}
+
+/* Styles pour les labels du formulaire */
+.client-form-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Styles pour les champs de saisie du formulaire */
+.client-form-container input, .client-form-container select, .client-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Styles pour les boutons */
+.client-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+/* Bouton principal */
+.client-btn-primary {
+    background-color: #3f51b5;
+    color: white;
+}
+
+.client-btn-primary:hover {
+    background-color: #303f9f;
+    transform: translateY(-2px);
+}
+
+/* Bouton secondaire */
+.client-btn-secondary {
+    background-color: #607d8b;
+    color: white;
+}
+
+.client-btn-secondary:hover {
+    background-color: #455a64;
+    transform: translateY(-2px);
+}
+
+/* Liens de navigation */
+.client-nav-links {
+    margin-top: 20px;
+    text-align: center;
 }

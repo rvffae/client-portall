@@ -3,12 +3,14 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-<body class="register-body">
+<div class="register-body">
     <div class="register-container">
-        <form class="register-form">
-            <h1 class="register-h1">Enregistrement</h1>
+        <div class="register-form">
+            <h1 class="register-h1">Register</h1>
 
-            {{ form_errors(registrationForm) }}
+            <div class="register-errors">
+                {{ form_errors(registrationForm) }}
+            </div>
 
             {{ form_start(registrationForm) }}
                 <div class="register-field">
@@ -24,9 +26,9 @@
                     {{ form_label(registrationForm.agreeTerms) }}
                 </div>
 
-                <button type="submit" class="register-btn">S'enregistrer</button>
+                <button type="submit" class="register-btn">Register</button>
             {{ form_end(registrationForm) }}
-        </form>
+        </div>
     </div>
-</body>
+</div>
 {% endblock %}

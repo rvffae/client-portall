@@ -82,23 +82,15 @@
 {% endblock %}
 {% block body %}
     <div id="company-index-container">
-        <h1>Company index</h1>
+        <h1 class="client-main-title">Company index</h1>
         <div class="import-section" id="import-section">
-            <h3>Importer des entreprises via CSV</h3>
+            <h3>Importer des entreprises clientes via CSV</h3>
             <p>Glissez-déposez votre fichier CSV ou cliquez pour le sélectionner.</p>
-            <p><small>Format attendu : id, name, city, state, zip_code, country, phone, email, website, created_at, updated_at, address</small></p>
-
             <div class="drop-zone" id="dropZone">
                 <div class="drop-zone-content">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14,2 14,8 20,8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10,9 9,9 8,9"></polyline>
-                    </svg>
+                <h3 class="company-emoji-index">📁</h3>
                     <p>Glissez votre fichier CSV ici ou cliquez pour le sélectionner</p>
-                    <p><small>Seuls les fichiers .csv sont acceptés</small></p>
+                    <p><small> Glissez-déposez votre fichier CSV ici ou cliquez pour sélectionner </small></p>
                 </div>
             </div>
 
