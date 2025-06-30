@@ -16,28 +16,141 @@ class InvoiceRepository extends ServiceEntityRepository
         parent::__construct($registry, Invoice::class);
     }
 
-    //    /**
-    //     * @return Invoice[] Returns an array of Invoice objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('i.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Récupère le chiffre d'affaires mensuel
+     */
+    public function getMonthlyRevenue(): array
+    {
+        // Récupérer toutes les factures avec date et montant
+        $invoices = $this->createQueryBuilder('i')
+            ->select('i.issue_date, i.amount')
+            ->where('i.issue_date IS NOT NULL')
+            ->andWhere('i.amount IS NOT NULL')
+            ->andWhere('i.amount > 0')
+            ->orderBy('i.issue_date', 'ASC')
+            ->getQuery()
+            ->getResult();
 
-    //    public function findOneBySomeField($value): ?Invoice
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        // Grouper par mois manuellement en PHP
+        $monthlyData = [];
+        foreach ($invoices as $invoice) {
+            $date = $invoice['issue_date'];
+            if ($date instanceof \DateTime) {
+                $year = (int) $date->format('Y');
+                $month = (int) $date->format('n');
+                $key = $year . '-' . $month;
+                
+                if (!isset($monthlyData[$key])) {
+                    $monthlyData[$key] = [
+                        'year' => $year,
+                        'month' => $month,
+                        'total_amount' => 0
+                    ];
+                }
+                $monthlyData[$key]['total_amount'] += $invoice['amount'];
+            }
+        }
+
+        // Trier par année puis mois
+        ksort($monthlyData);
+        
+        return array_values($monthlyData);
+    }
+
+    /**
+     * Récupère le chiffre d'affaires par année
+     */
+    public function getYearlyRevenue(): array
+    {
+        // Récupérer toutes les factures avec date et montant
+        $invoices = $this->createQueryBuilder('i')
+            ->select('i.issue_date, i.amount')
+            ->where('i.issue_date IS NOT NULL')
+            ->andWhere('i.amount IS NOT NULL')
+            ->andWhere('i.amount > 0')
+            ->orderBy('i.issue_date', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        // Grouper par année manuellement en PHP
+        $yearlyData = [];
+        foreach ($invoices as $invoice) {
+            $date = $invoice['issue_date'];
+            if ($date instanceof \DateTime) {
+                $year = (int) $date->format('Y');
+                
+                if (!isset($yearlyData[$year])) {
+                    $yearlyData[$year] = [
+                        'year' => $year,
+                        'total_amount' => 0
+                    ];
+                }
+                $yearlyData[$year]['total_amount'] += $invoice['amount'];
+            }
+        }
+
+        // Trier par année
+        ksort($yearlyData);
+        
+        return array_values($yearlyData);
+    }
+
+    /**
+     * Récupère les statistiques générales
+     */
+    public function getRevenueStats(): array
+    {
+        $qb = $this->createQueryBuilder('i')
+            ->select('COUNT(i.id) as total_invoices, SUM(i.amount) as total_revenue, AVG(i.amount) as avg_amount')
+            ->where('i.amount IS NOT NULL')
+            ->andWhere('i.amount > 0');
+
+        return $qb->getQuery()->getSingleResult();
+    }
+
+    /**
+     * Récupère le chiffre d'affaires des N derniers mois
+     */
+    public function getRevenueLastMonths(int $months = 12): array
+    {
+        $date = new \DateTime();
+        $date->modify("-{$months} months");
+
+        // Récupérer toutes les factures des derniers mois
+        $invoices = $this->createQueryBuilder('i')
+            ->select('i.issue_date, i.amount')
+            ->where('i.issue_date >= :date')
+            ->andWhere('i.issue_date IS NOT NULL')
+            ->andWhere('i.amount IS NOT NULL')
+            ->andWhere('i.amount > 0')
+            ->setParameter('date', $date)
+            ->orderBy('i.issue_date', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        // Grouper par mois manuellement en PHP
+        $monthlyData = [];
+        foreach ($invoices as $invoice) {
+            $invoiceDate = $invoice['issue_date'];
+            if ($invoiceDate instanceof \DateTime) {
+                $year = (int) $invoiceDate->format('Y');
+                $month = (int) $invoiceDate->format('n');
+                $key = $year . '-' . $month;
+                
+                if (!isset($monthlyData[$key])) {
+                    $monthlyData[$key] = [
+                        'year' => $year,
+                        'month' => $month,
+                        'total_amount' => 0
+                    ];
+                }
+                $monthlyData[$key]['total_amount'] += $invoice['amount'];
+            }
+        }
+
+        // Trier par année puis mois
+        ksort($monthlyData);
+        
+        return array_values($monthlyData);
+    }
 }

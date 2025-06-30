@@ -24,16 +24,33 @@
     display: inline-block;
     background-color: #0c0c0d;
     color: #fff;
-    padding: 10px 15px;
-    margin-bottom: 20px;
+    padding: 10px 12px;
+    margin-bottom: 5px;
     border-radius: 12px;
-    height: 20px;
     width: 150px;
     text-decoration: none;
+    text-align: center;
 }
 
+.inv-index-stat-btn {
+    display: inline-block;
+    background-color: #0c0c0d;
+    color: #fff;
+    padding: 10px 10px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    width: 130px;
+    text-decoration: none;
+    text-align: center;
+}
+
+
 .inv-index-create-btn:hover {
-    background-color: #2980b9;
+    background-color: #1ebf26;
+}
+
+.inv-index-stat-btn:hover {
+    background-color: #1ebf26;
 }
 
 .inv-index-table {
@@ -726,4 +743,30 @@ input:disabled, select:disabled {
 
 .list-container .delete-btn:hover {
     background-color: #c82333;
+}
+
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+#revenueChart, #yearlyChart {
+    max-height: 400px;
+}
+
+.bg-primary { background-color: #007bff !important; }
+.bg-success { background-color: #f2c45f !important; }
+.bg-info { background-color: #17a2b8 !important; }
+
+
+
+.big-stat-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
 }

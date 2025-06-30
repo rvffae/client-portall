@@ -1,0 +1,243 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des Factures{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="big-stat-container">
+            <h1 class="mb-4">Évolution du Chiffre d'Affaires</h1>
+            
+            <!-- Boutons de navigation -->
+            <div class="mb-3">
+                <a href="{{ path('app_invoice_index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour aux factures
+                </a>
+            </div>
+
+            <!-- Cards avec statistiques générales -->
+            <div class="row mb-4" id="stats-cards">
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Factures</h5>
+                            <h2 id="total-invoices">-</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Chiffre d'Affaires Total</h5>
+                            <h2 id="total-revenue">-</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Montant Moyen</h5>
+                            <h2 id="avg-amount">-</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Graphiques -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Évolution Mensuelle du Chiffre d'Affaires</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="revenueChart" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Chiffre d'Affaires par Année</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="yearlyChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Configuration des couleurs
+    const colors = {
+        primary: '#007bff',
+        success: '#28a745',
+        info: '#17a2b8',
+        warning: '#ffc107',
+        danger: '#dc3545'
+    };
+
+    // Fonction pour formater les montants
+    function formatMoney(amount) {
+        return new Intl.NumberFormat('fr-FR', {
+            style: 'currency',
+            currency: 'EUR'
+        }).format(amount);
+    }
+
+    // Charger les données du chiffre d'affaires mensuel
+    fetch('{{ path("app_invoice_revenue_data") }}')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Données reçues:', data);
+            
+            // Vérifier si on a des données
+            if (!data.labels || !data.data || data.data.length === 0) {
+                console.error('Aucune donnée disponible');
+                return;
+            }
+            
+            // Graphique linéaire mensuel
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Chiffre d\'Affaires (€)',
+                        data: data.data,
+                        borderColor: colors.primary,
+                        backgroundColor: colors.primary + '20',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: colors.primary,
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatMoney(value);
+                                }
+                            }
+                        }
+                    },
+                    elements: {
+                        point: {
+                            hoverRadius: 8
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+
+            // Calculer et afficher les statistiques
+            const totalRevenue = data.data.reduce((sum, amount) => sum + amount, 0);
+            const avgAmount = totalRevenue / data.data.length;
+            
+            document.getElementById('total-revenue').textContent = formatMoney(totalRevenue);
+            document.getElementById('avg-amount').textContent = formatMoney(avgAmount);
+            document.getElementById('total-invoices').textContent = data.data.length + ' mois';
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des données:', error);
+        });
+
+    // Graphique en barres pour les années (données réelles)
+    fetch('{{ path("app_invoice_yearly_revenue_data") }}')
+        .then(response => response.json())
+        .then(yearlyData => {
+            console.log('Données annuelles reçues:', yearlyData);
+            
+            const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
+            new Chart(yearlyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: yearlyData.labels || ['2024'],
+                    datasets: [{
+                        data: yearlyData.data || [50000],
+                        backgroundColor: yearlyData.backgroundColor || [colors.primary, colors.success, colors.info],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + formatMoney(context.parsed);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des données annuelles:', error);
+            // Graphique de fallback
+            const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
+            new Chart(yearlyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['2024'],
+                    datasets: [{
+                        data: [50000],
+                        backgroundColor: [colors.primary],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                }
+            });
+        });
+});
+</script>
+
+<style>
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+#revenueChart, #yearlyChart {
+    max-height: 400px;
+}
+
+.bg-primary { background-color: #007bff !important; }
+.bg-success { background-color: #f2c45f !important; }
+.bg-info { background-color: #17a2b8 !important; }
+</style>
+{% endblock %}
