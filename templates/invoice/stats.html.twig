@@ -10,7 +10,7 @@
             
             <!-- Boutons de navigation -->
             <div class="mb-3">
-                <a href="{{ path('app_invoice_index') }}" class="btn btn-secondary">
+                <a href="{{ path('app_invoice_index') }}" class="inv-index-stat-btn">
                     <i class="fas fa-arrow-left"></i> Retour aux factures
                 </a>
             </div>
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Configuration des couleurs
     const colors = {
         primary: '#007bff',
-        success: '#28a745',
+        success: '#9f8290',
         info: '#17a2b8',
         warning: '#ffc107',
         danger: '#dc3545'
@@ -223,21 +223,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style>
 .card {
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .card-header {
     background-color: #f8f9fa;
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    margin-bottom: 20px;
 }
 
 #revenueChart, #yearlyChart {
+    max-height: 600px;
+}
+
+#yearlyChart {
     max-height: 400px;
 }
 
-.bg-primary { background-color: #007bff !important; }
-.bg-success { background-color: #f2c45f !important; }
-.bg-info { background-color: #17a2b8 !important; }
 </style>
 {% endblock %}

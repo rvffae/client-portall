@@ -20,6 +20,7 @@ import './js/calendar.js';
 import './js/dashboard.js';
 import './js/communication.js';
 
+
 import zoomPlugin from 'chartjs-plugin-zoom';
 
 // register globally for all charts
