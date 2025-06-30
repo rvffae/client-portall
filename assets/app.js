@@ -5,15 +5,15 @@ import './bootstrap.js';
  * This file will be included onto the page via the importmap() Twig function,
  * which should already be in your base.html.twig.
  */
-import './styles/company.css';
-import './styles/app.css';
-import './styles/login.css';
-import './styles/register.css';
-import './styles/dashboard.css';
-import './styles/communication.css';
-import './styles/googlecalendar.css';
-import './styles/form.css';
-import './styles/client.css';
+import './styles/company.scss';
+import './styles/app.scss';
+import './styles/login.scss';
+import './styles/register.scss';
+import './styles/dashboard.scss';
+import './styles/communication.scss';
+import './styles/googlecalendar.scss';
+import './styles/form.scss';
+import './styles/client.scss';
 
 import './js/calendar.js';
 import './js/dashboard.js';
