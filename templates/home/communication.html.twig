@@ -264,7 +264,7 @@
                     <span class="communication-nav-text">Tableau de bord</span>
                 </a>
             </li>
-            <li class="communication-nav-item">
+            <li class="communication-nav-item communication-nav-item-active">
                 <a href="{{ path('communication_index') }}" class="communication-nav-link">
                     <span class="communication-nav-icon">{{ ux_icon('ph:envelope') }}</span>
                     <span class="communication-nav-text">Messagerie</span>
@@ -283,21 +283,21 @@
                 </a>
             </li>
             <li class="communication-nav-item">
-                <a href="#" class="communication-nav-link">
+                <a href="{{path('app_company_index')}}" class="communication-nav-link">
                     <span class="communication-nav-icon">{{ ux_icon('ph:buildings') }}</span>
                     <span class="communication-nav-text">Entreprises</span>
+                </a>
+            </li>
+            <li class="communication-nav-item">
+                <a href="{{path('app_project_index')}}" class="communication-nav-link">
+                    <span class="communication-nav-icon">{{ ux_icon('ph:folder') }}</span>
+                    <span class="communication-nav-text">Projets</span>
                 </a>
             </li>
             <li class="communication-nav-item">
                 <a href="#" class="communication-nav-link">
                     <span class="communication-nav-icon">{{ ux_icon('ph:chart-line') }}</span>
                     <span class="communication-nav-text">Statistiques</span>
-                </a>
-            </li>
-            <li class="communication-nav-item">
-                <a href="#" class="communication-nav-link">
-                    <span class="communication-nav-icon">{{ ux_icon('ph:device-mobile') }}</span>
-                    <span class="communication-nav-text">Applications</span>
                 </a>
             </li>
             <li class="communication-nav-item">

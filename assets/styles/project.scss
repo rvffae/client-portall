@@ -1,0 +1,727 @@
+/* ===== GLOBAL STYLES ===== */
+.project-global-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+/* ===== PROJECT INDEX PAGE ===== */
+.project-index-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.project-index-title {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.project-index-create-btn {
+    display: inline-block;
+    background-color: #0c0c0d;
+    color: #fff;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    height: 20px;
+    width: 150px;
+    text-decoration: none;
+}
+
+.project-index-create-btn:hover {
+    background-color: #2980b9;
+}
+
+.project-index-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.project-index-table th, .project-index-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.project-index-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.project-index-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.project-index-show-link, .project-index-edit-link {
+    color: #3498db;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.project-index-show-link:hover, .project-index-edit-link:hover {
+    text-decoration: underline;
+}
+
+.project-index-delete-form {
+    display: inline;
+}
+
+.project-index-delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.project-index-delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* ===== PROJECT SHOW PAGE ===== */
+.project-show-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.project-show-title {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.project-show-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.project-show-table th, .project-show-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.project-show-table th {
+    background-color: #f8f9fa;
+    width: 20%;
+}
+
+.project-show-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.project-show-back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+}
+
+.project-show-back-link:hover {
+    text-decoration: underline;
+}
+
+.project-show-edit-link {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 10px;
+    color: #2ecc71;
+    text-decoration: none;
+}
+
+.project-show-edit-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== PROJECT EDIT PAGE ===== */
+.project-edit-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.project-edit-title {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.project-edit-back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+}
+
+.project-edit-back-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== NEW PROJECT PAGE ===== */
+.project-new-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.project-new-header {
+    margin-bottom: 20px;
+}
+
+.project-new-title {
+    color: #2c3e50;
+    margin: 0;
+}
+
+.project-new-form-container {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.project-new-back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+}
+
+.project-new-back-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== NEW AND EDIT PROJECT PAGES ===== */
+.project-form-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.project-form-title {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.project-form-group {
+    margin-bottom: 15px;
+}
+
+.project-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.project-form-group input[type="text"],
+.project-form-group input[type="number"],
+.project-form-group input[type="date"],
+.project-form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.project-form-group input:focus,
+.project-form-group select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.project-form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.project-save-btn, .project-update-btn {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.project-save-btn:hover, .project-update-btn:hover {
+    background-color: #27ae60;
+}
+
+.project-back-link {
+    display: inline-block;
+    color: #3498db;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.project-back-link:hover {
+    text-decoration: underline;
+}
+
+.project-delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.project-delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* ===== PROJECT INDEX PAGE WITH SIDEBAR ===== */
+.project-main-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "sidebar main";
+    min-height: 100vh;
+}
+
+.project-container {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    background: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding: 2rem;
+}
+
+.project-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.project-title {
+    font-size: 2rem;
+    font-weight: 500;
+    color: #333333;
+    margin: 0;
+}
+
+/* ===== SIDEBAR ===== */
+.project-sidebar {
+    grid-area: sidebar;
+    background: #333333;
+    padding: 1rem 0;
+    overflow-y: auto;
+    transition: background 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.project-nav-header {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+}
+
+.project-nav-title {
+    color: #cccccc;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.project-nav-title:hover {
+    color: #ffffff;
+}
+
+.project-nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.project-nav-item {
+    margin-bottom: 0.5rem;
+}
+
+.project-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #cccccc;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.project-nav-link:hover {
+    background: #4d4d4d;
+    color: #ffffff;
+}
+
+.project-nav-item-active .project-nav-link {
+    background: #4d4d4d;
+    color: white;
+    font-weight: 500;
+}
+
+.project-nav-icon {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    width: 24px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.project-nav-link:hover .project-nav-icon {
+    transform: scale(1.1);
+}
+
+.project-nav-text {
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+/* ===== NEW PROJECT PAGE ===== */
+.new-project-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    width: 95%;
+    max-width: 950px;
+    margin: 20px auto;
+    padding: 25px;
+    background: #f5f7fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.new-project-header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.new-project-title {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.new-project-form-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.new-project-back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.new-project-back-link:hover {
+    text-decoration: underline;
+}
+
+/* Style pour le formulaire */
+.new-project-form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.new-project-form-container .form-group {
+    margin-bottom: 20px;
+}
+
+.new-project-form-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #34495e;
+}
+
+.new-project-form-container input[type="text"],
+.new-project-form-container input[type="number"],
+.new-project-form-container input[type="date"],
+.new-project-form-container select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.new-project-form-container input:focus,
+.new-project-form-container select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.new-project-form-container button {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.new-project-form-container button:hover {
+    background-color: #27ae60;
+}
+
+/* Style pour les messages d'erreur et de succès */
+.message {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Style pour les champs obligatoires */
+.form-group required label:after {
+    content: " *";
+    color: #e74c3c;
+}
+
+/* ===== EDIT PROJECT PAGE ===== */
+.edit-project-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    max-width: 95%;
+    margin: 20px auto;
+    padding: 25px;
+    background: #f5f7fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.edit-project-title {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.edit-project-form-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-project-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-project-back-link {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.edit-project-back-link:hover {
+    text-decoration: underline;
+}
+
+/* Style pour le formulaire */
+.edit-project-form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-project-form-container .form-group {
+    margin-bottom: 20px;
+}
+
+.edit-project-form-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #34495e;
+}
+
+.edit-project-form-container input[type="text"],
+.edit-project-form-container input[type="number"],
+.edit-project-form-container input[type="date"],
+.edit-project-form-container select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.edit-project-form-container input:focus,
+.edit-project-form-container select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.edit-project-form-container button {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.edit-project-form-container button:hover {
+    background-color: #27ae60;
+}
+
+/* Style pour le formulaire de suppression */
+.edit-project-delete-form {
+    display: inline;
+}
+
+.edit-project-delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.edit-project-delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Style pour les boutons de retour */
+.back-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    color: #3498db;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.back-link:hover {
+    background-color: #e9ecef;
+    text-decoration: none;
+}
+
+/* Style pour les champs désactivés */
+input:disabled, select:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* Style pour les listes */
+.list-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.list-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.list-container th, .list-container td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.list-container th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.list-container tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Style pour les liens dans les listes */
+.list-container a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.list-container a:hover {
+    text-decoration: underline;
+}
+
+/* Style pour les boutons d'action dans les listes */
+.list-container .action-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.list-container .edit-btn {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.list-container .edit-btn:hover {
+    background-color: #e9b806;
+}
+
+.list-container .delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.list-container .delete-btn:hover {
+    background-color: #c82333;
+}

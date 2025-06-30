@@ -1,49 +1,107 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Project index{% endblock %}
-
+{% block title %}📁 Gestion des projets{% endblock %}
 {% block body %}
-    <h1 ">Project index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Start_date</th>
-                <th>End_date</th>
-                <th>Status</th>
-                <th>Budget</th>
-                <th>Created_at</th>
-                <th>Updated_at</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for project in projects %}
-            <tr>
-                <td>{{ project.id }}</td>
-                <td>{{ project.name }}</td>
-                <td>{{ project.description }}</td>
-                <td>{{ project.startDate ? project.startDate|date('Y-m-d') : '' }}</td>
-                <td>{{ project.endDate ? project.endDate|date('Y-m-d') : '' }}</td>
-                <td>{{ project.status }}</td>
-                <td>{{ project.budget }}</td>
-                <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ project.updatedAt ? project.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_project_show', {'id': project.id}) }}">show</a>
-                    <a href="{{ path('app_project_edit', {'id': project.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_project_new') }}">Create new</a>
+<div class="project-main-container">
+    <!-- Navigation principale -->
+    <nav class="project-sidebar">
+        <div class="project-nav-header">
+            <h2 class="project-nav-title">Menu</h2>
+        </div>
+        <ul class="project-nav-menu">
+            <li class="project-nav-item">
+                <a href="{{ path('dashboard') }}" class="project-nav-link">
+                    <span class="project-nav-icon">{{ ux_icon('ph:chart-pie') }}</span>
+                    <span class="project-nav-text">Tableau de bord</span>
+                </a>
+            </li>
+            <li class="project-nav-item">
+                <a href="{{ path('communication_index') }}" class="project-nav-link">
+                    <span class="project-nav-icon">{{ ux_icon('ph:envelope') }}</span>
+                    <span class="project-nav-text">Messagerie</span>
+                </a>
+            </li>
+            <li class="project-nav-item">
+                <a href="{{ path('app_invoice_index') }}" class="project-nav-link">
+                    <span class="project-nav-icon">{{ ux_icon('ph:invoice') }}</span>
+                    <span class="project-nav-text">Factures</span>
+                </a>
+            </li>
+            <li class="project-nav-item">
+                <a href="{{path('app_client_index')}}" class="project-nav-link">
+                    <span class="project-nav-icon">{{ ux_icon('ph:users') }}</span>
+                    <span class="project-nav-text">Clients</span>
+                </a>
+            </li>
+            <li class="project-nav-item">
+                <a href="{{ path('app_company_index') }}" class="project-nav-link">
+                    <span class="project-nav-icon">{{ ux_icon('ph:buildings') }}</span>
+                    <span class="project-nav-text">Entreprises</span>
+                </a>
+            </li>
+            <li class="project-nav-item project-nav-item-active">
+                <a href="{{ path('app_project_index') }}" class="project-nav-link">
+                    <span class="project-nav-icon">{{ ux_icon('ph:folder') }}</span>
+                    <span class="project-nav-text">Projets</span>
+                </a>
+            </li>
+            <li class="project-nav-item">
+                <a href="#" class="project-nav-link">
+                    <span class="project-nav-icon">{{ ux_icon('ph:chart-line') }}</span>
+                    <span class="project-nav-text">Statistiques</span>
+                </a>
+            </li>
+            <li class="project-nav-item">
+                <a href="#" class="project-nav-link">
+                    <span class="project-nav-icon">{{ ux_icon('ph:gear') }}</span>
+                    <span class="project-nav-text">Paramètres</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="project-container">
+        <div class="project-header">
+            <h1 class="project-title">Project Index</h1>
+        </div>
+        <a href="{{ path('app_project_new') }}" class="project-index-create-btn">Create New Project</a>
+        <table class="project-index-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Start_date</th>
+                    <th>End_date</th>
+                    <th>Status</th>
+                    <th>Budget</th>
+                    <th>Created_at</th>
+                    <th>Updated_at</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                    <tr>
+                        <td>{{ project.id }}</td>
+                        <td>{{ project.name }}</td>
+                        <td>{{ project.description }}</td>
+                        <td>{{ project.startDate ? project.startDate|date('Y-m-d') : '' }}</td>
+                        <td>{{ project.endDate ? project.endDate|date('Y-m-d') : '' }}</td>
+                        <td>{{ project.status }}</td>
+                        <td>{{ project.budget }}</td>
+                        <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ project.updatedAt ? project.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_project_show', {'id': project.id}) }}" class="project-index-show-link">Show</a>
+                            <a href="{{ path('app_project_edit', {'id': project.id}) }}" class="project-index-edit-link">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="10">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

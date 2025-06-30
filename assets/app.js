@@ -14,6 +14,7 @@ import './styles/communication.scss';
 import './styles/googlecalendar.scss';
 import './styles/form.scss';
 import './styles/client.scss';
+import './styles/project.scss';
 
 import './js/calendar.js';
 import './js/dashboard.js';
