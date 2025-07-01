@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="big-stat-container">
-            <h1 class="mb-4">Évolution du Chiffre d'Affaires</h1>
+            <h1 class="stat-h1">Évolution du Chiffre d'Affaires</h1>
             
             <!-- Boutons de navigation -->
             <div class="mb-3">
@@ -69,6 +69,12 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
 
 <!-- Chart.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
@@ -220,25 +226,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 </script>
-
-<style>
-.card {
-    border: 1px solid rgba(0, 0, 0, 0.125);
-}
-
-.card-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-    margin-bottom: 20px;
-}
-
-#revenueChart, #yearlyChart {
-    max-height: 600px;
-}
-
-#yearlyChart {
-    max-height: 400px;
-}
-
-</style>
 {% endblock %}

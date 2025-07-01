@@ -761,3 +761,25 @@ input:disabled, select:disabled {
 .card-title mb-0 {
     font-weight: 300;
 }
+
+.stat-h1 {
+    text-align: center;
+}
+
+.card {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    margin-bottom: 20px;
+}
+
+#revenueChart, #yearlyChart {
+    max-height: 600px;
+}
+
+#yearlyChart {
+    max-height: 400px;
+}
