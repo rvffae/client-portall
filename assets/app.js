@@ -15,6 +15,7 @@ import './styles/googlecalendar.scss';
 import './styles/form.scss';
 import './styles/client.scss';
 import './styles/project.scss';
+import './styles/compose.scss';
 
 import './js/calendar.js';
 import './js/dashboard.js';

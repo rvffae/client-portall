@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voir l'email{% endblock %}
+
+{% block body %}
+<div class="email-container">
+    <h1>Détails de l'email</h1>
+    <div class="email-header">
+        <div class="email-from"><strong>De :</strong> {{ email.from }}</div>
+        <div class="email-to"><strong>À :</strong> {{ email.to }}</div>
+        <div class="email-subject"><strong>Sujet :</strong> {{ email.subject }}</div>
+        <div class="email-date"><strong>Date :</strong> {{ email.date|date('d/m/Y H:i') }}</div>
+    </div>
+    <div class="email-body">
+        {{ email.body|raw }}
+    </div>
+</div>
+{% endblock %}

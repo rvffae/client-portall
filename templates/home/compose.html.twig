@@ -404,9 +404,9 @@
 {% block body %}
 <div class="compose-container">
     <div class="compose-header">
-        <h1>Composer un email</h1>
+        <h1 class="compose-h1">Composer un email</h1>
         <div class="compose-actions">
-            <a href="{{ path('communication_index') }}" class="btn btn-secondary">
+            <a href="{{ path('communication_index') }}" class="inv-index-create-btn">
                 ← Retour
             </a>
         </div>
@@ -455,15 +455,15 @@
         <div class="compose-footer">
             <div class="compose-main-actions">
                 <button type="submit" class="btn btn-primary">
-                    📤 Envoyer
+                    Envoyer
                 </button>
                 <button type="button" id="schedule-btn" class="btn btn-secondary">
-                    ⏰ Programmer
+                    Programmer
                 </button>
             </div>
             <div class="compose-secondary-actions">
                 <button type="button" id="save-draft-btn" class="btn btn-outline">
-                    💾 Sauvegarder en brouillon
+                    Sauvegarder en brouillon
                 </button>
             </div>
         </div>

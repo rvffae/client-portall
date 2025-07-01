@@ -134,9 +134,9 @@
                         </div>
                         <div class="communication-message-subject">${this.escapeHtml(draft.subject)}</div>
                         <div class="draft-actions">
-                            <button class="draft-edit-btn" data-draft-id="${draft.id}">✏️ Modifier</button>
-                            <button class="draft-send-btn" data-draft-id="${draft.id}">📤 Envoyer</button>
-                            <button class="draft-delete-btn" data-draft-id="${draft.id}">🗑️ Supprimer</button>
+                            <button class="inv-index-create-btn" data-draft-id="${draft.id}">Modifier</button>
+                            <button class="inv-index-create-btn" data-draft-id="${draft.id}">Envoyer</button>
+                            <button class="inv-index-create-btn" data-draft-id="${draft.id}">Supprimer</button>
                         </div>
                     </div>
                 `).join('');
@@ -546,7 +546,7 @@
                         <button class="communication-section-refresh" data-section="drafts" title="Actualiser">⟳</button>
                     </div>
                     <div class="communication-section-content">
-                        {{ include('communication/_loading.html.twig') }}
+                        {{ include('home/_loading.html.twig') }}
                     </div>
                 </div>
 
@@ -560,7 +560,7 @@
                         <button class="communication-section-refresh" data-section="scheduled" title="Actualiser">⟳</button>
                     </div>
                     <div class="communication-section-content">
-                        {{ include('communication/_loading.html.twig') }}
+                        {{ include('home/_loading.html.twig') }}
                     </div>
                 </div>
 
@@ -596,6 +596,7 @@
             </div>
 
             <div class="communication-actions">
+                <a href="{{ path('communication_compose') }}" class="inv-index-create-btn">Ecrire un mail</a>
                 <a href="{{ path('communication_disconnect') }}" class="communication-btn communication-btn-disconnect">
                     <span>🔓</span>
                     Se déconnecter

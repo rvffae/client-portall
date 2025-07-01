@@ -89,7 +89,7 @@ class CommunicationController extends AbstractController
         if (!$this->googleApiService->isAuthenticated()) {
             return $this->redirectToRoute('communication_auth');
         }
-        return $this->render('communication/compose.html.twig');
+        return $this->render('home/compose.html.twig');
     }
 
     #[Route('/send-email', name: 'send_email', methods: ['POST'])]
@@ -368,6 +368,24 @@ class CommunicationController extends AbstractController
                 'success' => false,
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    #[Route('/view-email/{messageId}', name: 'view_email', methods: ['GET'])]
+    public function viewEmail(string $messageId): Response
+    {
+        if (!$this->googleApiService->isAuthenticated()) {
+            return $this->redirectToRoute('communication_auth');
+        }
+
+        try {
+            $email = $this->googleApiService->getEmail($messageId);
+            return $this->render('home/view_email.html.twig', [
+                'email' => $email,
+            ]);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors de la récupération de l\'email: ' . $e->getMessage());
+            return $this->redirectToRoute('communication_index');
         }
     }
 }
