@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,6 +35,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Contact>
+     */
+    #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'userr')]
+    private Collection $contacts;
+
+    /**
+     * @var Collection<int, Contact>
+     */
+    #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'useros')]
+    private Collection $contactos;
+
+    /**
+     * @var Collection<int, Client>
+     */
+    #[ORM\ManyToMany(targetEntity: Client::class, inversedBy: 'users')]
+    private Collection $clients;
+
+    /**
+     * @var Collection<int, Client>
+     */
+    #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'useros')]
+    private Collection $useros;
+
+    public function __construct()
+    {
+        $this->contacts = new ArrayCollection();
+        $this->contactos = new ArrayCollection();
+        $this->clients = new ArrayCollection();
+        $this->useros = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,5 +139,116 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): static
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts->add($contact);
+            $contact->setUserr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): static
+    {
+        if ($this->contacts->removeElement($contact)) {
+            // set the owning side to null (unless already changed)
+            if ($contact->getUserr() === $this) {
+                $contact->setUserr(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContactos(): Collection
+    {
+        return $this->contactos;
+    }
+
+    public function addContacto(Contact $contacto): static
+    {
+        if (!$this->contactos->contains($contacto)) {
+            $this->contactos->add($contacto);
+            $contacto->setUseros($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContacto(Contact $contacto): static
+    {
+        if ($this->contactos->removeElement($contacto)) {
+            // set the owning side to null (unless already changed)
+            if ($contacto->getUseros() === $this) {
+                $contacto->setUseros(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Client>
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): static
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients->add($client);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): static
+    {
+        $this->clients->removeElement($client);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Client>
+     */
+    public function getUseros(): Collection
+    {
+        return $this->useros;
+    }
+
+    public function addUsero(Client $usero): static
+    {
+        if (!$this->useros->contains($usero)) {
+            $this->useros->add($usero);
+            $usero->addUsero($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsero(Client $usero): static
+    {
+        if ($this->useros->removeElement($usero)) {
+            $usero->removeUsero($this);
+        }
+
+        return $this;
     }
 }

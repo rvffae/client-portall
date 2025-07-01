@@ -4,255 +4,405 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% block communication_scripts %}
-        <script>
-            class CommunicationManager {
-                constructor() {
-                    this.isAuthenticated = {{ authenticated|default(false) ? 'true' : 'false' }};
-                    this.refreshIntervals = {};
-                    this.init();
-                }
+    <script>
+        class CommunicationManager {
+            constructor() {
+                this.isAuthenticated = {{ authenticated|default(false) ? 'true' : 'false' }};
+                this.refreshIntervals = {};
+                this.init();
+            }
 
-                init() {
-                    this.bindEvents();
-                    if (this.isAuthenticated) {
-                        this.startAutoRefresh();
-                        this.updateStatus();
+            init() {
+                this.bindEvents();
+                if (this.isAuthenticated) {
+                    this.startAutoRefresh();
+                    this.updateStatus();
+                }
+                this.animateElements();
+            }
+
+            bindEvents() {
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('communication-section-refresh')) {
+                        const section = e.target.getAttribute('data-section');
+                        this.refreshSection(section);
+                    } else if (e.target.classList.contains('draft-edit-btn')) {
+                        const draftId = e.target.getAttribute('data-draft-id');
+                        this.editDraft(draftId);
+                    } else if (e.target.classList.contains('draft-send-btn')) {
+                        const draftId = e.target.getAttribute('data-draft-id');
+                        this.sendDraft(draftId);
+                    } else if (e.target.classList.contains('draft-delete-btn')) {
+                        const draftId = e.target.getAttribute('data-draft-id');
+                        this.deleteDraft(draftId);
+                    } else if (e.target.classList.contains('scheduled-cancel-btn')) {
+                        const scheduledId = e.target.getAttribute('data-scheduled-id');
+                        this.cancelScheduledEmail(scheduledId);
+                    } else if (e.target.closest('.communication-message-item')) {
+                        const messageItem = e.target.closest('.communication-message-item');
+                        this.handleMessageClick(messageItem);
                     }
-                    this.animateElements();
-                }
+                });
+            }
 
-                bindEvents() {
-                    document.addEventListener('click', (e) => {
-                        if (e.target.classList.contains('communication-section-refresh')) {
-                            const section = e.target.getAttribute('data-section');
-                            this.refreshSection(section);
-                        }
-                    });
+            async refreshSection(section) {
+                const sectionElement = document.querySelector(`.communication-section[data-section="${section}"]`);
+                const contentElement = sectionElement.querySelector('.communication-section-content');
+                const refreshBtn = sectionElement.querySelector('.communication-section-refresh');
+                refreshBtn.style.transform = 'rotate(360deg)';
+                contentElement.innerHTML = this.getLoadingHTML();
 
-                    document.addEventListener('click', (e) => {
-                        if (e.target.closest('.communication-message-item')) {
-                            const messageItem = e.target.closest('.communication-message-item');
-                            this.handleMessageClick(messageItem);
-                        }
-                    });
-                }
+                try {
+                    let endpoint = '';
+                    switch(section) {
+                        case 'gmail':
+                            endpoint = '{{ path("communication_emails") }}';
+                            break;
+                        case 'drafts':
+                            endpoint = '{{ path("communication_drafts") }}';
+                            break;
+                        case 'scheduled':
+                            endpoint = '{{ path("communication_scheduled_emails") }}';
+                            break;
+                        case 'chat':
+                            endpoint = '{{ path("communication_chat_messages") }}';
+                            break;
+                    }
 
-                async refreshSection(section) {
-                    const sectionElement = document.querySelector(`[data-section="${section}"]`).closest('.communication-section');
-                    const contentElement = sectionElement.querySelector('.communication-section-content');
-                    const refreshBtn = sectionElement.querySelector('.communication-section-refresh');
-                    refreshBtn.style.transform = 'rotate(360deg)';
-                    contentElement.innerHTML = this.getLoadingHTML();
+                    const response = await fetch(endpoint);
+                    const data = await response.json();
 
-                    try {
-                        let endpoint = '';
+                    if (data.success) {
                         switch(section) {
                             case 'gmail':
-                                endpoint = '{{ path("communication_emails") }}';
+                                this.renderEmails(data.emails, contentElement);
+                                break;
+                            case 'drafts':
+                                this.renderDrafts(data.drafts, contentElement);
+                                break;
+                            case 'scheduled':
+                                this.renderScheduledEmails(data.scheduledEmails, contentElement);
                                 break;
                             case 'chat':
-                                endpoint = '{{ path("communication_chat_messages") }}';
+                                this.renderChatMessages(data.messages, contentElement);
                                 break;
                         }
-
-                        const response = await fetch(endpoint);
-                        const data = await response.json();
-
-                        if (data.success) {
-                            if (section === 'gmail') {
-                                this.renderEmails(data.emails, contentElement);
-                            } else if (section === 'chat') {
-                                this.renderChatMessages(data.messages, contentElement);
-                            }
-                        } else {
-                            contentElement.innerHTML = this.getErrorHTML('Erreur lors du chargement');
-                        }
-                    } catch (error) {
-                        console.error('Erreur:', error);
-                        contentElement.innerHTML = this.getErrorHTML('Erreur de connexion');
+                    } else {
+                        contentElement.innerHTML = this.getErrorHTML(data.error || 'Erreur lors du chargement');
                     }
-
-                    setTimeout(() => {
-                        refreshBtn.style.transform = '';
-                    }, 500);
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    contentElement.innerHTML = this.getErrorHTML('Erreur de connexion');
                 }
 
-                renderEmails(emails, container) {
-                    if (!emails || emails.length === 0) {
-                        container.innerHTML = this.getEmptyHTML('📧', 'Aucun email trouvé');
-                        return;
-                    }
+                setTimeout(() => {
+                    refreshBtn.style.transform = '';
+                }, 500);
+            }
 
-                    const emailsHTML = emails.map(email => `
-                        <div class="communication-message-item" data-type="email" data-id="${email.id}">
-                            <div class="communication-message-header">
-                                <div class="communication-message-from">${this.escapeHtml(email.from)}</div>
-                                <div class="communication-message-date">${this.formatDate(email.date)}</div>
-                            </div>
-                            <div class="communication-message-subject">${this.escapeHtml(email.subject)}</div>
-                            <div class="communication-message-snippet">${this.escapeHtml(email.snippet)}</div>
+            renderEmails(emails, container) {
+                if (!emails || emails.length === 0) {
+                    container.innerHTML = this.getEmptyHTML('📧', 'Aucun email trouvé');
+                    return;
+                }
+
+                const emailsHTML = emails.map(email => `
+                    <div class="communication-message-item" data-type="email" data-id="${email.id}">
+                        <div class="communication-message-header">
+                            <div class="communication-message-from">${this.escapeHtml(email.from)}</div>
+                            <div class="communication-message-date">${this.formatDate(email.date)}</div>
                         </div>
-                    `).join('');
+                        <div class="communication-message-subject">${this.escapeHtml(email.subject)}</div>
+                        <div class="communication-message-snippet">${this.escapeHtml(email.snippet)}</div>
+                    </div>
+                `).join('');
 
-                    container.innerHTML = emailsHTML;
+                container.innerHTML = emailsHTML;
+            }
+
+            renderDrafts(drafts, container) {
+                if (!drafts || drafts.length === 0) {
+                    container.innerHTML = this.getEmptyHTML('📝', 'Aucun brouillon trouvé');
+                    return;
                 }
 
-                renderChatMessages(messages, container) {
-                    if (!messages || messages.length === 0) {
-                        container.innerHTML = this.getEmptyHTML('💬', 'Aucun message de chat trouvé');
-                        return;
-                    }
-
-                    const messagesHTML = messages.map(message => `
-                        <div class="communication-message-item" data-type="chat" data-id="${message.id}">
-                            <div class="communication-message-header">
-                                <div class="communication-message-from">${this.escapeHtml(message.sender)}</div>
-                                <div class="communication-message-date">${this.formatDate(message.createTime)}</div>
-                            </div>
-                            <div class="communication-message-subject">📍 ${this.escapeHtml(message.space)}</div>
-                            <div class="communication-message-snippet">${this.escapeHtml(message.text)}</div>
+                const draftsHTML = drafts.map(draft => `
+                    <div class="communication-message-item" data-type="draft" data-id="${draft.id}">
+                        <div class="communication-message-header">
+                            <div class="communication-message-from">À: ${this.escapeHtml(draft.to)}</div>
+                            <div class="communication-message-date">${this.formatDate(draft.date)}</div>
                         </div>
-                    `).join('');
+                        <div class="communication-message-subject">${this.escapeHtml(draft.subject)}</div>
+                        <div class="draft-actions">
+                            <button class="draft-edit-btn" data-draft-id="${draft.id}">✏️ Modifier</button>
+                            <button class="draft-send-btn" data-draft-id="${draft.id}">📤 Envoyer</button>
+                            <button class="draft-delete-btn" data-draft-id="${draft.id}">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                `).join('');
 
-                    container.innerHTML = messagesHTML;
+                container.innerHTML = draftsHTML;
+            }
+
+            renderScheduledEmails(scheduledEmails, container) {
+                if (!scheduledEmails || scheduledEmails.length === 0) {
+                    container.innerHTML = this.getEmptyHTML('⏰', 'Aucun email programmé');
+                    return;
                 }
 
-                async updateStatus() {
-                    try {
-                        const response = await fetch('{{ path("communication_status") }}');
-                        const data = await response.json();
-                        const emailResponse = await fetch('{{ path("communication_emails") }}');
-                        const emailData = await emailResponse.json();
-                        const chatResponse = await fetch('{{ path("communication_chat_messages") }}');
-                        const chatData = await chatResponse.json();
-                        if (emailData.success) {
-                            this.updateCounter('gmail', emailData.emails.length);
-                        }
-                        if (chatData.success) {
-                            this.updateCounter('chat', chatData.messages.length);
-                        }
-                    } catch (error) {
-                        console.error('Erreur lors de la mise à jour du statut:', error);
-                    }
+                const scheduledHTML = scheduledEmails.map(email => `
+                    <div class="communication-message-item scheduled-item" data-type="scheduled" data-id="${email.id}">
+                        <div class="communication-message-header">
+                            <div class="communication-message-from">À: ${this.escapeHtml(email.to)}</div>
+                            <div class="communication-message-date">📅 ${this.formatDate(email.scheduledTime)}</div>
+                        </div>
+                        <div class="communication-message-subject">${this.escapeHtml(email.subject)}</div>
+                        <div class="communication-message-status">Status: ${email.status}</div>
+                        <div class="scheduled-actions">
+                            <button class="scheduled-cancel-btn" data-scheduled-id="${email.id}">❌ Annuler</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML = scheduledHTML;
+            }
+
+            renderChatMessages(messages, container) {
+                if (!messages || messages.length === 0) {
+                    container.innerHTML = this.getEmptyHTML('💬', 'Aucun message de chat trouvé');
+                    return;
                 }
 
-                updateCounter(type, count) {
-                    const counterElement = document.querySelector(`[data-counter="${type}"]`);
-                    if (counterElement) {
-                        counterElement.textContent = count;
-                        counterElement.style.transform = 'scale(1.2)';
-                        setTimeout(() => {
-                            counterElement.style.transform = '';
-                        }, 300);
-                    }
+                const messagesHTML = messages.map(message => `
+                    <div class="communication-message-item" data-type="chat" data-id="${message.id}">
+                        <div class="communication-message-header">
+                            <div class="communication-message-from">${this.escapeHtml(message.sender)}</div>
+                            <div class="communication-message-date">${this.formatDate(message.createTime)}</div>
+                        </div>
+                        <div class="communication-message-subject">📍 ${this.escapeHtml(message.space)}</div>
+                        <div class="communication-message-snippet">${this.escapeHtml(message.text)}</div>
+                    </div>
+                `).join('');
+
+                container.innerHTML = messagesHTML;
+            }
+
+            async editDraft(draftId) {
+                window.location.href = `{{ path('communication_compose') }}?draft=${draftId}`;
+            }
+
+            async deleteDraft(draftId) {
+                if (!confirm('Êtes-vous sûr de vouloir supprimer ce brouillon ?')) {
+                    return;
                 }
-
-                startAutoRefresh() {
-                    this.refreshIntervals.main = setInterval(() => {
-                        this.refreshSection('gmail');
-                        this.refreshSection('chat');
-                        this.updateStatus();
-                    }, 300000);
-                }
-
-                handleMessageClick(messageItem) {
-                    messageItem.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        messageItem.style.transform = '';
-                    }, 150);
-
-                    const type = messageItem.getAttribute('data-type');
-                    const id = messageItem.getAttribute('data-id');
-                    console.log(`Clic sur ${type} avec ID: ${id}`);
-                }
-
-                animateElements() {
-                    const elements = document.querySelectorAll('.communication-section, .communication-status-card');
-                    elements.forEach((element, index) => {
-                        element.style.opacity = '0';
-                        element.style.transform = 'translateY(20px)';
-                        setTimeout(() => {
-                            element.style.transition = 'all 0.6s ease';
-                            element.style.opacity = '1';
-                            element.style.transform = 'translateY(0)';
-                        }, index * 100);
+                try {
+                    const response = await fetch(`{{ path('communication_delete_draft', {draftId: '__ID__'}) }}`.replace('__ID__', draftId), {
+                        method: 'DELETE'
                     });
-                }
-
-                getLoadingHTML() {
-                    return `
-                        <div class="communication-loading">
-                            <div class="communication-loading-icon">⟳</div>
-                            <div>Chargement...</div>
-                        </div>
-                    `;
-                }
-
-                getEmptyHTML(icon, message) {
-                    return `
-                        <div class="communication-empty">
-                            <div class="communication-empty-icon">${icon}</div>
-                            <div>${message}</div>
-                        </div>
-                    `;
-                }
-
-                getErrorHTML(message) {
-                    return `
-                        <div class="communication-empty">
-                            <div class="communication-empty-icon">⚠️</div>
-                            <div>${message}</div>
-                        </div>
-                    `;
-                }
-
-                escapeHtml(text) {
-                    if (!text) return '';
-                    const div = document.createElement('div');
-                    div.textContent = text;
-                    return div.innerHTML;
-                }
-
-                formatDate(dateString) {
-                    if (!dateString) return '';
-                    try {
-                        const date = new Date(dateString);
-                        return date.toLocaleDateString('fr-FR', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
-                    } catch (error) {
-                        return dateString;
+                    const result = await response.json();
+                    if (result.success) {
+                        this.showNotification('Brouillon supprimé', 'success');
+                        this.refreshSection('drafts');
+                    } else {
+                        this.showNotification(result.error || 'Erreur lors de la suppression', 'error');
                     }
-                }
-
-                destroy() {
-                    Object.values(this.refreshIntervals).forEach(interval => {
-                        clearInterval(interval);
-                    });
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    this.showNotification('Erreur de connexion', 'error');
                 }
             }
 
-            document.addEventListener('DOMContentLoaded', () => {
-                window.communicationManager = new CommunicationManager();
-            });
-
-            window.addEventListener('beforeunload', () => {
-                if (window.communicationManager) {
-                    window.communicationManager.destroy();
+            async sendDraft(draftId) {
+                if (!confirm('Envoyer ce brouillon maintenant ?')) {
+                    return;
                 }
-            });
-        </script>
-    {% endblock %}
+                try {
+                    const response = await fetch(`{{ path('communication_send_draft', {draftId: '__ID__'}) }}`.replace('__ID__', draftId), {
+                        method: 'POST'
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        this.showNotification('Email envoyé avec succès', 'success');
+                        this.refreshSection('drafts');
+                        this.refreshSection('gmail');
+                    } else {
+                        this.showNotification(result.error || 'Erreur lors de l\'envoi', 'error');
+                    }
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    this.showNotification('Erreur de connexion', 'error');
+                }
+            }
+
+            async cancelScheduledEmail(scheduledId) {
+                if (!confirm('Annuler cet email programmé ?')) {
+                    return;
+                }
+                try {
+                    const response = await fetch(`{{ path('communication_cancel_scheduled', {scheduledId: '__ID__'}) }}`.replace('__ID__', scheduledId), {
+                        method: 'DELETE'
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        this.showNotification('Email programmé annulé', 'success');
+                        this.refreshSection('scheduled');
+                    } else {
+                        this.showNotification(result.error || 'Erreur lors de l\'annulation', 'error');
+                    }
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    this.showNotification('Erreur de connexion', 'error');
+                }
+            }
+
+            handleMessageClick(messageItem) {
+                const type = messageItem.getAttribute('data-type');
+                const id = messageItem.getAttribute('data-id');
+
+                if (type === 'email') {
+                    window.location.href = `{{ path('communication_view_email', {messageId: '__ID__'}) }}`.replace('__ID__', id);
+                } else if (type === 'draft') {
+                    this.editDraft(id);
+                }
+            }
+
+            startAutoRefresh() {
+                this.refreshIntervals.gmail = setInterval(() => {
+                    this.refreshSection('gmail');
+                }, 60000);
+                this.refreshIntervals.drafts = setInterval(() => {
+                    this.refreshSection('drafts');
+                }, 120000);
+                this.refreshIntervals.scheduled = setInterval(() => {
+                    this.refreshSection('scheduled');
+                }, 30000);
+                this.refreshIntervals.chat = setInterval(() => {
+                    this.refreshSection('chat');
+                }, 300000);
+            }
+
+            updateStatus() {
+                const statusElement = document.querySelector('.communication-status');
+                if (statusElement) {
+                    statusElement.innerHTML = '<span class="status-online">🟢 Connecté</span>';
+                }
+            }
+
+            animateElements() {
+                const elements = document.querySelectorAll('.communication-section, .communication-status-card');
+                elements.forEach((element, index) => {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        element.style.transition = 'all 0.6s ease';
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+            }
+
+            getLoadingHTML() {
+                return `
+                    <div class="communication-loading">
+                        <div class="communication-loading-icon">⟳</div>
+                        <div>Chargement...</div>
+                    </div>
+                `;
+            }
+
+            getEmptyHTML(icon, message) {
+                return `
+                    <div class="communication-empty">
+                        <div class="communication-empty-icon">${icon}</div>
+                        <div>${message}</div>
+                    </div>
+                `;
+            }
+
+            getErrorHTML(message) {
+                return `
+                    <div class="communication-empty">
+                        <div class="communication-empty-icon">⚠️</div>
+                        <div>${message}</div>
+                    </div>
+                `;
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+                notification.textContent = message;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 4000);
+            }
+
+            escapeHtml(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            formatDate(dateString) {
+                if (!dateString) return '';
+                try {
+                    const date = new Date(dateString);
+                    const now = new Date();
+                    const diffTime = Math.abs(now - date);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (diffDays === 1) {
+                        return 'Aujourd\'hui ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                    } else if (diffDays === 2) {
+                        return 'Hier ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                    } else if (diffDays <= 7) {
+                        return date.toLocaleDateString('fr-FR', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
+                    } else {
+                        return date.toLocaleDateString('fr-FR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+                } catch (error) {
+                    return dateString;
+                }
+            }
+
+            destroy() {
+                Object.values(this.refreshIntervals).forEach(interval => {
+                    clearInterval(interval);
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.communicationManager = new CommunicationManager();
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (window.communicationManager) {
+                window.communicationManager.destroy();
+            }
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
 <div class="communication-main-container">
-    <!-- Navigation principale -->
     <nav class="communication-sidebar">
         <div class="communication-nav-header">
             <h2 class="communication-nav-title">Menu</h2>
@@ -271,31 +421,31 @@
                 </a>
             </li>
             <li class="communication-nav-item">
-                <a href="{{ path('app_invoice_index')}}" class="communication-nav-link">
+                <a href="{{ path('app_invoice_index') }}" class="communication-nav-link">
                     <span class="communication-nav-icon">{{ ux_icon('ph:invoice') }}</span>
                     <span class="communication-nav-text">Factures</span>
                 </a>
             </li>
             <li class="communication-nav-item">
-                <a href="{{path('app_client_index')}}" class="communication-nav-link">
+                <a href="{{ path('app_client_index') }}" class="communication-nav-link">
                     <span class="communication-nav-icon">{{ ux_icon('ph:users') }}</span>
                     <span class="communication-nav-text">Clients</span>
                 </a>
             </li>
             <li class="communication-nav-item">
-                <a href="{{path('app_company_index')}}" class="communication-nav-link">
+                <a href="{{ path('app_company_index') }}" class="communication-nav-link">
                     <span class="communication-nav-icon">{{ ux_icon('ph:buildings') }}</span>
                     <span class="communication-nav-text">Entreprises</span>
                 </a>
             </li>
             <li class="communication-nav-item">
-                <a href="{{path('app_project_index')}}" class="communication-nav-link">
+                <a href="{{ path('app_project_index') }}" class="communication-nav-link">
                     <span class="communication-nav-icon">{{ ux_icon('ph:folder') }}</span>
                     <span class="communication-nav-text">Projets</span>
                 </a>
             </li>
             <li class="communication-nav-item">
-                <a href="#" class="communication-nav-link">
+                <a href="{{ path('app_invoice_stats') }}" class="communication-nav-link">
                     <span class="communication-nav-icon">{{ ux_icon('ph:chart-line') }}</span>
                     <span class="communication-nav-text">Statistiques</span>
                 </a>
@@ -357,7 +507,7 @@
 
             <div class="communication-content-grid">
                 <!-- Section Gmail -->
-                <div class="communication-section">
+                <div class="communication-section" data-section="gmail">
                     <div class="communication-section-header">
                         <h2 class="communication-section-title">
                             <span class="communication-section-icon">📥</span>
@@ -386,8 +536,36 @@
                     </div>
                 </div>
 
+                <!-- Section Brouillons -->
+                <div class="communication-section" data-section="drafts">
+                    <div class="communication-section-header">
+                        <h2 class="communication-section-title">
+                            <span class="communication-section-icon">📝</span>
+                            Brouillons
+                        </h2>
+                        <button class="communication-section-refresh" data-section="drafts" title="Actualiser">⟳</button>
+                    </div>
+                    <div class="communication-section-content">
+                        {{ include('communication/_loading.html.twig') }}
+                    </div>
+                </div>
+
+                <!-- Section Emails programmés -->
+                <div class="communication-section" data-section="scheduled">
+                    <div class="communication-section-header">
+                        <h2 class="communication-section-title">
+                            <span class="communication-section-icon">⏰</span>
+                            Emails programmés
+                        </h2>
+                        <button class="communication-section-refresh" data-section="scheduled" title="Actualiser">⟳</button>
+                    </div>
+                    <div class="communication-section-content">
+                        {{ include('communication/_loading.html.twig') }}
+                    </div>
+                </div>
+
                 <!-- Section Google Chat -->
-                <div class="communication-section">
+                <div class="communication-section" data-section="chat">
                     <div class="communication-section-header">
                         <h2 class="communication-section-title">
                             <span class="communication-section-icon">💬</span>

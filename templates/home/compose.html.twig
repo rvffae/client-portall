@@ -1,0 +1,499 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Composer un email{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        class EmailComposer {
+            constructor() {
+                this.init();
+                this.attachments = [];
+                this.isDraft = false;
+                this.draftId = null;
+            }
+
+            init() {
+                this.bindEvents();
+                this.initializeEditor();
+                this.setupAutoSave();
+            }
+
+            bindEvents() {
+                // Envoi du formulaire
+                document.getElementById('email-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleSubmit();
+                });
+
+                // Sauvegarde en brouillon
+                document.getElementById('save-draft-btn').addEventListener('click', () => {
+                    this.saveDraft();
+                });
+
+                // Programmation d'envoi
+                document.getElementById('schedule-btn').addEventListener('click', () => {
+                    this.showScheduleModal();
+                });
+
+                // Gestion des pièces jointes
+                document.getElementById('attachment-input').addEventListener('change', (e) => {
+                    this.handleAttachments(e.target.files);
+                });
+
+                // Bouton d'ajout de pièce jointe
+                document.getElementById('attachment-btn').addEventListener('click', () => {
+                    document.getElementById('attachment-input').click();
+                });
+
+                // Suppression des pièces jointes
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('remove-attachment')) {
+                        const index = parseInt(e.target.dataset.index);
+                        this.removeAttachment(index);
+                    }
+                });
+
+                // Modal de programmation
+                document.getElementById('confirm-schedule').addEventListener('click', () => {
+                    this.scheduleEmail();
+                });
+
+                document.getElementById('cancel-schedule').addEventListener('click', () => {
+                    this.hideScheduleModal();
+                });
+
+                // CC/BCC toggle
+                document.getElementById('cc-bcc-toggle').addEventListener('click', () => {
+                    this.toggleCcBcc();
+                });
+            }
+
+            initializeEditor() {
+                // Initialisation de l'éditeur riche (vous pouvez utiliser TinyMCE, CKEditor, etc.)
+                const bodyTextarea = document.getElementById('email-body');
+                
+                // Configuration basique d'un éditeur
+                if (typeof tinymce !== 'undefined') {
+                    tinymce.init({
+                        selector: '#email-body',
+                        height: 400,
+                        plugins: 'link image code lists',
+                        toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image | code',
+                        setup: (editor) => {
+                            editor.on('change', () => {
+                                this.triggerAutoSave();
+                            });
+                        }
+                    });
+                }
+            }
+
+            async handleSubmit() {
+                const formData = this.getFormData();
+                
+                if (!this.validateForm(formData)) {
+                    return;
+                }
+
+                this.showLoading('Envoi en cours...');
+
+                try {
+                    const response = await fetch('{{ path("communication_send_email") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        this.showSuccess('Email envoyé avec succès !');
+                        setTimeout(() => {
+                            window.location.href = '{{ path("communication_index") }}';
+                        }, 2000);
+                    } else {
+                        this.showError(result.error || 'Erreur lors de l\'envoi');
+                    }
+                } catch (error) {
+                    this.showError('Erreur de connexion');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            async saveDraft() {
+                const formData = this.getFormData();
+                
+                this.showLoading('Sauvegarde...');
+
+                try {
+                    const url = this.draftId 
+                        ? `{{ path("communication_update_draft", {draftId: "__ID__"}) }}`.replace('__ID__', this.draftId)
+                        : '{{ path("communication_create_draft") }}';
+                    
+                    const method = this.draftId ? 'PUT' : 'POST';
+
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        this.isDraft = true;
+                        this.draftId = result.draftId;
+                        this.showSuccess('Brouillon sauvegardé');
+                    } else {
+                        this.showError(result.error || 'Erreur lors de la sauvegarde');
+                    }
+                } catch (error) {
+                    this.showError('Erreur de connexion');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            setupAutoSave() {
+                this.autoSaveTimer = null;
+                
+                // Auto-sauvegarde toutes les 30 secondes
+                setInterval(() => {
+                    if (this.hasChanges()) {
+                        this.saveDraft();
+                    }
+                }, 30000);
+
+                // Auto-sauvegarde déclenchée par les changements
+                const inputs = document.querySelectorAll('#email-form input, #email-form textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('input', () => {
+                        this.triggerAutoSave();
+                    });
+                });
+            }
+
+            triggerAutoSave() {
+                clearTimeout(this.autoSaveTimer);
+                this.autoSaveTimer = setTimeout(() => {
+                    if (this.hasChanges()) {
+                        this.saveDraft();
+                    }
+                }, 5000); // 5 secondes après le dernier changement
+            }
+
+            hasChanges() {
+                const formData = this.getFormData();
+                return formData.to || formData.subject || formData.body || 
+                       formData.cc || formData.bcc || this.attachments.length > 0;
+            }
+
+            handleAttachments(files) {
+                Array.from(files).forEach(file => {
+                    if (file.size > 25 * 1024 * 1024) { // 25MB max
+                        this.showError(`Le fichier ${file.name} est trop volumineux (max 25MB)`);
+                        return;
+                    }
+
+                    this.attachments.push({
+                        file: file,
+                        name: file.name,
+                        size: file.size,
+                        type: file.type
+                    });
+                });
+
+                this.updateAttachmentsList();
+                document.getElementById('attachment-input').value = '';
+            }
+
+            removeAttachment(index) {
+                this.attachments.splice(index, 1);
+                this.updateAttachmentsList();
+            }
+
+            updateAttachmentsList() {
+                const container = document.getElementById('attachments-list');
+                
+                if (this.attachments.length === 0) {
+                    container.innerHTML = '';
+                    return;
+                }
+
+                const html = this.attachments.map((attachment, index) => `
+                    <div class="attachment-item">
+                        <span class="attachment-icon">📎</span>
+                        <span class="attachment-name">${attachment.name}</span>
+                        <span class="attachment-size">(${this.formatFileSize(attachment.size)})</span>
+                        <button type="button" class="remove-attachment" data-index="${index}">×</button>
+                    </div>
+                `).join('');
+
+                container.innerHTML = html;
+            }
+
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            showScheduleModal() {
+                document.getElementById('schedule-modal').style.display = 'block';
+                
+                // Définir la date/heure minimum (maintenant + 1 minute)
+                const now = new Date();
+                now.setMinutes(now.getMinutes() + 1);
+                const minDateTime = now.toISOString().slice(0, 16);
+                document.getElementById('scheduled-time').min = minDateTime;
+            }
+
+            hideScheduleModal() {
+                document.getElementById('schedule-modal').style.display = 'none';
+            }
+
+            async scheduleEmail() {
+                const scheduledTime = document.getElementById('scheduled-time').value;
+                
+                if (!scheduledTime) {
+                    this.showError('Veuillez sélectionner une date et heure');
+                    return;
+                }
+
+                const formData = this.getFormData();
+                formData.scheduledTime = scheduledTime;
+
+                if (!this.validateForm(formData)) {
+                    return;
+                }
+
+                this.showLoading('Programmation en cours...');
+
+                try {
+                    const response = await fetch('{{ path("communication_send_email") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        this.showSuccess('Email programmé avec succès !');
+                        this.hideScheduleModal();
+                        setTimeout(() => {
+                            window.location.href = '{{ path("communication_index") }}';
+                        }, 2000);
+                    } else {
+                        this.showError(result.error || 'Erreur lors de la programmation');
+                    }
+                } catch (error) {
+                    this.showError('Erreur de connexion');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            toggleCcBcc() {
+                const ccBccFields = document.getElementById('cc-bcc-fields');
+                const isVisible = ccBccFields.style.display !== 'none';
+                ccBccFields.style.display = isVisible ? 'none' : 'block';
+                
+                const toggleText = document.getElementById('cc-bcc-toggle-text');
+                toggleText.textContent = isVisible ? 'Ajouter Cc/Bcc' : 'Masquer Cc/Bcc';
+            }
+
+            getFormData() {
+                return {
+                    to: document.getElementById('email-to').value.trim(),
+                    cc: document.getElementById('email-cc').value.trim(),
+                    bcc: document.getElementById('email-bcc').value.trim(),
+                    subject: document.getElementById('email-subject').value.trim(),
+                    body: this.getEmailBody(),
+                    attachments: this.attachments
+                };
+            }
+
+            getEmailBody() {
+                // Si TinyMCE est initialisé
+                if (typeof tinymce !== 'undefined' && tinymce.get('email-body')) {
+                    return tinymce.get('email-body').getContent();
+                }
+                return document.getElementById('email-body').value;
+            }
+
+            validateForm(formData) {
+                if (!formData.to) {
+                    this.showError('Veuillez saisir au moins un destinataire');
+                    return false;
+                }
+
+                if (!formData.subject) {
+                    this.showError('Veuillez saisir un objet');
+                    return false;
+                }
+
+                // Validation des emails
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const emails = formData.to.split(',').map(e => e.trim());
+                
+                for (let email of emails) {
+                    if (!emailRegex.test(email)) {
+                        this.showError(`Email invalide: ${email}`);
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            showLoading(message) {
+                const loader = document.getElementById('loading-overlay');
+                loader.querySelector('.loading-text').textContent = message;
+                loader.style.display = 'flex';
+            }
+
+            hideLoading() {
+                document.getElementById('loading-overlay').style.display = 'none';
+            }
+
+            showSuccess(message) {
+                this.showNotification(message, 'success');
+            }
+
+            showError(message) {
+                this.showNotification(message, 'error');
+            }
+
+            showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 4000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.emailComposer = new EmailComposer();
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+<div class="compose-container">
+    <div class="compose-header">
+        <h1>Composer un email</h1>
+        <div class="compose-actions">
+            <a href="{{ path('communication_index') }}" class="btn btn-secondary">
+                ← Retour
+            </a>
+        </div>
+    </div>
+
+    <form id="email-form" class="compose-form">
+        <div class="compose-field">
+            <label for="email-to">À :</label>
+            <input type="email" id="email-to" name="to" multiple placeholder="destinataire@example.com" required>
+            <button type="button" id="cc-bcc-toggle" class="cc-bcc-toggle">
+                <span id="cc-bcc-toggle-text">Ajouter Cc/Bcc</span>
+            </button>
+        </div>
+
+        <div id="cc-bcc-fields" class="cc-bcc-fields" style="display: none;">
+            <div class="compose-field">
+                <label for="email-cc">Cc :</label>
+                <input type="email" id="email-cc" name="cc" multiple placeholder="copie@example.com">
+            </div>
+            <div class="compose-field">
+                <label for="email-bcc">Bcc :</label>
+                <input type="email" id="email-bcc" name="bcc" multiple placeholder="copie.cachee@example.com">
+            </div>
+        </div>
+
+        <div class="compose-field">
+            <label for="email-subject">Objet :</label>
+            <input type="text" id="email-subject" name="subject" placeholder="Objet de l'email" required>
+        </div>
+
+        <div class="compose-field">
+            <div class="compose-toolbar">
+                <button type="button" id="attachment-btn" class="toolbar-btn" title="Ajouter une pièce jointe">
+                    📎 Pièce jointe
+                </button>
+                <input type="file" id="attachment-input" multiple style="display: none;" accept="*/*">
+            </div>
+            <div id="attachments-list" class="attachments-list"></div>
+        </div>
+
+        <div class="compose-field">
+            <label for="email-body">Message :</label>
+            <textarea id="email-body" name="body" rows="15" placeholder="Votre message..."></textarea>
+        </div>
+
+        <div class="compose-footer">
+            <div class="compose-main-actions">
+                <button type="submit" class="btn btn-primary">
+                    📤 Envoyer
+                </button>
+                <button type="button" id="schedule-btn" class="btn btn-secondary">
+                    ⏰ Programmer
+                </button>
+            </div>
+            <div class="compose-secondary-actions">
+                <button type="button" id="save-draft-btn" class="btn btn-outline">
+                    💾 Sauvegarder en brouillon
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Modal de programmation -->
+    <div id="schedule-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Programmer l'envoi</h3>
+            </div>
+            <div class="modal-body">
+                <div class="field">
+                    <label for="scheduled-time">Date et heure d'envoi :</label>
+                    <input type="datetime-local" id="scheduled-time" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel-schedule" class="btn btn-secondary">Annuler</button>
+                <button type="button" id="confirm-schedule" class="btn btn-primary">Programmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay de chargement -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Chargement...</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

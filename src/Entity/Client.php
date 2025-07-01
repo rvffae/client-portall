@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -48,6 +50,24 @@ class Client
 
     #[ORM\Column(nullable: true)]
     private ?\DateTime $updated_at = null;
+
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'clients')]
+    private Collection $users;
+
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'useros')]
+    private Collection $useros;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+        $this->useros = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -201,6 +221,57 @@ class Client
     public function setUpdatedAt(?\DateTime $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeClient($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUseros(): Collection
+    {
+        return $this->useros;
+    }
+
+    public function addUsero(User $usero): static
+    {
+        if (!$this->useros->contains($usero)) {
+            $this->useros->add($usero);
+        }
+
+        return $this;
+    }
+
+    public function removeUsero(User $usero): static
+    {
+        $this->useros->removeElement($usero);
 
         return $this;
     }
