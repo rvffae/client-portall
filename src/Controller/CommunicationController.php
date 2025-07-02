@@ -379,13 +379,20 @@ class CommunicationController extends AbstractController
         }
 
         try {
-            $email = $this->googleApiService->getEmail($messageId);
+            $email = $this->googleApiService->getGmailMessageById($messageId);
+
+            if ($email === null) {
+                throw new \Exception('Email not found');
+            }
+
             return $this->render('home/view_email.html.twig', [
                 'email' => $email,
             ]);
+
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors de la récupération de l\'email: ' . $e->getMessage());
             return $this->redirectToRoute('communication_index');
         }
     }
+
 }

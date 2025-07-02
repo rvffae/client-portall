@@ -44,7 +44,7 @@
             </div>
 
             <!-- Graphiques -->
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">
@@ -66,15 +66,23 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Nouveau graphique des entreprises -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Répartition du Chiffre d'Affaires par Entreprise</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="companyRevenueChart" height="80"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-
-
-
-
-
 
 <!-- Chart.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
@@ -123,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         backgroundColor: colors.primary + '20',
                         borderWidth: 3,
                         fill: true,
-                        tension: 0.4,
+                        tension: 0.5,
                         pointBackgroundColor: colors.primary,
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2,
@@ -180,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
             new Chart(yearlyCtx, {
-                type: 'doughnut',
+                type: 'pie',
                 data: {
                     labels: yearlyData.labels || ['2024'],
                     datasets: [{
@@ -209,21 +217,116 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Erreur lors du chargement des données annuelles:', error);
-            // Graphique de fallback
-            const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
-            new Chart(yearlyCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['2024'],
-                    datasets: [{
-                        data: [50000],
-                        backgroundColor: [colors.primary],
-                        borderWidth: 2,
-                        borderColor: '#fff'
-                    }]
-                }
-            });
         });
+
+    // NOUVEAU : Graphique des entreprises
+    loadCompanyRevenueChart();
 });
+
+// Fonction pour charger le graphique des entreprises
+async function loadCompanyRevenueChart() {
+    try {
+        const response = await fetch('{{ path("app_invoice_company_revenue_data") }}');
+        const data = await response.json();
+        
+        if (data.error) {
+            console.error('Erreur:', data.error);
+            // Afficher un message d'erreur dans le graphique
+            const ctx = document.getElementById('companyRevenueChart').getContext('2d');
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#dc3545';
+            ctx.textAlign = 'center';
+            ctx.fillText('Erreur lors du chargement des données', ctx.canvas.width / 2, ctx.canvas.height / 2);
+            return;
+        }
+
+        // Couleurs pour les entreprises
+        const companyColors = [
+            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', 
+            '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384',
+            '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+        ];
+
+        const ctx = document.getElementById('companyRevenueChart').getContext('2d');
+        
+        new Chart(ctx, {
+            type: 'doughnut', // Utilise 'doughnut' pour un style plus moderne
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Chiffre d\'affaires par entreprise',
+                    data: data.data,
+                    backgroundColor: companyColors.slice(0, data.labels.length),
+                    borderWidth: 3,
+                    borderColor: '#fff',
+                    hoverBorderWidth: 5,
+                    hoverBorderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: '50%', // Pour le style doughnut
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Qui contribue le plus à votre chiffre d\'affaires ?',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        padding: 20
+                    },
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#fff',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value.toLocaleString('fr-FR', {
+                                    style: 'currency',
+                                    currency: 'EUR'
+                                })} (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateRotate: true,
+                    animateScale: true
+                }
+            }
+        });
+        
+        console.log('Graphique des entreprises chargé:', data.debug);
+        
+    } catch (error) {
+        console.error('Erreur lors du chargement des données des entreprises:', error);
+        
+        // Afficher un message d'erreur dans le canvas
+        const ctx = document.getElementById('companyRevenueChart').getContext('2d');
+        ctx.font = '16px Arial';
+        ctx.fillStyle = '#dc3545';
+        ctx.textAlign = 'center';
+        ctx.fillText('Impossible de charger les données des entreprises', ctx.canvas.width / 2, ctx.canvas.height / 2 - 10);
+        ctx.fillText('Vérifiez la console pour plus de détails', ctx.canvas.width / 2, ctx.canvas.height / 2 + 10);
+    }
+}
 </script>
 {% endblock %}

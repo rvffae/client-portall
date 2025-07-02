@@ -419,6 +419,48 @@ class GoogleApiService
         $request = $this->requestStack->getCurrentRequest();
         return $request ? $request->getSession() : null;
     }
+
+    public function getGmailMessageById(string $messageId): ?array
+    {
+        if (!$this->isAuthenticated()) {
+            return null;
+        }
+
+        try {
+            $service = $this->getGmailService();
+            $messageDetails = $service->users_messages->get('me', $messageId);
+            $headers = $messageDetails->getPayload()->getHeaders();
+
+            $subject = '';
+            $from = '';
+            $date = '';
+
+            foreach ($headers as $header) {
+                switch ($header->getName()) {
+                    case 'Subject':
+                        $subject = $header->getValue();
+                        break;
+                    case 'From':
+                        $from = $header->getValue();
+                        break;
+                    case 'Date':
+                        $date = $header->getValue();
+                        break;
+                }
+            }
+
+            return [
+                'id' => $messageDetails->getId(),
+                'subject' => $subject,
+                'from' => $from,
+                'date' => $date,
+                'snippet' => $messageDetails->getSnippet()
+            ];
+        } catch (\Exception $e) {
+            $this->logger->error('Error fetching Gmail message by ID: ' . $e->getMessage());
+            return null;
+        }
+    }
 }
 
 function base64url_encode($data)

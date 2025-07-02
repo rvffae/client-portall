@@ -54,15 +54,6 @@ final class InvoiceController extends AbstractController
                 $data[] = (float) $item['total_amount'];
             }
             
-            // Si pas de données, retourner des données de test
-            if (empty($data)) {
-                return new JsonResponse([
-                    'labels' => ['Jan 2024', 'Fév 2024', 'Mar 2024'],
-                    'data' => [1500, 2300, 1800],
-                    'debug' => 'Aucune donnée trouvée, données de test utilisées'
-                ]);
-            }
-            
             return new JsonResponse([
                 'labels' => $labels,
                 'data' => $data,
@@ -86,7 +77,7 @@ final class InvoiceController extends AbstractController
             
             $labels = [];
             $data = [];
-            $backgroundColors = ['#007bff', '#28a745', '#17a2b8', '#ffc107', '#dc3545'];
+            $backgroundColors = ['#CCCCFF', '#6495ED', '#40E0D0', '#9FE2BF', '#DE3163', '#FF7F50', '#FFBF00', '#DFFF00' ];
             
             foreach ($yearlyData as $index => $item) {
                 $labels[] = (string) $item['year'];
@@ -103,6 +94,42 @@ final class InvoiceController extends AbstractController
             return new JsonResponse([
                 'error' => $e->getMessage(),
                 'labels' => ['2024'],
+                'data' => [50000]
+            ]);
+        }
+    }
+
+    // NOUVELLE MÉTHODE : Chiffre d'affaires par entreprise
+    #[Route('/api/company-revenue-data', name: 'app_invoice_company_revenue_data', methods: ['GET'])]
+    public function getCompanyRevenueData(InvoiceRepository $invoiceRepository): JsonResponse
+    {
+        try {
+            $companyData = $invoiceRepository->getCompanyRevenue();
+            
+            $labels = [];
+            $data = [];
+            $backgroundColors = [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', 
+                '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384',
+                '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+            ];
+            
+            foreach ($companyData as $item) {
+                $labels[] = $item['company_name'];
+                $data[] = (float) $item['total_amount'];
+            }
+            
+            return new JsonResponse([
+                'labels' => $labels,
+                'data' => $data,
+                'backgroundColor' => array_slice($backgroundColors, 0, count($data)),
+                'debug' => count($companyData) . ' entreprises trouvées'
+            ]);
+            
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'error' => $e->getMessage(),
+                'labels' => ['Entreprise Test'],
                 'data' => [50000]
             ]);
         }

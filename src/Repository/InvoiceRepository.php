@@ -96,6 +96,23 @@ class InvoiceRepository extends ServiceEntityRepository
     }
 
     /**
+     * NOUVELLE MÉTHODE : Récupère le chiffre d'affaires par entreprise
+     */
+    public function getCompanyRevenue(): array
+    {
+        $qb = $this->createQueryBuilder('i')
+            ->select('c.name as company_name, SUM(i.amount) as total_amount')
+            ->innerJoin('i.project', 'p')
+            ->innerJoin('p.companies', 'c')
+            ->where('i.amount IS NOT NULL')
+            ->andWhere('i.amount > 0')
+            ->groupBy('c.id', 'c.name')
+            ->orderBy('total_amount', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * Récupère les statistiques générales
      */
     public function getRevenueStats(): array

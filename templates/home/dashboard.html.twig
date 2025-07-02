@@ -532,20 +532,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Erreur lors du chargement des données annuelles:', error);
-            // Graphique de fallback
-            const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
-            new Chart(yearlyCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['2024'],
-                    datasets: [{
-                        data: [50000],
-                        backgroundColor: [colors.primary],
-                        borderWidth: 2,
-                        borderColor: '#fff'
-                    }]
-                }
-            });
         });
 });
 </script>
