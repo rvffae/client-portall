@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             document.getElementById('total-revenue').textContent = formatMoney(totalRevenue);
             document.getElementById('avg-amount').textContent = formatMoney(avgAmount);
-            document.getElementById('total-invoices').textContent = data.data.length + ' mois';
+            document.getElementById('total-invoices').textContent = data.data.length + ' mois différents';
         })
         .catch(error => {
             console.error('Erreur lors du chargement des données:', error);
