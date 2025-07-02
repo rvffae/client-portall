@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         backgroundColor: colors.primary + '20',
                         borderWidth: 3,
                         fill: true,
-                        tension: 0.5,
+                        tension: 0,
                         pointBackgroundColor: colors.primary,
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2,
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
             new Chart(yearlyCtx, {
-                type: 'pie',
+                type: 'doughnut',
                 data: {
                     labels: yearlyData.labels || ['2024'],
                     datasets: [{
