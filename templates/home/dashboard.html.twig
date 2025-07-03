@@ -88,38 +88,36 @@
                 <div class="dashboard-stat-icon">👥</div>
                 <div class="dashboard-stat-content">
                     <h3 class="dashboard-stat-title">Clients</h3>
-                    <p class="dashboard-stat-number">56</p>
-                    <span class="dashboard-stat-change dashboard-stat-positive">+12%</span>
+                    <p class="dashboard-stat-number">{{ stats.totalClients }}</p>
+                    <span class="dashboard-stat-change {{ stats.clientGrowthPercent >= 0 ? 'dashboard-stat-positive' : 'dashboard-stat-negative' }}">
+                        {{ stats.clientGrowthPercent >= 0 ? '+' : '' }}{{ stats.clientGrowthPercent }}%
+                    </span>
                 </div>
             </div>
 
             <div class="dashboard-stat-card dashboard-stat-card-success">
                 <div class="dashboard-stat-icon">💰</div>
                 <div class="dashboard-stat-content">
-                    <h3 class="dashboard-stat-title">Revenus</h3>
-                    <p class="dashboard-stat-number">€45,678</p>
-                    <span class="dashboard-stat-change dashboard-stat-positive">+8%</span>
-                </div>
-            </div>
-
-            <div class="dashboard-stat-card dashboard-stat-card-warning">
-                <div class="dashboard-stat-icon">📦</div>
-                <div class="dashboard-stat-content">
-                    <h3 class="dashboard-stat-title">Commandes</h3>
-                    <p class="dashboard-stat-number">567</p>
-                    <span class="dashboard-stat-change dashboard-stat-negative">-3%</span>
+                    <h3 class="dashboard-stat-title">Chiffres d'affaires</h3>
+                    <p class="dashboard-stat-number">{{ stats.totalRevenue|number_format(0, ',', ' ') }}€</p>
+                    <span class="dashboard-stat-change {{ stats.revenueGrowthPercent >= 0 ? 'dashboard-stat-positive' : 'dashboard-stat-negative' }}">
+                        {{ stats.revenueGrowthPercent >= 0 ? '+' : '' }}{{ stats.revenueGrowthPercent }}%
+                    </span>
                 </div>
             </div>
 
             <div class="dashboard-stat-card dashboard-stat-card-info">
                 <div class="dashboard-stat-icon">📊</div>
                 <div class="dashboard-stat-content">
-                    <h3 class="dashboard-stat-title">Taux de conversion</h3>
-                    <p class="dashboard-stat-number">3.2%</p>
-                    <span class="dashboard-stat-change dashboard-stat-positive">+0.5%</span>
+                    <h3 class="dashboard-stat-title">Evolution mensuelle</h3>
+                    <p class="dashboard-stat-number">{{ stats.monthlyGrowthPercent }}%</p>
+                    <span class="dashboard-stat-change {{ stats.monthlyGrowthPercent >= 0 ? 'dashboard-stat-positive' : 'dashboard-stat-negative' }}">
+                        {{ stats.monthlyGrowthPercent >= 0 ? '+' : '' }}{{ stats.monthlyGrowthPercent >= 0 ? '0.5' : '-0.5' }}%
+                    </span>
                 </div>
             </div>
         </div>
+
 
         <!-- Section Google Calendar -->
         <section class="dashboard-calendar-section">
@@ -446,7 +444,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         backgroundColor: colors.primary + '20',
                         borderWidth: 3,
                         fill: true,
-                        tension: 0.4,
+                        tension: 0,
                         pointBackgroundColor: colors.primary,
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2,
